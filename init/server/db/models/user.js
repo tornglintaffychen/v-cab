@@ -37,7 +37,7 @@ module.exports = function (db) {
             type: Sequelize.STRING
         },
         isAdmin: {
-            type: Sequelize.BOOLEAN;
+            type: Sequelize.BOOLEAN,
             defaultValue: false
         }
     }, {
