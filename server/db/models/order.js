@@ -17,7 +17,7 @@ module.exports = function (db) {
         purchaseDate: {
             type: Sequelize.DATE
         },
-        products: {
+        productList: {
             // [{productId: id, productPrice: price}, {productId: id, productPrice: price}]
             type: Sequelize.ARRAY(Sequelize.JSON),
             allowNull: false

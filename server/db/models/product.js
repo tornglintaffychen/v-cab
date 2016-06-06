@@ -16,15 +16,16 @@ module.exports = function (db) {
         quantity: {
             type: Sequelize.INTEGER
         },
-        photoURl: {
+        photoUrl: {
             type: Sequelize.STRING,
             defaultValue: "/images/default.jpg"
         },
         price: {
-            type: Sequelize.INTEGER
+            type: Sequelize.FLOAT
         },
-        description: {
-            type: Sequelize.TEXT
+        returnable: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     }, {
         //get average rating
