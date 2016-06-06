@@ -10,12 +10,9 @@ module.exports = function (db) {
             type: Sequelize.ENUM('received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
             defaultValue: 'received'
         },
-        returnable: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
-        },
         purchaseDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            defaultValue: Sequelize.NOW
         },
         products: {
             // [{productId: id, productPrice: price}, {productId: id, productPrice: price}]
