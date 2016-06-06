@@ -17,9 +17,7 @@ router.get('/', function (req, res, next) {
 })
 
 router.get('/:id', function (req, res, next) {
-    Product.findById({
-            req.params.id
-        })
+    Product.findById(req.params.id)
         .then(function (product) {
             res.json(product)
         })
@@ -36,3 +34,5 @@ router.get('/search', function (req, res, next) {
         limit: 20
     })
 })
+
+module.exports = router;
