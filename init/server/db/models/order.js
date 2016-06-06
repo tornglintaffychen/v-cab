@@ -22,7 +22,8 @@ module.exports = function (db) {
         },
         products: {
             // [{productId: id, productPrice: price}, {productId: id, productPrice: price}]
-            type: Sequelize.ARRAY(Sequelize.JSON)
+            type: Sequelize.ARRAY(Sequelize.JSON),
+            allowNull: false
         }
     }, {
         getterMethods: {
