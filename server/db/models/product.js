@@ -26,6 +26,9 @@ module.exports = function (db) {
         returnable: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
+        },
+        description: {
+            type: Sequelize.TEXT
         }
     }, {
         //get average rating
