@@ -2,6 +2,7 @@
 var crypto = require('crypto');
 var _ = require('lodash');
 var Sequelize = require('sequelize');
+var Reviews = require('./Reviews');
 
 module.exports = function (db) {
 
@@ -22,7 +23,25 @@ module.exports = function (db) {
         price: {
             type: Sequelize.INTEGER
         }
-    });
+    }, {
+        //get average rating
+        getterMethods: {
+            starRating: function () {
+                var currProductId = this.id;
 
-};
+                return Reviews.findAll({
+                    where: {
+                        productId: currProductId
+                    }
+                }).then(function(ratings) {
+                    var length = ratings.length;
+                    var average = ratings.reduce(function(a, b){
+                        return a+b;
+                    });
+                    return average/length;
+                });
+            }
+        }
+    });
+}
 
