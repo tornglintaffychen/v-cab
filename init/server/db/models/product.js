@@ -24,6 +24,7 @@ module.exports = function (db) {
             type: Sequelize.INTEGER
         }
     }, {
+        //get average rating
         getterMethods: {
             starRating: function () {
                 var currProductId = this.id;
