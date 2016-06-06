@@ -25,7 +25,7 @@ module.exports = function (db) {
         }
     }, {
         getterMethods: {
-            starRating: function (newRating) {
+            starRating: function () {
                 var currProductId = this.id;
 
                 return Reviews.findAll({
