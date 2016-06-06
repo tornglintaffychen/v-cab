@@ -7,7 +7,7 @@ var Reviews = require('./review');
 module.exports = function (db) {
 
     db.define('product', {
-       title: {
+        title: {
             type: Sequelize.STRING
         },
         categories: {
@@ -16,12 +16,19 @@ module.exports = function (db) {
         quantity: {
             type: Sequelize.INTEGER
         },
-        photoURl: {
+        photoUrl: {
             type: Sequelize.STRING,
             defaultValue: "/images/default.jpg"
         },
         price: {
-            type: Sequelize.INTEGER
+            type: Sequelize.FLOAT
+        },
+        returnable: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        description: {
+            type: Sequelize.TEXT
         }
     }, {
         //get average rating
@@ -33,15 +40,14 @@ module.exports = function (db) {
                     where: {
                         productId: currProductId
                     }
-                }).then(function(ratings) {
+                }).then(function (ratings) {
                     var length = ratings.length;
-                    var average = ratings.reduce(function(a, b){
-                        return a+b;
+                    var average = ratings.reduce(function (a, b) {
+                        return a + b;
                     });
-                    return average/length;
+                    return average / length;
                 });
             }
         }
     });
 }
-

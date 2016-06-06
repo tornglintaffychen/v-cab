@@ -1,8 +1,6 @@
 'use strict';
 var db = require('./_db');
 
-module.exports = db;
-
 var User = require('./models/user')(db);
 var Review = require('./models/review')(db);
 var Product = require('./models/product')(db);
@@ -17,3 +15,12 @@ Product.hasMany(Review)
 Order.belongs(User)
 User.hasMany(Order)
 Order.hasMany(Product)
+
+
+module.exports = {
+    db: db,
+    User: User,
+    Review: Review,
+    Product: Product,
+    Order: Order
+};
