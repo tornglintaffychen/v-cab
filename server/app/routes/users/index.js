@@ -3,8 +3,8 @@ var router = require('express').Router();
 
 var rootPath = '../../../';
 var User = require(rootPath + 'db').User;
-
-module.exports = router;
+var Review = require(rootPath + 'db').Review;
+var Order = require(rootPath + 'db').Order;
 
 // only admin users can see all users
 router.get('/', function (req, res, next) {
@@ -31,7 +31,7 @@ router.post('/', function (req, res, next) {
         })
 })
 
-router.post('/:id', function (req, res, next) {
+router.put('/:id', function (req, res, next) {
     User.findById(req.params.id)
         .then(function (foundUser) {
             foundUser.update(req.body)
@@ -41,3 +41,27 @@ router.post('/:id', function (req, res, next) {
         })
         .catch(next)
 })
+
+// find all reviews a specific user has written
+router.get('/:id/reviews', function (req, res, next) {
+    User.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: Review
+        })
+        .catch(next)
+})
+
+// find all order of a specific user
+router.get('/:id/orders', function (req, res, next) {
+    User.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: Order
+        })
+        .catch(next)
+})
+
+module.exports = router;
