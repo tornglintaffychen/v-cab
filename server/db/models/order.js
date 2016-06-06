@@ -10,14 +10,11 @@ module.exports = function (db) {
             type: Sequelize.ENUM('received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
             defaultValue: 'received'
         },
-        returnable: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
-        },
         purchaseDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            defaultValue: Sequelize.NOW
         },
-        products: {
+        productList: {
             // [{productId: id, productPrice: price}, {productId: id, productPrice: price}]
             type: Sequelize.ARRAY(Sequelize.JSON),
             allowNull: false
@@ -31,4 +28,3 @@ module.exports = function (db) {
             }
         }
     });
-};

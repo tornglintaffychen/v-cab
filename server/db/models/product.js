@@ -2,7 +2,7 @@
 var crypto = require('crypto');
 var _ = require('lodash');
 var Sequelize = require('sequelize');
-var Reviews = require('./Reviews');
+var Reviews = require('./review');
 
 module.exports = function (db) {
 
@@ -16,12 +16,16 @@ module.exports = function (db) {
         quantity: {
             type: Sequelize.INTEGER
         },
-        photoURl: {
+        photoUrl: {
             type: Sequelize.STRING,
             defaultValue: "/images/default.jpg"
         },
         price: {
-            type: Sequelize.INTEGER
+            type: Sequelize.FLOAT
+        },
+        returnable: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     }, {
         //get average rating
@@ -44,4 +48,3 @@ module.exports = function (db) {
         }
     });
 }
-
