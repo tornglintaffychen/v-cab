@@ -7,18 +7,18 @@ require('./models/review')(db);
 require('./models/product')(db);
 require('./models/order')(db);
 
-var User = db.model('user');
-var Review = db.model('review');
-var Product = db.model('product');
-var Order = db.model('order');
+db.User = db.model('user');
+db.Review = db.model('review');
+db.Product = db.model('product');
+db.Order = db.model('order');
 
 
-Review.belongsTo(User);
-User.hasMany(Review)
+db.Review.belongsTo(db.User);
+db.User.hasMany(db.Review)
 
-Review.belongsTo(Product);
-Product.hasMany(Review)
+db.Review.belongsTo(db.Product);
+db.Product.hasMany(db.Review)
 
-Order.belongsTo(User)
-User.hasMany(Order)
-Order.hasMany(Product)
+db.Order.belongsTo(db.User)
+db.User.hasMany(db.Order)
+db.Order.hasMany(db.Product)

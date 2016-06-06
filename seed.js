@@ -22,7 +22,7 @@ var db = require('./server/db');
 var User = db.model('user');
 var Product = db.model('product');
 var Order = db.model('order');
-var Reviews = db.model('review');
+var Review = db.model('review');
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
@@ -77,23 +77,58 @@ var seedProducts = function () {
 
     return Promise.all(creatingProducts);
 }
-// var seedOrders = function (){
-//     var orders = [
-//         {
-//             status: 'processing'
-//             products: [];
-//         },
-//         {
-//             status: 'returnProcessing'
-//             products: 
-//         }
-//     ];
-//     var creatingOrders = orders.map(function(orderObj){
-//         return Order.create(orderObj);
-//     });
+var seedOrders = function (){
+    var orders = [
+        {
+            status: 'processing', 
+            productList: [{productId: 1, productPrice: 1.50}, {productId: 2, productPrice: 8.75}],
+            userId: 1
+
+        },
+        {
+            status: 'returnProcessing',
+            productList: [{productId: 1, productPrice: 1.50}, {productId: 1, productPrice: 1.50}],
+            userId: 2
+        }
+    ];
+
+    var creatingOrders = orders.map(function(orderObj){
+        return Order.create(orderObj);
+    });
     
-//     return Promise.all(creatingOrders);
-// }
+    return Promise.all(creatingOrders);
+}
+
+var seedReviews = function (){
+    var reviews = [
+        {
+            text: 'holy crap this was great', 
+            rating: 3,
+            userId: 1,
+            productId: 2
+
+        },
+        {
+            text: 'holy crap this was the BEST', 
+            rating: 5,
+            userId: 1,
+            productId: 1
+
+        },
+        {
+            text: 'holy crap this was the worst', 
+            rating: 1,
+            userId: 2,
+            productId: 1
+        }
+    ];
+
+    var creatingReviews = reviews.map(function(reviewObj){
+        return Review.create(reviewObj);
+    });
+    
+    return Promise.all(creatingReviews);
+}
 
 db.sync({ force: true })
     .then(function () {
@@ -102,12 +137,12 @@ db.sync({ force: true })
     .then(function () {
         return seedProducts();
     })
-    // .then(function () {
-    //     return seedOrders();
-    // })
-    // .then(function () {
-    //     return seedReviews();
-    // })
+    .then(function () {
+        return seedOrders();
+    })
+    .then(function () {
+        return seedReviews();
+    })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
