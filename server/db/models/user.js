@@ -6,6 +6,18 @@ var Sequelize = require('sequelize');
 module.exports = function (db) {
 
     db.define('user', {
+        firstName: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        lastName: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        address: {
+            type: Sequelize.TEXT,
+            allowNull: true
+        },
         email: {
             type: Sequelize.STRING
         },
@@ -23,6 +35,10 @@ module.exports = function (db) {
         },
         google_id: {
             type: Sequelize.STRING
+        },
+        isAdmin: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     }, {
         instanceMethods: {
@@ -57,4 +73,3 @@ module.exports = function (db) {
 
 
 };
-
