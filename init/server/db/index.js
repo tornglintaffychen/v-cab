@@ -2,5 +2,8 @@
 var db = require('./_db');
 module.exports = db;
 
-require('./models/user')(db);
+var User = require('./models/user')(db);
+var Review = require('./models/review')(db);
 
+Review.belongsTo(User);
+Review.belongsTo(Product);
