@@ -11,7 +11,8 @@ module.exports = function (db) {
             type: Sequelize.INTEGER
         },
         status: {
-            type: Sequelize.ENUM('received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned')
+            type: Sequelize.ENUM('received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
+            defaultValue: 'received'
         },
         returnable: {
             type: Sequelize.BOOLEAN,
