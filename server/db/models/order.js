@@ -18,7 +18,7 @@ module.exports = function (db) {
             type: Sequelize.DATE
         },
         productList: {
-            // [{productId: id, productPrice: price}, {productId: id, productPrice: price}]
+            // [{productId: id, productPrice: price, productIdQty: num}, {productId: id, productPrice: price, productIdQty: num}]
             type: Sequelize.ARRAY(Sequelize.JSON)
             defaultValue: []
         }
