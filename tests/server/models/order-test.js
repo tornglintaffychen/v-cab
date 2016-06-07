@@ -28,28 +28,28 @@ function makeRandomProduct() {
 }
 
 
-describe("getterMethods", function () {
+describe("getterMethods", function() {
 
-    beforeEach('Sync DB', function () {
+    beforeEach('Sync DB', function() {
         db.sync({
             force: true
         })
-        let createOrder = function (order) {
+        let createOrder = function(order) {
             // Taffy Review: shouldn't it be Order.create?
             return Review.create(order);
         }
     });
 
     // Taffy Review: is it array of 20 products?
-    let products = Array(20).fill(1).map(function () {
+    let products = Array(20).fill(1).map(function() {
         return makeRandomProduct()
     });
 
-    it("gets the total", function (done) {
+    it("gets the total", function(done) {
         Order.create({
                 productList: products
             })
-            .then(function (order) {
+            .then(function(order) {
                 // added qty 3 per each product, so the result should be $120
                 expect(order.total).to.equal(120);
                 done();

@@ -25,7 +25,7 @@ describe('Review model', () => {
         rating: 3
     };
 
-    let createReview = function (review) {
+    let createReview = function(review) {
         return Review.create(review);
     }
 

@@ -14,18 +14,18 @@ require('../../../server/db/models/review')(db);
 var Review = db.model('review');
 var Product = db.model('product');
 
-describe("getterMethods", function () {
-    beforeEach('Sync DB', function () {
+describe("getterMethods", function() {
+    beforeEach('Sync DB', function() {
         db.sync({
             force: true
         })
 
     });
 
-    let createProduct = function () {
+    let createProduct = function() {
         return Product.create();
     }
-    let createReview = function (rating, product) {
+    let createReview = function(rating, product) {
         var props = {
             rating: rating,
             productId: productId
@@ -46,11 +46,11 @@ describe("getterMethods", function () {
         })
 
 
-    it("gets the average rating", function (done) {
+    it("gets the average rating", function(done) {
         // Taffy Review: should be a test saying avg is 3?
         // See if below code is ok.
         Product.findById(productId)
-            .then(function (foundProduct) {
+            .then(function(foundProduct) {
                 expect(foundProduct.starRating()).to.equal(3);
             })
 
