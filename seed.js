@@ -8,7 +8,7 @@ var Order = db.model('order');
 var Review = db.model('review');
 var Promise = require('sequelize').Promise;
 
-var seedUsers = function() {
+var seedUsers = function () {
     //  currently the seed generates 7 users (including 2 admins)
 
     var users = [{
@@ -53,21 +53,21 @@ var seedUsers = function() {
 
 
 
-    var creatingUsers = users.map(function(userObj) {
+    var creatingUsers = users.map(function (userObj) {
         return User.create(userObj);
     });
 
     return Promise.all(creatingUsers);
 
 };
-var seedProducts = function() {
+var seedProducts = function () {
     var numofProj = 4;
     //this means that whenever we seed the DB we can assume the IDs are 1-4. increment this when you add to the seed!
 
     var products = [{
             title: 'KBuechs',
             //            year: '1982'
-            description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
+            description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive',
             categories: ['-O', 'smoked', 'spiked', 'inexpensive'],
             quantity: 47,
             photoUrl: "images/kbuechs.jpg",
@@ -76,7 +76,7 @@ var seedProducts = function() {
         }, {
             title: 'Lorimited Edition',
             //            year: null,
-            description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete.',
+            description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated',
             categories: ['+O', 'premium'
                 'rare', 'limited', 'highly-rated'
             ],
@@ -87,7 +87,7 @@ var seedProducts = function() {
         }, {
             title: 'The Taff',
             //            year: null,
-            description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.'
+            description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases. stylish'
             categories: ['stylish'],
             quantity: 8,
             photoUrl: "images/default.jpg",
@@ -96,13 +96,13 @@ var seedProducts = function() {
         }
 
     ];
-    var creatingProducts = products.map(function(productObj) {
+    var creatingProducts = products.map(function (productObj) {
         return Product.create(productObj);
     });
 
     return Promise.all(creatingProducts);
 }
-var seedOrders = function() {
+var seedOrders = function () {
     var orders = [{
         status: 'processing',
         productList: [{
@@ -126,14 +126,14 @@ var seedOrders = function() {
         userId: 2
     }];
 
-    var creatingOrders = orders.map(function(orderObj) {
+    var creatingOrders = orders.map(function (orderObj) {
         return Order.create(orderObj);
     });
 
     return Promise.all(creatingOrders);
 }
 
-var seedReviews = function() {
+var seedReviews = function () {
     var reviews = [{
         text: 'holy crap this was great',
         rating: 3,
@@ -153,7 +153,7 @@ var seedReviews = function() {
         productId: 1
     }];
 
-    var creatingReviews = reviews.map(function(reviewObj) {
+    var creatingReviews = reviews.map(function (reviewObj) {
         return Review.create(reviewObj);
     });
 
@@ -165,14 +165,14 @@ var seedAll = [seedUsers(), seedProducts(), seedOrders(), seedReviews()]
 db.sync({
         force: true
     })
-    .then(function() {
+    .then(function () {
         return Promise.all(seedAll)
     })
-    .then(function() {
+    .then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
     })
-    .catch(function(err) {
+    .catch(function (err) {
         console.error(err);
         process.kill(1);
     });
