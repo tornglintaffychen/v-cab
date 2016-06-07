@@ -3,7 +3,7 @@ var crypto = require('crypto');
 var _ = require('lodash');
 var Sequelize = require('sequelize');
 
-module.exports = function (db) {
+module.exports = function(db) {
 
     db.define('order', {
         status: {
@@ -17,13 +17,13 @@ module.exports = function (db) {
         },
         productList: {
             // [{productId: id, productPrice: price, productQty: num}, {productId: id, productPrice: price, productQty: num}]
-            type: Sequelize.ARRAY(Sequelize.JSON)
+            type: Sequelize.ARRAY(Sequelize.JSON),
             defaultValue: []
         }
     }, {
         getterMethods: {
-            total: function () {
-                return this.products.reduce(function (a, b) {
+            total: function() {
+                return this.products.reduce(function(a, b) {
                     return b.productPrice * b.productQty + a;
                 }, 0);
             }
