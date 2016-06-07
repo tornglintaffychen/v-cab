@@ -7,8 +7,8 @@ module.exports = function (db) {
 
     db.define('order', {
         status: {
-            type: Sequelize.ENUM('received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
-            defaultValue: 'received'
+            type: Sequelize.ENUM('inCart', 'received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
+            defaultValue: 'inCart'
         },
         returnable: {
             type: Sequelize.BOOLEAN,
@@ -19,8 +19,8 @@ module.exports = function (db) {
         },
         productList: {
             // [{productId: id, productPrice: price}, {productId: id, productPrice: price}]
-            type: Sequelize.ARRAY(Sequelize.JSON),
-            allowNull: false
+            type: Sequelize.ARRAY(Sequelize.JSON)
+            defaultValue: []
         }
     }, {
         getterMethods: {
