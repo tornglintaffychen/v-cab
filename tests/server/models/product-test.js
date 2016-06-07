@@ -15,34 +15,44 @@ var Review = db.model('review');
 var Product = db.model('product');
 
 describe("getterMethods", function () {
-  beforeEach('Sync DB', function(){
-    db.sync({force:true})
+    beforeEach('Sync DB', function () {
+        db.sync({
+            force: true
+        })
 
-  });
+    });
 
-  let createProduct = function (){
-    return Product.create();
-  }
-  let createReview = function (rating, product){
-    var props = {rating: rating, productId: productId}
-    return Review.create(props);
-  }
-
-  createProduct()
-  .then(product => {
-    var ratings = [];
-    for (var i = 1; i <=5; i++) {
-      ratings.push(createReview(i, product))
+    let createProduct = function () {
+        return Product.create();
     }
-    return Promise.all(ratings)
-  })
-  .then(ratings => {
-    console.log(ratings)
-  })
+    let createReview = function (rating, product) {
+        var props = {
+            rating: rating,
+            productId: productId
+        }
+        return Review.create(props);
+    }
+
+    createProduct()
+        .then(product => {
+            var ratings = [];
+            for (var i = 1; i <= 5; i++) {
+                ratings.push(createReview(i, product))
+            }
+            return Promise.all(ratings)
+        })
+        .then(ratings => {
+            console.log(ratings)
+        })
 
 
-  it("gets the average rating", function(done) {
+    it("gets the average rating", function (done) {
+        // Taffy Review: should be a test saying avg is 3?
+        // See if below code is ok.
+        Product.findById(productId)
+            .then(function (foundProduct) {
+                expect(foundProduct.starRating()).to.equal(3);
+            })
 
-
-  });
+    });
 });
