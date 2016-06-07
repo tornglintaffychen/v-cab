@@ -2,7 +2,7 @@
 var crypto = require('crypto');
 var _ = require('lodash');
 var Sequelize = require('sequelize');
-var Reviews = require('./Reviews');
+var Reviews = require('./review');
 
 module.exports = function (db) {
 
@@ -44,4 +44,3 @@ module.exports = function (db) {
         }
     });
 }
-

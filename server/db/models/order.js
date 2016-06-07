@@ -10,14 +10,16 @@ module.exports = function (db) {
             type: Sequelize.ENUM('received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
             defaultValue: 'received'
         },
-        returnable: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
-        },
+        //UPDTED IN OTHER BRANCH
+        // returnable: {
+        //     type: Sequelize.BOOLEAN,
+        //     defaultValue: false
+        // },
         purchaseDate: {
             type: Sequelize.DATE
         },
-        products: {
+        //UPDTED IN OTHER BRANCH
+        productList: {
             // [{productId: id, productPrice: price}, {productId: id, productPrice: price}]
             type: Sequelize.ARRAY(Sequelize.JSON),
             allowNull: false
@@ -25,9 +27,10 @@ module.exports = function (db) {
     }, {
         getterMethods: {
             total: function () {
-                return this.products.reduce(function (a, b) {
-                    return a.productPrice + b.productPrice;
-                });
+                return this.productList.reduce(function (a, b) {
+                  // console.log(a, b);
+                    return b.productPrice+a;
+                },0);
             }
         }
     });
