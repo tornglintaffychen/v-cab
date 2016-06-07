@@ -12,7 +12,11 @@
 // var User = db.model('user');
 //
 // describe('User model', function () {
+<<<<<<< HEAD
 // 
+=======
+//
+>>>>>>> ee2fba0bf098bc90ef421851200e88bace815daa
 //     beforeEach('Sync DB', function () {
 //        return db.sync({ force: true });
 //     });
