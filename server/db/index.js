@@ -23,3 +23,7 @@ Product.hasMany(Review)
 Order.belongsTo(User)
 User.hasMany(Order)
 Order.hasMany(Product)
+//let's make sure we've got all this connected correctly
+//do we need to add any other links?
+//let's go through models and make sure
+//if we do Review belongsTo User, how does that work with unregistered users?
