@@ -16,7 +16,7 @@ var Order = db.model('order');
 
 //makeRandomProduct () => obj[{productId: id, productPrice: price}
 // Taffy Review: we changed the productList to [{productId: id, productPrice: price, qty: num}]
-// to keep track the order qty of eqch product
+// to keep track the order qty of each product
 function makeRandomProduct() {
     var randomId = Math.floor(Math.random() * (100 - 1) + 1);
     // Taffy Review: add qty
