@@ -5,7 +5,7 @@ var Sequelize = require('sequelize');
 var Reviews = require('./review');
 
 
-module.exports = function (db) {
+module.exports = function(db) {
     // Katie review:let's make sure all of these are editable by the admin
 
     db.define('product', {
@@ -30,10 +30,9 @@ module.exports = function (db) {
         price: {
             type: Sequelize.FLOAT
         },
-<<<<<<< HEAD
-=======
+
         // Katie review: not sure if float is correct. maybe we could have 'dollars' and 'cents' within price? that might make totalling things easier? we DEFINITELY shouldn't allow null here
->>>>>>> models
+
         returnable: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
@@ -45,16 +44,16 @@ module.exports = function (db) {
     }, {
         // get average rating
         getterMethods: {
-            starRating: function () {
+            starRating: function() {
                 var currProductId = this.id;
                 // Katie review: we should include a bit where we round up/down to the nearest half star, or at least limit it to like, 3.2 or somesuch, otherwise we'll get a repeating number eventually
                 return Reviews.findAll({
                     where: {
                         productId: currProductId
                     }
-                }).then(function (ratings) {
+                }).then(function(ratings) {
                     var length = ratings.length;
-                    var average = ratings.reduce(function (a, b) {
+                    var average = ratings.reduce(function(a, b) {
                         return a + b;
                     });
                     return average / length;

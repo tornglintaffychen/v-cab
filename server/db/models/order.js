@@ -32,5 +32,6 @@ module.exports = function(db) {
             }
         }
     });
+
     // Katie review: let's make a function that checks how old the order is and delete it after 2 years. Let's also at some point figure out whether to link this by email or what. maybe a pivot table and link to users based on email? or userId?
 };
