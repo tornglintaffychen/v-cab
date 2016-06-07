@@ -26,8 +26,8 @@ module.exports = function (db) {
         getterMethods: {
             total: function () {
                 return this.products.reduce(function (a, b) {
-                    return a.productPrice + b.productPrice;
-                });
+                    return b.productPrice + a;
+                }, 0);
             }
         }
     });
