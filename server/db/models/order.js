@@ -10,12 +10,9 @@ module.exports = function (db) {
             type: Sequelize.ENUM('inCart', 'received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
             defaultValue: 'inCart'
         },
-        returnable: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
-        },
         purchaseDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            defaultValue: Sequelize.NOW
         },
         productList: {
             // [{productId: id, productPrice: price, productIdQty: num}, {productId: id, productPrice: price, productIdQty: num}]

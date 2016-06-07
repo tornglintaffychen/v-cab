@@ -2,8 +2,14 @@
 var path = require('path');
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 
 module.exports = function (db) {
+
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
 
     // Pass our express application pipeline into the configuration
     // function located at server/app/configure/index.js
@@ -44,4 +50,3 @@ module.exports = function (db) {
     return app;
 
 };
-
