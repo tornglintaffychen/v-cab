@@ -22,9 +22,7 @@ router.post('/', function (req, res, next) {
             res.json(added);
         })
         //added a catch*sv
-        .catch(function (err) {
-            res.status(500).send("Invalid Id");
-        });
+        .catch(next);
 });
 
 //update user
@@ -43,9 +41,7 @@ router.put('/:id', function (req, res, next) {
         .then(function (edited) {
             res.json(edited);
         })
-        .catch(function (err) {
-            res.status(500).send("Invalid Id");
-        });
+        .catch(next);
 });
 //combined*sv
 //get one user, their order and reviews
@@ -64,9 +60,7 @@ router.get('/:id', function (req, res, next) {
                 res.status(404).send("Not Found");
             }
         })
-        .catch(function (err) {
-            res.status(500).send("Invalid Id");
-        });
+        .catch(next);
 });
 
 

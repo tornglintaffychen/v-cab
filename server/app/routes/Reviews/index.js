@@ -18,11 +18,8 @@ router.get('/:id', function (req, res, next) {
     Review.findById(req.params.id)
         .then(function (review) {
             //check to be sure theres a book w that id*sv
-            if (review) {
-                res.json(review);
-            } else {
-                res.status(404).send("Not Found");
-            }
+            if (review) res.json(review);
+            else res.status(404).send("Not Found");
         })
         .catch(next);
 });
@@ -33,12 +30,10 @@ router.post('/', function (req, res, next) {
         .then(function (added) {
             res.json(added);
         })
-        .catch(function (err) {
-            res.status(500).send("Invalid Input");
-        });
+        .catch(next);
 });
 
-//delete review*sv
+//delete review*sv for the admin or your own review
 router.delete('/:id', function (req, res, next) {
     Review.destroy({
             where: {
@@ -46,15 +41,10 @@ router.delete('/:id', function (req, res, next) {
             }
         })
         .then(function (review) {
-            if (review) {
-                res.sendStatus(204);
-            } else {
-                res.sendStatus(404);
-            }
+            if (review) res.status(204).json(review);
+            else res.sendStatus(404);
         })
-        .catch(function (err) {
-            res.status(500).send("Invalid Id");
-        });
+        .catch(next);
 });
 
 //update
@@ -63,6 +53,9 @@ router.put('/:id', function (req, res, next) {
             where: {
                 id: req.params.id
             }
+        }).then(function (updated) {
+            if (updated) res.status(204).json(updated);
+            else res.status(404).end();
         })
         //send status if it's an invalid id
         .catch(function (err) {

@@ -8,14 +8,8 @@ var Review = require(rootPath + 'db').Review;
 // category too, because req.query
 router.get('/', function (req, res, next) {
     Product.findAll({
-            // where: {
-            //     req.query
-            // }
-            //contains*sv
             where: {
-                categories: {
-                    $contains: req.query
-                }
+                req.query
             }
         })
         .then(function (products) {
