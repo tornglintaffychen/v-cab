@@ -21,13 +21,10 @@ router.post('/', function (req, res, next) {
         .then(function (added) {
             res.json(added);
         })
-        //added a catch*sv
-        .catch(function(err){
-            res.status(500).send("Invalid Id");
-        });
+        .catch(next);
 });
 
-//update user 
+//update user
 router.put('/:id', function (req, res, next) {
     User.findById(req.params.id)
         .then(function (foundUser) {
@@ -35,8 +32,7 @@ router.put('/:id', function (req, res, next) {
             if (foundUser) {
                 //didn't return*sv
                 return foundUser.update(req.body);
-            }
-            else {
+            } else {
                 res.status(404).send("Not Found");
                 return;
             }
@@ -44,33 +40,27 @@ router.put('/:id', function (req, res, next) {
         .then(function (edited) {
             res.json(edited);
         })
-        .catch(function(err){
-            res.status(500).send("Invalid Id");
-        });
+        .catch(next);
 });
 //combined*sv
 //get one user, their order and reviews
 router.get('/:id', function (req, res, next) {
     User.findOne({
-        where: {
-            id: req.params.id
-        },
-        include: Review, Order
-    })
-    .then(function(user){
-        if (user) {
-            res.json(user);
-        }
-        else {
-            res.status(404).send("Not Found");
-        }
-    })
-    .catch(function(err){
-        res.status(500).send("Invalid Id");
-    });
+            where: {
+                id: req.params.id
+            },
+            include: Review,
+            Order
+        })
+        .then(function (user) {
+            if (user) {
+                res.json(user);
+            } else {
+                res.status(404).send("Not Found");
+            }
+        })
+        .catch(next);
 });
-
-   
 
 
 module.exports = router;
