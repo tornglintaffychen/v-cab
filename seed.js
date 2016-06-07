@@ -1,21 +1,4 @@
-/*
-
-This seed file is only a placeholder. It should be expanded and altered
-to fit the development of your application.
-
-It uses the same file the server uses to establish
-the database connection:
---- server/db/index.js
-
-The name of the database used is set in your environment files:
---- server/env/*
-
-This seed file has a safety check to see if you already have users
-in the database. If you are developing multiple applications with the
-fsg scaffolding, keep in mind that fsg always uses the same database
-name in the environment files.
-
-*/
+/* As of 6/7/16, this seed file creates entries for each model, as well as creating entries that are based solely on the object-model relationships. */
 
 var chalk = require('chalk');
 var db = require('./server/db');
@@ -26,6 +9,7 @@ var Review = db.model('review');
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
+//  currently the seed generates 7 users (including 2 admins)
 
     var users = [
         {
@@ -41,8 +25,41 @@ var seedUsers = function () {
             email: 'obama@gmail.com',
             password: 'potus',
             isAdmin: true
+        },
+        {
+            firstName: 'Kanaya',
+            lastName: 'Maryam',
+            email: 'grim@aux.troll',
+            password: '613'
+        },
+        {
+            firstName: 'K',
+            lastName: 'B',
+            email: 'kbuechner@gmail.com',
+            password: '7777'
+        },
+        {
+            firstName: 'Alucard',
+            lastName: 'Hellsing',
+            email: 'undead@vampire.horse',
+            password: 'dracula'
+        },
+        {
+            firstName: 'Bruce',
+            lastName: 'Wayne',
+            email: 'batman@gotham.gov',
+            password: 'batman'
+        },
+        {
+            firstName: 'asdf',
+            lastname: 'jkl',
+            email: 'qw@er.ty',
+            password: 'yiop',
+            isAdmin: true,
         }
     ];
+
+
 
     var creatingUsers = users.map(function (userObj) {
         return User.create(userObj);
@@ -52,24 +69,41 @@ var seedUsers = function () {
 
 };
 var seedProducts = function () {
+    var numofProj = 4;
+    //this means that whenever we seed the DB we can assume the IDs are 1-4. increment this when you add to the seed!
 
     var products = [
         {
             title: 'KBuechs',
-            categories: ['-O', 'smoked', 'spiked'],
-            quantity: 7,
+//            year: '1982'
+            description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
+            categories: ['-O', 'smoked', 'spiked', 'inexpensive'],
+            quantity: 47,
             photoUrl: "images/kbuechs.jpg",
             price: 1.50,
             returnable: true,
         },
         {
             title: 'Lorimited Edition',
-            categories: ['+O', 'premium'],
+//            year: null,
+            description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete.',
+            categories: ['+O', 'premium' 'rare', 'limited', 'highly-rated'],
             quantity: 6,
-            photoUrl: "images/kbuechs.jpg",
-            price: 8.75,
+            photoUrl: "images/default.jpg",
+            price: 79.99,
+            returnable: false
+        },
+        {
+            title: 'The Taff',
+//            year: null,
+            description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.
+            categories: ['stylish'],
+            quantity: 8,
+            photoUrl: "images/default.jpg",
+            price: 42.30,
             returnable: false
         }
+
     ];
     var creatingProducts = products.map(function(productObj){
         return Product.create(productObj);
