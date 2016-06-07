@@ -1,6 +1,3 @@
-//REVIEW: Lori: Katie is this meant for notes?
-
-
 categories
 
 blood - type(varities: '-O', '+0', '-AB', '+AB', '-B', '+B', '-A', '+A', )

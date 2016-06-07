@@ -160,25 +160,17 @@ var seedReviews = function() {
     return Promise.all(creatingReviews);
 }
 
-//REVIEW:Lori: Is this consecutive because of dependencies?
+var seedAll = [seedUsers(), seedProducts(), seedOrders(), seedReviews()]
+
 db.sync({
         force: true
     })
     .then(function() {
-        return seedUsers();
-    })
-    .then(function() {
-        return seedProducts();
-    })
-    .then(function() {
-        return seedOrders();
-    })
-    .then(function() {
-        return seedReviews();
+        return Promise.all(seedAll)
     })
     .then(function() {
         console.log(chalk.green('Seed successful!'));
-        process.kill(0); //REVIEW: Lori: Can you teach me what this line does
+        process.kill(0);
     })
     .catch(function(err) {
         console.error(err);

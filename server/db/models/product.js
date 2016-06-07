@@ -23,7 +23,6 @@ module.exports = function(db) {
         price: {
             type: Sequelize.FLOAT
         },
-        //REVIEW: Lori: Great catch Katie! 
         returnable: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
