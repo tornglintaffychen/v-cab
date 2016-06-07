@@ -7,27 +7,24 @@ module.exports = function (db) {
 
     db.define('order', {
         status: {
-            type: Sequelize.ENUM('received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
-            defaultValue: 'received'
-        },
-        returnable: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
+            type: Sequelize.ENUM('inCart', 'received', 'processing', 'shipped', 'delivered', 'returnProcessing', 'returned'),
+            defaultValue: 'inCart'
         },
         purchaseDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            defaultValue: Sequelize.NOW
         },
-        products: {
-            // [{productId: id, productPrice: price}, {productId: id, productPrice: price}]
-            type: Sequelize.ARRAY(Sequelize.JSON),
-            allowNull: false
+        productList: {
+            // [{productId: id, productPrice: price, productIdQty: num}, {productId: id, productPrice: price, productIdQty: num}]
+            type: Sequelize.ARRAY(Sequelize.JSON)
+            defaultValue: []
         }
     }, {
         getterMethods: {
             total: function () {
                 return this.products.reduce(function (a, b) {
-                    return a.productPrice + b.productPrice;
-                });
+                    return b.productPrice + a;
+                }, 0);
             }
         }
     });

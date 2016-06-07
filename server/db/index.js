@@ -3,10 +3,16 @@ var db = require('./_db');
 
 module.exports = db;
 
-var User = require('./models/user')(db);
-var Review = require('./models/review')(db);
-var Product = require('./models/product')(db);
-var Order = require('./models/order')(db);
+require('./models/user')(db);
+require('./models/review')(db);
+require('./models/product')(db);
+require('./models/order')(db);
+
+db.User = db.model('user');
+db.Review = db.model('review');
+db.Product = db.model('product');
+db.Order = db.model('order');
+
 
 Review.belongsTo(User);
 User.hasMany(Review)
@@ -14,6 +20,6 @@ User.hasMany(Review)
 Review.belongsTo(Product);
 Product.hasMany(Review)
 
-Order.belongs(User)
+Order.belongsTo(User)
 User.hasMany(Order)
 Order.hasMany(Product)
