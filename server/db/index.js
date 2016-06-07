@@ -14,12 +14,6 @@ db.Review = db.model('review');
 db.Product = db.model('product');
 db.Order = db.model('order');
 
-
-// Katie review: let's make sure we've got all this connected correctly
-// do we need to add any other links?
-// let's go through models and make sure
-// if we do Review belongsTo User, how does that work with unregistered users?
-
 db.Review.belongsTo(db.User);
 db.User.hasMany(db.Review)
 
