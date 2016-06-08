@@ -38,7 +38,8 @@ module.exports = function (db) {
         description: {
             type: Sequelize.TEXT,
             validate: {
-                len: [25, 250] //only allow values with length between 25 and 250
+            //     len: [25, 250] //only allow values with length between 25 and 250
+                min: 25
             }
         }
     }, {
