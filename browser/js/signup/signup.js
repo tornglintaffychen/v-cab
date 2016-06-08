@@ -18,7 +18,7 @@ app.controller('SignUpCtrl', function ($scope, SignUp, $state) {
 
         SignUp.createUser(signupInfo)
             .then(function () {
-                $state.go('home');
+                $state.go('login');
             })
             .catch(function () {
                 $scope.error = 'Invalid signup credentials.';
