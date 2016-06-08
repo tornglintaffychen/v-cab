@@ -2,6 +2,7 @@
 
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var secrets = require('./secrets.js');
 
 module.exports = function (app, db) {
 
@@ -10,9 +11,9 @@ module.exports = function (app, db) {
     var googleConfig = app.getValue('env').GOOGLE;
 
     var googleCredentials = {
-        clientID: googleConfig.clientID,
-        clientSecret: googleConfig.clientSecret,
-        callbackURL: googleConfig.callbackURL
+        clientID: secrets.google.clientID,
+        clientSecret: secrets.google.clientSecret,
+        callbackURL: "http://localhost:1337"
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
@@ -51,7 +52,9 @@ module.exports = function (app, db) {
     }));
 
     app.get('/auth/google/callback',
-        passport.authenticate('google', {failureRedirect: '/login'}),
+        passport.authenticate('google', {
+            failureRedirect: '/login'
+        }),
         function (req, res) {
             res.redirect('/');
         });
