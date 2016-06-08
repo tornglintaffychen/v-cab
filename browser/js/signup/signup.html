@@ -1,10 +1,17 @@
 <div class="signin-container">
   <div class="buffer local">
-    <form id="signup-form" name="signupForm" ng-submit="signupForm.$valid && sendsignup(signup)">
+    <form id="signup-form" name="signupForm" ng-submit="signupForm.$valid && sendSignup(signup)">
         <alert type="danger" ng-show="error">
             {{ error }}
         </alert>
-
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" ng-model="signup.firstName" class="form-control" id="firstName" placeholder="Enter first name">
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" ng-model="signup.lastName" class="form-control" id="lastName" placeholder="Enter last name">
+        </div>
         <div class="form-group">
             <label for="email">Email address</label>
             <input type="text" ng-model="signup.email" class="form-control" id="email" placeholder="Enter email">
