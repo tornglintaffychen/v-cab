@@ -77,9 +77,7 @@ var seedProducts = function () {
             title: 'Lorimited Edition',
             //            year: null,
             description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated',
-            categories: ['+O', 'premium'
-                'rare', 'limited', 'highly-rated'
-            ],
+            categories: ['+O', 'premium','rare', 'limited', 'highly-rated'],
             quantity: 6,
             photoUrl: "images/default.jpg",
             price: 79.99,
@@ -87,7 +85,7 @@ var seedProducts = function () {
         }, {
             title: 'The Taff',
             //            year: null,
-            description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases. stylish'
+            description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.',
             categories: ['stylish'],
             quantity: 8,
             photoUrl: "images/default.jpg",
@@ -135,19 +133,19 @@ var seedOrders = function () {
 
 var seedReviews = function () {
     var reviews = [{
-        text: 'holy crap this was great',
+        text: 'holy crap this was great the BEST BEST BEST BEST BEST BEST BEST BEST BEST',
         rating: 3,
         userId: 1,
         productId: 2
 
     }, {
-        text: 'holy crap this was the BEST',
+        text: 'holy crap this was the BEST BEST BEST BEST BEST BEST BEST BEST',
         rating: 5,
         userId: 1,
         productId: 1
 
     }, {
-        text: 'holy crap this was the worst',
+        text: 'holy crap this was the worst the worst the worst the worst EVER EVER EVER EVER',
         rating: 1,
         userId: 2,
         productId: 1
@@ -161,6 +159,7 @@ var seedReviews = function () {
 }
 
 var seedAll = [seedUsers(), seedProducts(), seedOrders(), seedReviews()]
+//var seedAll = [seedUsers(), seedProducts(), seedReviews()]
 
 db.sync({
         force: true
@@ -170,9 +169,9 @@ db.sync({
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
-        process.kill(0);
+        process.exit(0);
     })
     .catch(function (err) {
         console.error(err);
-        process.kill(1);
+        process.exit(1);
     });
