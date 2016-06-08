@@ -4,12 +4,13 @@ var router = express.Router();
 var rootPath = '../../../';
 var Product = require(rootPath + 'db').Product;
 var Review = require(rootPath + 'db').Review;
+var Category = require(rootPath + 'db').Category;
 
 // category too, because req.query
 router.get('/', function (req, res, next) {
     Product.findAll({
             where: req.query,
-            include: Review
+            include: [Category, Review]
         })
         .then(function (products) {
             if (products) {
@@ -23,7 +24,12 @@ router.get('/', function (req, res, next) {
 
 //FindOne by ID
 router.get('/:id', function (req, res, next) {
-    Product.findById(req.params.id)
+    Product.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [Category, Review]
+        })
         .then(function (product) {
             if (product) {
                 res.json(product);
@@ -41,7 +47,8 @@ router.get('/search', function (req, res, next) {
             where: {
                 description: {
                     $like: '%' + req.query.name + '%'
-                }
+                },
+                include: [Category, Review]
             },
             limit: 20
         })
