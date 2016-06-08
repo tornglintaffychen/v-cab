@@ -12,11 +12,11 @@ module.exports = function (db) {
             type: Sequelize.STRING,
             allowNull: false
         },
-        categories: {
-            type: Sequelize.ARRAY(Sequelize.STRING),
-            allowNull: false,
-            // defaultValue: ["uncategorized"]  // error for "uncategorized =>fix is either [] or ["uncategorized"]
-        },
+        // categories: {
+        //     type: Sequelize.ARRAY(Sequelize.STRING),
+        //     allowNull: false,
+        //     // defaultValue: ["uncategorized"]  // error for "uncategorized =>fix is either [] or ["uncategorized"]
+        // },
         inventory: {
             type: Sequelize.INTEGER,
             allowNull: false,
