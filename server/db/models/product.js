@@ -43,7 +43,7 @@ module.exports = function (db) {
             }
         }
     }, {
-        // get average rating
+        // get average rating   
         getterMethods: {
             starRating: function () {
                 var currProductId = this.id;
