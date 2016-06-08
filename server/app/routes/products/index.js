@@ -22,6 +22,7 @@ router.get('/', function(req, res, next) {
 
 //FindOne by ID
 router.get('/:id', function(req, res, next) {
+    console.log("in .get/:id")
     Product.findById(req.params.id)
         .then(function(product) {
             if (product) {

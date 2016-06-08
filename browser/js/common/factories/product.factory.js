@@ -13,10 +13,13 @@ app.factory('ProductFactory', function($http){
 	};
 
 	ProductFactory.fetchById = function (id) {
-		return $http.get ('/api/products/' + id)
+		return $http.get('/api/products/' + id)
 		.then(function (response){
 			return response.data;
-		});
+		})
+		.catch(function(error){
+			console.error(error.message)
+		})
 	};
 
 	return ProductFactory;
