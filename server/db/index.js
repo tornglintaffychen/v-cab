@@ -22,8 +22,8 @@ db.User.hasMany(db.Review);
 db.Review.belongsTo(db.Product);
 db.Product.hasMany(db.Review);
 
-db.Category.belongsToMany(db.Product);
-db.Product.belongsToMany(db.Category);
+db.Category.belongsToMany(db.Product, {through: 'ProductCategory' });
+db.Product.belongsToMany(db.Category, {through: 'CategoryProduct' });
 
 db.Order.belongsTo(db.User);
 db.User.hasMany(db.Order);
