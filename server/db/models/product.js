@@ -2,8 +2,7 @@
 var crypto = require('crypto');
 var _ = require('lodash');
 var Sequelize = require('sequelize');
-var Reviews = require('./review');
-
+// var Review = require('../index').Review
 
 module.exports = function (db) {
     // Katie review:let's make sure all of these are editable by the admin
@@ -13,11 +12,11 @@ module.exports = function (db) {
             type: Sequelize.STRING,
             allowNull: false
         },
-        categories: {
-            type: Sequelize.ARRAY(Sequelize.STRING),
-            allowNull: false,
-            // defaultValue: ["uncategorized"]  // error for "uncategorized =>fix is either [] or ["uncategorized"]
-        },
+        // categories: {
+        //     type: Sequelize.ARRAY(Sequelize.STRING),
+        //     allowNull: false,
+        //     // defaultValue: ["uncategorized"]  // error for "uncategorized =>fix is either [] or ["uncategorized"]
+        // },
         inventory: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -38,7 +37,8 @@ module.exports = function (db) {
         description: {
             type: Sequelize.TEXT,
             validate: {
-                len: [25, 250] //only allow values with length between 25 and 250
+                //     len: [25, 250] //only allow values with length between 25 and 250
+                min: 25
             }
         }
     }, {
@@ -46,12 +46,13 @@ module.exports = function (db) {
         getterMethods: {
             starRating: function () {
                 var currProductId = this.id;
-                return Reviews.findAll({
+                return db.Review.findAll({
                     where: {
                         productId: currProductId
                     }
                 }).then(function (ratings) {
                     var length = ratings.length;
+                    if (!length) return;
                     var average = ratings.reduce(function (a, b) {
                         return a + b;
                     });
