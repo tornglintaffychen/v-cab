@@ -7,8 +7,8 @@ var SequelizeStore = require('connect-session-sequelize')(session.Store);
 var ENABLED_AUTH_STRATEGIES = [
     'local',
     //'twitter',
-    //'facebook',
-    //'google'
+    'facebook',
+    'google'
 ];
 
 module.exports = function (app, db) {
@@ -56,7 +56,9 @@ module.exports = function (app, db) {
     // logged in already.
     app.get('/session', function (req, res) {
         if (req.user) {
-            res.send({ user: req.user.sanitize() });
+            res.send({
+                user: req.user.sanitize()
+            });
         } else {
             res.status(401).send('No authenticated user.');
         }
