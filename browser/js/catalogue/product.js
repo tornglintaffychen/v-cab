@@ -23,18 +23,17 @@ app.config(function ($stateProvider) {
 
 
 // //product controller for single product
-app.controller('ProductCtrl', function($scope, ProductFactory ){
-console.log("HI")
-	//$scope.product = oneProduct;
-
+app.controller('ProductCtrl', function($scope, ProductFactory, oneProduct){
+	$scope.product = oneProduct;
+	console.log($scope.product)
 })
 
 // //productSSSSS controller for all products
-// app.controller('productsCtrl', function($scope, ProductFactory, allProducts){
+app.controller('productsCtrl', function($scope, ProductFactory, allProducts){
 
-// 	$scope.products = allProducts;
+	$scope.products = allProducts;
 
-// })
+})
 
 
 
