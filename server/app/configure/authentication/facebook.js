@@ -1,6 +1,7 @@
 'use strict';
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var secrets = require('./secrets.js');
 
 module.exports = function (app, db) {
 
@@ -9,9 +10,9 @@ module.exports = function (app, db) {
     var facebookConfig = app.getValue('env').FACEBOOK;
 
     var facebookCredentials = {
-        clientID: facebookConfig.clientID,
-        clientSecret: facebookConfig.clientSecret,
-        callbackURL: facebookConfig.callbackURL
+        clientID: secrets.facebook.clientID,
+        clientSecret: secrets.facebook.clientSecret,
+        callbackURL: "http://vcab.testing:1337"
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
@@ -45,7 +46,9 @@ module.exports = function (app, db) {
     app.get('/auth/facebook', passport.authenticate('facebook'));
 
     app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {failureRedirect: '/login'}),
+        passport.authenticate('facebook', {
+            failureRedirect: '/login'
+        }),
         function (req, res) {
             res.redirect('/');
         });
