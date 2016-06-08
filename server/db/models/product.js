@@ -16,7 +16,7 @@ module.exports = function (db) {
         categories: {
             type: Sequelize.ARRAY(Sequelize.STRING),
             allowNull: false,
-            // defaultValue: ["uncategorized"]
+            // defaultValue: ["uncategorized"]  // error for "uncategorized =>fix is either [] or ["uncategorized"]
         },
         inventory: {
             type: Sequelize.INTEGER,
