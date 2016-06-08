@@ -45,7 +45,7 @@ var seedUsers = function () {
         password: 'batman'
     }, {
         firstName: 'asdf',
-        lastname: 'jkl',
+        lastName: 'jkl',
         email: 'qw@er.ty',
         password: 'yiop',
         isAdmin: true,
@@ -67,32 +67,31 @@ var seedProducts = function () {
     var products = [{
             title: 'KBuechs',
             //            year: '1982'
-            description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive',
             categories: ['-O', 'smoked', 'spiked', 'inexpensive'],
-            quantity: 47,
+            inventory: 47,
             photoUrl: "images/kbuechs.jpg",
             price: 1.50,
             returnable: true,
+            description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive'
         }, {
             title: 'Lorimited Edition',
             //            year: null,
-            description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated',
-            categories: ['+O', 'premium'
-                'rare', 'limited', 'highly-rated'
-            ],
-            quantity: 6,
+            categories: ['+O', 'premium','rare', 'limited', 'highly-rated'],
+            inventory: 6,
             photoUrl: "images/default.jpg",
             price: 79.99,
-            returnable: false
+            returnable: false,
+            description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated'
+
         }, {
             title: 'The Taff',
             //            year: null,
-            description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases. stylish'
             categories: ['stylish'],
-            quantity: 8,
+            inventory: 8,
             photoUrl: "images/default.jpg",
             price: 42.30,
-            returnable: false
+            returnable: false,
+            description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.'
         }
 
     ];
@@ -135,19 +134,19 @@ var seedOrders = function () {
 
 var seedReviews = function () {
     var reviews = [{
-        text: 'holy crap this was great',
+        text: 'holy crap this was great the BEST BEST BEST BEST BEST BEST BEST BEST BEST',
         rating: 3,
         userId: 1,
         productId: 2
 
     }, {
-        text: 'holy crap this was the BEST',
+        text: 'holy crap this was the BEST BEST BEST BEST BEST BEST BEST BEST',
         rating: 5,
         userId: 1,
         productId: 1
 
     }, {
-        text: 'holy crap this was the worst',
+        text: 'holy crap this was the worst the worst the worst the worst EVER EVER EVER EVER',
         rating: 1,
         userId: 2,
         productId: 1
@@ -160,19 +159,29 @@ var seedReviews = function () {
     return Promise.all(creatingReviews);
 }
 
-var seedAll = [seedUsers(), seedProducts(), seedOrders(), seedReviews()]
+
+//var seedAll = [seedUsers(), seedProducts(), seedReviews()]
 
 db.sync({
         force: true
     })
     .then(function () {
-        return Promise.all(seedAll)
+        return seedUsers()
     })
     .then(function () {
-        console.log(chalk.green('Seed successful!'));
-        process.kill(0);
+        return seedProducts()
+    })
+    .then(function () {
+        return seedOrders()
+    })
+    .then(function () {
+        return seedReviews()
+    })
+    .then(function () {
+            console.log(chalk.green('Seed successful!'));
+            process.exit(0);
     })
     .catch(function (err) {
         console.error(err);
-        process.kill(1);
+        process.exit(1);
     });
