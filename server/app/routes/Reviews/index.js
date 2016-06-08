@@ -59,6 +59,7 @@ router.put('/:id', function (req, res, next) {
         })
         //send status if it's an invalid id
         .catch(function (err) {
+					console.log(err);
             res.status(500).send("Invalid Id");
         });
 });

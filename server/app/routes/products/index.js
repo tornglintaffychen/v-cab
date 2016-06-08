@@ -1,4 +1,4 @@
-var express = requrie('express');
+var express = require('express');
 var router = express.Router();
 
 var rootPath = '../../../';
