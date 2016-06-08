@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/maxww/v-cab.png?label=ready&title=Ready)](https://waffle.io/maxww/v-cab)
 # v-cab
 
 Vein Cabernet - A little bit of web never hurt anyone
