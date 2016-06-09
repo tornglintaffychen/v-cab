@@ -20,16 +20,27 @@ module.exports = function (app, db) {
         console.log(profile.name.givenName);
         console.log(profile.name.familyName);
         console.log(profile.emails[0].value);
-        console.dir(User)
+        console.dir(User);
 
-        User.create({
-                    google_id: profile.id,   
-                    firstName: "taffy",
-                    lastName: "Chen"
+        User.findOne({
+            where:{
+                google_id: profile.id
+            } 
             })
             .then(function (userToLogin) {
-                console.log("userToLogin", userToLogin) 
-                done(null, userToLogin);
+                if (userToLogin) {
+                    done(null, userToLogin);
+                }
+                else {
+                    User.create({
+                        google_id: profile.id,
+                        firstName: profile.name.givenName,
+                        lastName: profile.name.familyName
+                    })
+                    .then(function(user){
+                        done(null, user);
+                    });
+                }                
             })
             .catch(function (err) {
                 console.error('Error creating user from Google authentication', err);
