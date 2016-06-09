@@ -1,4 +1,4 @@
-app.factory('categoryFty', function ($http) {
+app.factory('CategoryFactory', function ($http) {
 
     var selectedCats = null;
 
@@ -12,18 +12,18 @@ app.factory('categoryFty', function ($http) {
     };
 });
 
-app.directive('categoryView', function (categoryFty, ProductFactory) {
+app.directive('categoryView', function (CategoryFactory, ProductFactory) {
     return {
         restrict: 'E',
         scope: {
         },
         templateUrl: 'js/common/directives/category/category.html',
         link: function (scope) {
-            categoryFty.getAllCats()
+            CategoryFactory.getAllCats()
             .then(function(categories) {
                 scope.categories = categories;
             });
-            scope.addToSelectedCats = ProductFactory.addCat;
+            scope.addToSelectedCats = ProductFactory.addCategory;
         }
     };
 });
