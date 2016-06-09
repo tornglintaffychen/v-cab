@@ -1,7 +1,6 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('home', {
-        url: '/',
-        templateUrl: 'js/home/home.html',
-        controller: "ProductsCtrl"
+        url: '/home',
+        templateUrl: 'js/home/home.html'
     });
 });

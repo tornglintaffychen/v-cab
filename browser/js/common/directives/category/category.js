@@ -2,12 +2,14 @@ app.factory('CategoryFactory', function ($http) {
 
     var selectedCats = null;
 
+
+app.factory('categoryFactory', function ($http) {
     return {
-        getAllCats: function () {
+        getAllCategories: function () {
             return $http.get('/api/categories')
-            .then(function(categories){
-                return categories.data;
-            });
+						.then(function(categories){
+							return categories.data;
+						});
         }
     };
 });
