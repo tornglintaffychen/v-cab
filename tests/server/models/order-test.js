@@ -1,5 +1,4 @@
-//EI: error when running tests: 
-/* SyntaxError: Block-scoped declarations (let, const, function, class) not yet supported outside strict mode */
+//EI: need to use 'gulp testServerJS', not npm test, or you get an error related to block-scoping
 
 // EI: use const here
 const sinon = require('sinon');
