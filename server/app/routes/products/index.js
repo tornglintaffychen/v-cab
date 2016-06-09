@@ -23,7 +23,7 @@ router.get('/', function (req, res, next) {
 });
 
 //FindOne by ID
-//YI: this is basically the same but you could use findById here too
+//YI: use findById! much more efficient!
 router.get('/:id', function (req, res, next) {
     Product.findOne({
             where: {

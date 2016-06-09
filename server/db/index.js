@@ -15,7 +15,7 @@ db.Review = db.model('review');
 db.Product = db.model('product');
 db.Order = db.model('order');
 db.Category = db.model('category');
-//YI: I don't think you want this double-binding. no reason to store the foreign key on both tables
+
 db.Review.belongsTo(db.User);
 db.User.hasMany(db.Review);
 
