@@ -22,7 +22,7 @@ router.get('/:id', function (req, res, next) {
         })
         .catch(next);
 })
-
+//YI: should this be limited by auth?
 router.post('/', function (req, res, next) {
     Order.create(req.body)
         .then(function (order) {

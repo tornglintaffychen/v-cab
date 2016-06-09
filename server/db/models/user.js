@@ -21,9 +21,11 @@ module.exports = function (db) {
             allowNull: true
         },
         //do we want to allow address to be null for registered users?
+        //YI: I think this should definitely be required AND unique, since it's what you'll use to sign up and log users in with
         email: {
             type: Sequelize.STRING
         },
+        //YI: allow null?
         password: {
             type: Sequelize.STRING
         },
