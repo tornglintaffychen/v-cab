@@ -16,7 +16,7 @@ app.config(function ($stateProvider) {
 
 // state for all products
 app.config(function ($stateProvider) {
-    $stateProvider.state('products', {
+    $stateProvider.state('home.products', {
         url: '/products',
 				controller: 'ProductsCtrl',
         templateUrl: 'js/catalog/products.html',
