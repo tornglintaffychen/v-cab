@@ -7,6 +7,7 @@ var Product = db.model('product');
 var Order = db.model('order');
 var Review = db.model('review');
 var Category = db.model('category');
+var OrderProduct = db.model('OrderProduct')
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
@@ -61,6 +62,7 @@ var seedUsers = function () {
     return Promise.all(creatingUsers);
 
 };
+
 var seedProducts = function () {
     var numofProj = 4;
     //this means that whenever we seed the DB we can assume the IDs are 1-4. increment this when you add to the seed!
@@ -96,27 +98,26 @@ var seedProducts = function () {
 
     return Promise.all(creatingProducts);
 }
-var seedOrders = function () {
-    var orders = [{
-        status: 'inCart',
-        productId: 1,
-        quantity: 5,
-        price: 1.5,
-        userId: 1
 
-    }, {
-        status: 'inCart',
-        productId: 2,
-        quantity: 3,
-        price: 7.99,
-        userId: 1
-    }];
+function createOrder(products) {
+    // var orderThese = products.slice(0, 3)
+    Order.create()
+        .then(function (order) {
+            products.forEach(product => {
+                OrderProduct.create({
+                    productId: product.id,
+                    orderId: order.id,
+                    quantity: 5,
+                    price: product.price
+                })
+            })
+        })
+}
 
-    var creatingOrders = orders.map(function (orderObj) {
-        return Order.create(orderObj)
-    });
-
-    return Promise.all(creatingOrders);
+var seedOrders = function (products) {
+    for (var i = 3; i > 0; i--) {
+        createOrder(products.slice(i))
+    }
 }
 
 var seedReviews = function () {
@@ -160,8 +161,6 @@ var seedCategory = function () {
     return Promise.all(createCategories)
 }
 
-//var seedAll = [seedUsers(), seedProducts(), seedReviews()]
-
 db.sync({
         force: true
     })
@@ -171,8 +170,8 @@ db.sync({
     .then(function () {
         return seedProducts()
     })
-    .then(function () {
-        return seedOrders()
+    .then(function (createdProducts) {
+        return seedOrders(createdProducts)
     })
     .then(function () {
         return seedReviews()
