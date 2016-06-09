@@ -13,13 +13,14 @@ router.get('/', function (req, res, next) {
             include: [Category, Review]
         })
         .then(function (products) {
+            if (!products.length) throw new Error('not found!')
             //EI: why is this logic necessary? what about products.length <= 0?
             // 404 indicates that this endpoint wasn't found, not that products couldn't be found, right?
             // plus, you've already got error-handling middleware in your routes/index.js
             if (products) {
                 res.json(products);
             } else {
-                res.status(404).send("Not Found");
+                // res.status(404).send("Not Found");
             }
         })
         .catch(next);

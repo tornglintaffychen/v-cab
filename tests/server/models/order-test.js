@@ -1,22 +1,20 @@
 //EI: error when running tests: 
 /* SyntaxError: Block-scoped declarations (let, const, function, class) not yet supported outside strict mode */
-'use strict';
 
-var sinon = require('sinon');
-var expect = require('chai').expect;
-
-
-var Sequelize = require('sequelize');
-var dbURI = 'postgres://localhost:5432/vcab';
-var db = new Sequelize(dbURI, {
+// EI: use const here
+const sinon = require('sinon');
+const expect = require('chai').expect;
+const Sequelize = require('sequelize');
+const dbURI = 'postgres://localhost:5432/vcab';
+const db = new Sequelize(dbURI, {
     logging: false
 });
 
 require('../../../server/db/models/order')(db);
 require('../../../server/db/models/user')(db);
 
-var User = db.model('user');
-var Order = db.model('order');
+const User = db.model('user');
+const Order = db.model('order');
 
 //makeRandomProduct () => obj[{productId: id, productPrice: price}
 // Taffy Review: we changed the productList to [{productId: id, productPrice: price, qty: num}]
