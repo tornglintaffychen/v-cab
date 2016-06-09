@@ -1,3 +1,7 @@
+//EI: error when running tests: 
+/* SyntaxError: Block-scoped declarations (let, const, function, class) not yet supported outside strict mode */
+'use strict';
+
 var sinon = require('sinon');
 var expect = require('chai').expect;
 
