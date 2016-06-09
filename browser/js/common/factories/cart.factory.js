@@ -28,12 +28,11 @@ app.factory('CartFactory', function ($http) {
     // tc: get order by id
     CartFactory.getOrder = function (orderId) {
         CartFactory.currentCartId = orderId;
-        console.log(orderId)
         return $http.get('/api/orders/' + orderId)
             .then(getData)
             .then(function (data) {
-                CartFactory.productList = data.productList;
-                console.log(CartFactory.productList)
+                CartFactory.actualProduct = data.productInfo;
+                CartFactory.productList = data.orderInfo.productList;
                 return CartFactory.productList;
             })
     };
@@ -41,7 +40,6 @@ app.factory('CartFactory', function ($http) {
     // have a variable to show cart count
     CartFactory.itemCount = function () {
         return CartFactory.productList.reduce(function (a, b) {
-            console.log(a, b)
             return b.productQty + a
         }, 0)
     };

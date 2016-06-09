@@ -24,6 +24,18 @@
                  return this.productList.reduce(function (a, b) {
                      return b.productPrice * b.productQty + a;
                  }, 0);
+             },
+             currentProducts: function () {
+                 var productsPromise = this.productList.map(function (obj) {
+                     return db.Product.findById(obj.productId)
+                         .then(function (product) {
+                             return product
+                         })
+                 })
+                 return Promise.all(productsPromise)
+                     .then(function (products) {
+                         return products
+                     })
              }
          }
      });

@@ -4,6 +4,7 @@ var router = express.Router();
 var rootPath = '../../../';
 var Order = require(rootPath + 'db').Order;
 
+
 // Only admins
 router.get('/', function (req, res, next) {
     Order.findAll({
@@ -16,9 +17,21 @@ router.get('/', function (req, res, next) {
 })
 
 router.get('/:id', function (req, res, next) {
-    Order.findById(req.params.id)
+    Order.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
         .then(function (order) {
-            res.json(order)
+            order.currentProducts
+                .then(function (products) {
+
+                    var orderObj = {
+                        orderInfo: order,
+                        productInfo: products
+                    }
+                    res.json(orderObj)
+                })
         })
         .catch(next);
 })

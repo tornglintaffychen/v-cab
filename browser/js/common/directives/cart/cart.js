@@ -15,22 +15,22 @@ app.config(function ($stateProvider) {
         url: "/cart",
         templateUrl: "/js/common/directives/cart/incart.html",
         controller: "CartController",
-        resolve: {
-            productList: function (CartFactory) {
-                return CartFactory.getOrder(1)
-                    .then(function (list) {
-                        CartFactory.productList = list
-                        return list;
-                    })
-
-            }
-        }
+        // resolve: {
+        //     productList: function (CartFactory) {
+        //         return CartFactory.getOrder(1)
+        //             .then(function (list) {
+        //                 // CartFactory.productList = list
+        //                 return list;
+        //             })
+        //
+        //     }
+        // }
     })
 })
 
 app.controller('CartController', function ($scope, productList, CartFactory) {
-
-    $scope.productList = productList;
+    $scope.actualProduct = CartFactory.actualProduct;
+    $scope.qty = CartFactory.productList.productQty;
 
 
     // tc: should be = CartFactory.itemCount() hard coded 1 just for seeing

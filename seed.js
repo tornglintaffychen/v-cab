@@ -101,10 +101,12 @@ var seedOrders = function () {
         status: 'processing',
         productList: [{
             productId: 1,
-            productPrice: 1.50
+            productPrice: 1.50,
+            productQty: 5
         }, {
             productId: 2,
-            productPrice: 8.75
+            productPrice: 8.75,
+            productQty: 2
         }],
         userId: 1
 
@@ -112,10 +114,12 @@ var seedOrders = function () {
         status: 'returnProcessing',
         productList: [{
             productId: 1,
-            productPrice: 1.50
+            productPrice: 1.50,
+            productQty: 2
         }, {
-            productId: 1,
-            productPrice: 1.50
+            productId: 3,
+            productPrice: 1.50,
+            productQty: 2
         }],
         userId: 2
     }];

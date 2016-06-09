@@ -1,16 +1,15 @@
 <div>
     <form ng-submit="updateCart(currentCartId)">
-        <ul ng-repeat="product in productList">
+        <ul ng-repeat="product in actualProduct">
             <li>
-                {{product.productId}}
+                {{product.id}}
             </li>
             <li>
-                {{product.productPrice}}
+                {{product.price}}
             </li>
             <!-- tc: will remove product if the qty become 0 -->
-            <input placeholder="{{product.productQty}}"/>
+            <input ng-model="qty" placeholder="{{qty}}"/>
         </ul>
         <button type="submit" class="btn btn-sucess">update</button>
     </form>
-    <button ng-click="getOrder(1)">getOrder</button>
 </div>
