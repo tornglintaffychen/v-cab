@@ -21,7 +21,6 @@ app.directive('categoryView', function (categoryFty, ProductFactory) {
         link: function (scope) {
             categoryFty.getAllCats()
             .then(function(categories) {
-                console.log(categories)
                 scope.categories = categories;
             });
             scope.addToSelectedCats = ProductFactory.addCat;
