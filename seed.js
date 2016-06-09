@@ -88,7 +88,6 @@ var seedProducts = function () {
             returnable: false,
             description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.'
         }
-
     ];
     var creatingProducts = products.map(function (productObj) {
         return Product.create(productObj);
@@ -101,23 +100,40 @@ var seedOrders = function () {
         status: 'processing',
         productList: [{
             productId: 1,
-            productPrice: 1.50
+            productPrice: 1.50, 
+            productQty: 3
         }, {
             productId: 2,
-            productPrice: 8.75
+            productPrice: 8.75,
+            productQty: 1
+        },
+        {
+            productId: 3,
+            productPrice: 3.75,
+            productQty: 7
         }],
-        userId: 1
+        userId: 3
 
     }, {
         status: 'returnProcessing',
         productList: [{
             productId: 1,
-            productPrice: 1.50
-        }, {
-            productId: 1,
-            productPrice: 1.50
+            productPrice: 1.50,
+            productQty: 2
         }],
         userId: 2
+    },{
+        status: 'shipped',
+        productList: [{
+            productId: 2,
+            productPrice: 1000.50,
+            productQty: 1
+        }, {
+            productId: 3,
+            productPrice: 10.50,
+            productQty: 2
+        }],
+        userId: 7
     }];
 
     var creatingOrders = orders.map(function (orderObj) {
@@ -157,17 +173,78 @@ var seedReviews = function () {
 var seedCategory = function () {
     var categories = [{
         title: "+O"
-    }, {
+    },
+    {
         title: "-O"
+    },
+    {   
+        title: "+A"
+    },
+    {   
+        title: "-A"
+    },
+    {   
+        title: "+B"
+    },
+    {   
+        title: "-B"
+    },
+    {   
+        title: "+AB"
+    },
+    {   
+        title: "-AB"
+    },
+    {   
+        title: "Premium"
+    },
+    {
+        title: "Rare"
+    },
+    {   
+        title: "Smoked"
+    },
+    {   
+        title: "Spiked"
+    },
+    {   
+        title: "Vegan"
+    },
+    {   
+        title: "Basic"
+    },
+    {   
+        title: "Inexpensive"
+    },
+    {   
+        title: "Stylish"
+    },
+    {   
+        title: "Bold"
     }];
 
-    var createCategories = categories.map(function (cat) {
-        return Category.create(cat);
+    var createCategories = categories.map(function (category) {
+        return Category.create(category);
     });
 
-    return Promise.all(createCategories)
+    // var seedProductCategory = function 
+    // return Promise.all(createCategories)
 }
-
+    var addCategoryToKbuechs = function(){
+        var theProduct;
+        var categoryArray;
+        Product.findById(1)
+        .then(function(product){
+            theProduct=product;
+            return Category.findById(1)
+        })
+        .then(function(category){
+            return theProduct.setCategory(category)
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+    }
 //var seedAll = [seedUsers(), seedProducts(), seedReviews()]
 //the seed function doesn't work unless we chain the seeding, because certain things are dependent on others being generated, i.e. orders needs both a product id and a user id, so we can't s
 db.sync({
@@ -187,6 +264,9 @@ db.sync({
     })
     .then(function () {
         return seedReviews()
+    })
+    .then(function () {
+        return addCategoryToKbuechs()
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
