@@ -2,8 +2,11 @@
 
 //communicates between main page and the cart icon overlay
 app.factory('CartFactory', function() {
-  return {
+	function getData(response) {
+		return response.data;
+	}
+	return {
 		//have a variable to show cart count
-		
+
 	}
 })
