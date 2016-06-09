@@ -9,15 +9,17 @@ app.factory('categoryFty', function ($http) {
     };
 });
 
-app.directive('categoryView', function () {
+app.directive('categoryView', function (categoryFty) {
     return {
         restrict: 'E',
         scope: {},
         templateUrl: 'js/common/directives/category/category.html',
-        link: function (scope) {
-            scope.categories = [
-                'ALL', '-O', '+O', 'SMOKED', 'SPIKED', 'INEXPENSIVE', 'premium', 'RARE', 'LIMITED', 'HIGHLY-RATED', 'STYLISH', 'VEGAN'
-            ]
+        link: function (scope, categoryFty) {
+            console.log(categoryFty);
+            scope.categories = categoryFty.getAllCats();
+            // scope.categories = [
+            //     'ALL', '-O', '+O', 'SMOKED', 'SPIKED', 'INEXPENSIVE', 'premium', 'RARE', 'LIMITED', 'HIGHLY-RATED', 'STYLISH', 'VEGAN'
+            // ]
         }
     };
 });
