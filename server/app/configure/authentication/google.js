@@ -11,26 +11,21 @@ module.exports = function (app, db) {
     var googleCredentials = {
         clientID: secrets.google.clientID,
         clientSecret: secrets.google.clientSecret,
-        callbackURL: "http://localhost:1337"
+        callbackURL: "http://localhost:1337/auth/google/callback"
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
-
-        User.finOne({
+        // console.log("?????????????????????????");
+        // console.log(profile.name.givenName);
+        // console.log(profile.name.familyName);
+        // console.log(profile.emails[0].value);
+        User.findOrCreate({
                 where: {
                     google_id: profile.id
                 }
             })
-            .then(function (user) {
-                if (user) {
-                    return user;
-                } else {
-                    return User.create({
-                        google_id: profile.id
-                    });
-                }
-            })
             .then(function (userToLogin) {
+                // console.log("userToLogin", userToLogin)
                 done(null, userToLogin);
             })
             .catch(function (err) {
