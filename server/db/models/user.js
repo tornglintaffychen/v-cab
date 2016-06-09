@@ -8,14 +8,17 @@ module.exports = function (db) {
     db.define('user', {
         firstName: {
             type: Sequelize.STRING,
+            allowNull: false
         },
         lastName: {
             type: Sequelize.STRING,
+            allowNull: false
         },
         //possibly modify so that address is model of it's own with 'belongs to one' user and 'belongs to many' orders
         //unless there's a way for address to have sub-types
         address: {
-            type: Sequelize.TEXT
+            type: Sequelize.TEXT,
+            allowNull: true
         },
         //do we want to allow address to be null for registered users?
         email: {

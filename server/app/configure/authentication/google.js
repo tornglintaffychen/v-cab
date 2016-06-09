@@ -5,8 +5,9 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var secrets = require('./secrets.js');
 
 module.exports = function (app, db) {
-
-    var User = db.model('user');
+    ///ASHI mad important
+    require('../../../db/models/user')(db)
+    var User = db.models.user
 
     var googleCredentials = {
         clientID: secrets.google.clientID,
@@ -15,17 +16,19 @@ module.exports = function (app, db) {
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
-        // console.log("?????????????????????????");
-        // console.log(profile.name.givenName);
-        // console.log(profile.name.familyName);
-        // console.log(profile.emails[0].value);
-        User.findOrCreate({
-                where: {
-                    google_id: profile.id
-                }
+        console.log("?????????????????????????");
+        console.log(profile.name.givenName);
+        console.log(profile.name.familyName);
+        console.log(profile.emails[0].value);
+        console.dir(User)
+
+        User.create({
+                    google_id: profile.id,   
+                    firstName: "taffy",
+                    lastName: "Chen"
             })
             .then(function (userToLogin) {
-                // console.log("userToLogin", userToLogin)
+                console.log("userToLogin", userToLogin) 
                 done(null, userToLogin);
             })
             .catch(function (err) {
