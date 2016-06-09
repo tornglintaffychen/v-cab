@@ -33,6 +33,10 @@ app.controller('ProductCtrl', function ($scope, oneProduct) {
 })
 
 // //products controller for all products
-app.controller('ProductsCtrl', function ($scope, allProducts) {
-    $scope.products = allProducts;
-})
+app.controller('ProductsCtrl', function ($scope, allProducts, ProductFactory) {
+
+    $scope.products = ProductFactory.allProducts;
+    console.log("hi", allProducts)
+    $scope.selectedCats = ProductFactory.getCurrCats;
+   
+});

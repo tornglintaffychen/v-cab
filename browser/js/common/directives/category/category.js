@@ -6,14 +6,13 @@ app.factory('categoryFty', function ($http) {
         getAllCats: function () {
             return $http.get('/api/categories')
             .then(function(categories){
-                // console.log(categories)
                 return categories.data;
             });
         }
     };
 });
 
-app.directive('categoryView', function (categoryFty) {
+app.directive('categoryView', function (categoryFty, ProductFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -22,10 +21,10 @@ app.directive('categoryView', function (categoryFty) {
         link: function (scope) {
             categoryFty.getAllCats()
             .then(function(categories) {
-                scope.categories = categories.map(function(category){
-                    return category.title;
-                });
+                console.log(categories)
+                scope.categories = categories;
             });
+            scope.addToSelectedCats = ProductFactory.addCat;
         }
     };
 });
