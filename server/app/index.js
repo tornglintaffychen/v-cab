@@ -2,7 +2,6 @@
 var path = require('path');
 var express = require('express');
 var app = express();
-var bodyParser = require('body-parser');
 
 module.exports = function (db) {
     // Pass our express application pipeline into the configuration

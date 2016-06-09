@@ -58,10 +58,10 @@ router.put('/:id', function (req, res, next) {
             else res.status(404).end();
         })
         //send status if it's an invalid id
-        .catch(function (err) {
-					console.log(err);
+        .then(function (err) {
+            console.log(err);
             res.status(500).send("Invalid Id");
-        });
+        }).catch(next)
 });
 
 module.exports = router;
