@@ -1,3 +1,4 @@
+// EI: what's going on here?
 // // 'use strict';
 // // var crypto = require('crypto');
 // // var _ = require('lodash');

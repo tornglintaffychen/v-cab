@@ -25,6 +25,7 @@ db.Product.hasMany(db.Review);
 db.Category.belongsToMany(db.Product, {through: 'ProductCategory' });
 db.Product.belongsToMany(db.Category, {through: 'CategoryProduct' });
 
+//EI: is it necessary to set relations both ways?
 db.Order.belongsTo(db.User);
 db.User.hasMany(db.Order);
 db.Order.hasMany(db.Product);

@@ -13,6 +13,9 @@ router.get('/', function (req, res, next) {
             include: [Category, Review]
         })
         .then(function (products) {
+            //EI: why is this logic necessary? what about products.length <= 0?
+            // 404 indicates that this endpoint wasn't found, not that products couldn't be found, right?
+            // plus, you've already got error-handling middleware in your routes/index.js
             if (products) {
                 res.json(products);
             } else {
@@ -83,25 +86,25 @@ router.get('/:id/reviews', function (req, res, next) {
         .catch(next)
 });
 
-
-//Can we just include in the find one?
-// find all reviews a specific product has
-router.get('/:id/reviews', function (req, res, next) {
-    Product.findOne({
-            where: {
-                id: req.params.id
-            },
-            include: Review
-        })
-        //sending data back*sv
-        .then(function (product) {
-            if (product) {
-                res.json(product)
-            } else {
-                res.status(404).send("No Reviews Found");
-            }
-        })
-        .catch(next)
-});
+// EI: double route!
+// //Can we just include in the find one?
+// // find all reviews a specific product has
+// router.get('/:id/reviews', function (req, res, next) {
+//     Product.findOne({
+//             where: {
+//                 id: req.params.id
+//             },
+//             include: Review
+//         })
+//         //sending data back*sv
+//         .then(function (product) {
+//             if (product) {
+//                 res.json(product)
+//             } else {
+//                 res.status(404).send("No Reviews Found");
+//             }
+//         })
+//         .catch(next)
+// });
 
 module.exports = router;

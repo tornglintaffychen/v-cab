@@ -41,4 +41,7 @@ router.put('/:id', function (req, res, next) {
         })
         .catch(next);
 })
+
+//EI: delete route?
+
 module.exports = router;
