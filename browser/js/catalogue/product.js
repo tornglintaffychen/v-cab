@@ -3,7 +3,7 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
         url: '/products/:id',
-        templateUrl: 'js/catalogue/products.html',
+        templateUrl: 'js/detail/templates/product.html',
         controller: 'ProductCtrl',
         resolve: {
             oneProduct: function (ProductFactory, $stateParams) {
