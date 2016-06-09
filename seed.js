@@ -169,12 +169,15 @@ var seedCategory = function () {
 }
 
 //var seedAll = [seedUsers(), seedProducts(), seedReviews()]
-
+//the seed function doesn't work unless we chain the seeding, because certain things are dependent on others being generated, i.e. orders needs both a product id and a user id, so we can't s
 db.sync({
         force: true
     })
     .then(function () {
         return seedUsers()
+    })
+    .then(function () {
+        return seedCategory()
     })
     .then(function () {
         return seedProducts()
@@ -184,9 +187,6 @@ db.sync({
     })
     .then(function () {
         return seedReviews()
-    })
-    .then(function () {
-        return seedCategory()
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
