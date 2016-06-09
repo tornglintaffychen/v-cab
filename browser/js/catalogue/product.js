@@ -1,4 +1,5 @@
 'use strict'
+
 //state for single product
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
@@ -10,14 +11,15 @@ app.config(function ($stateProvider) {
                 return ProductFactory.fetchById($stateParams.id);
             }
         }
-    })
-})
+    });
+});
 
 // state for all products
 app.config(function ($stateProvider) {
     $stateProvider.state('products', {
         url: '/products',
         templateUrl: 'js/catalogue/products.html',
+        controller: "ProductsCtrl",
         resolve: {
             allProducts: function (ProductFactory) {
                 return ProductFactory.fetchAll();
@@ -30,13 +32,13 @@ app.config(function ($stateProvider) {
 // //product controller for single product
 app.controller('ProductCtrl', function ($scope, oneProduct) {
     $scope.product = oneProduct;
-})
+});
 
 // //products controller for all products
-app.controller('ProductsCtrl', function ($scope, allProducts, ProductFactory) {
-
-    $scope.products = ProductFactory.allProducts;
-    console.log("hi", allProducts)
+app.controller('ProductsCtrl', function ($scope, ProductFactory) {
+    ProductFactory.fetchAll()
+    .then(function(products){
+        $scope.products = products;
+    });
     $scope.selectedCats = ProductFactory.getCurrCats;
-   
 });

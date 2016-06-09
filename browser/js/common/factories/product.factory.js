@@ -10,13 +10,14 @@ app.factory('ProductFactory', function ($http) {
 
     ProductFactory.fetchAll = function () {
         return $http.get('/api/products')
-            .then(getData)
-    };
+            .then(getData);
+    };  
 
     //sv
     ProductFactory.addCats = function (category) {
         currCats.push(category);
     };
+
     //sv
     ProductFactory.getCurrCats = function () {
         return currCats;
