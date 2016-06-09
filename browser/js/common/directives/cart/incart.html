@@ -1,5 +1,5 @@
 <div>
-    <form ng-form="inCart" ng-submit="updateCart(currentCartId)">
+    <form ng-submit="updateCart(currentCartId)">
         <ul ng-repeat="product in productList">
             <li>
                 {{product.productId}}
@@ -12,4 +12,5 @@
         </ul>
         <button type="submit" class="btn btn-sucess">update</button>
     </form>
+    <button ng-click="getOrder(1)">getOrder</button>
 </div>

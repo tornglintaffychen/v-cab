@@ -1,10 +1,12 @@
 'use strict';
 
-app.directive('cart', function () {
+app.directive('cart', function (CartFactory) {
     return {
         restrict: 'E',
         templateUrl: '/js/common/directives/cart/cart.html',
-        controller: "CartController"
+        link: function (s, e, a) {
+            s.itemCount = CartFactory.itemCount()
+        }
     }
 })
 
@@ -12,17 +14,38 @@ app.config(function ($stateProvider) {
     $stateProvider.state('inCart', {
         url: "/cart",
         templateUrl: "/js/common/directives/cart/incart.html",
-        controller: "CartController"
+        controller: "CartController",
+        resolve: {
+            productList: function (CartFactory) {
+                return CartFactory.getOrder(1)
+                    .then(function (list) {
+                        CartFactory.productList = list
+                        return list;
+                    })
+
+            }
+        }
     })
 })
 
-app.controller('CartController', function ($scope, CartFactory) {
-    $scope.productList = CartFactory.getProductList();
+app.controller('CartController', function ($scope, productList, CartFactory) {
+
+    $scope.productList = productList;
+
+
     // tc: should be = CartFactory.itemCount() hard coded 1 just for seeing
-    $scope.itemCount = 1;
-    $scope.currentCartId = CartFactory.getCurrentCartId();
+    $scope.currentCartId = CartFactory.currentCartId;
 
     $scope.updateCart = function (orderId) {
         return CartFactory.updateCart(orderId)
     }
+
+    // $scope.getOrder = function (orderId) {
+    //     CartFactory.getOrder(orderId)
+    //         .then(function (updatedList) {
+    //             $scope.productList = updatedList;
+    //         })
+    //
+    // }
+
 })
