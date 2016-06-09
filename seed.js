@@ -98,30 +98,22 @@ var seedProducts = function () {
 }
 var seedOrders = function () {
     var orders = [{
-        status: 'processing',
-        productList: [{
-            productId: 1,
-            productPrice: 1.50
-        }, {
-            productId: 2,
-            productPrice: 8.75
-        }],
+        status: 'inCart',
+        productId: 1,
+        quantity: 5,
+        price: 1.5,
         userId: 1
 
     }, {
-        status: 'returnProcessing',
-        productList: [{
-            productId: 1,
-            productPrice: 1.50
-        }, {
-            productId: 1,
-            productPrice: 1.50
-        }],
-        userId: 2
+        status: 'inCart',
+        productId: 2,
+        quantity: 3,
+        price: 7.99,
+        userId: 1
     }];
 
     var creatingOrders = orders.map(function (orderObj) {
-        return Order.create(orderObj);
+        return Order.create(orderObj)
     });
 
     return Promise.all(creatingOrders);

@@ -12,11 +12,6 @@
          purchaseDate: {
              type: Sequelize.DATE,
              defaultValue: Sequelize.NOW
-         },
-         productList: {
-             // [{productId: id, productPrice: price, productQty: num}, {productId: id, productPrice: price, productQty: num}]
-             type: Sequelize.ARRAY(Sequelize.JSON),
-             defaultValue: []
          }
      }, {
          getterMethods: {
