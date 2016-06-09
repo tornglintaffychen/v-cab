@@ -1,4 +1,11 @@
-<section id="home">
+<section class="container-fluid" id="home">
     <category-view></category-view>
     <!-- <products-view></products-view> -->
+    <div class="products-container col-md-8" ng-controller="ProductsCtrl">
+    	<h2>Products</h2>
+   		<!-- add filter	-->
+	    <ul ng-repeat="product in products">
+			<li>{{product.title}}</li>
+		</ul>
+	</div>
 </section>
