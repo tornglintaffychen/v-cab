@@ -41,4 +41,22 @@ router.put('/:id', function (req, res, next) {
         })
         .catch(next);
 })
+
+// tc: instead of create and update, we use findOrCreate?
+// maybe not.
+// router.post('/:id', function (req, res, next) {
+//     Order.findOrCreate({
+//             where: {
+//                 id: req.params.id
+//             }
+//         })
+//         .then(function (order) {
+//             Order.update(req.body, {
+//                 where: {
+//                     id: order.id
+//                 }
+//             })
+//         })
+// })
+
 module.exports = router;
