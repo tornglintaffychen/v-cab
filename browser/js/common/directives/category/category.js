@@ -1,8 +1,12 @@
 app.factory('categoryFty', function ($http) {
+
+    var selectedCats = null;
+
     return {
         getAllCats: function () {
-            $http.get('/api/categories')
+            return $http.get('/api/categories')
             .then(function(categories){
+                // console.log(categories)
                 return categories.data;
             });
         }
@@ -12,14 +16,16 @@ app.factory('categoryFty', function ($http) {
 app.directive('categoryView', function (categoryFty) {
     return {
         restrict: 'E',
-        scope: {},
+        scope: {
+        },
         templateUrl: 'js/common/directives/category/category.html',
-        link: function (scope, categoryFty) {
-            console.log(categoryFty);
-            scope.categories = categoryFty.getAllCats();
-            // scope.categories = [
-            //     'ALL', '-O', '+O', 'SMOKED', 'SPIKED', 'INEXPENSIVE', 'premium', 'RARE', 'LIMITED', 'HIGHLY-RATED', 'STYLISH', 'VEGAN'
-            // ]
+        link: function (scope) {
+            categoryFty.getAllCats()
+            .then(function(categories) {
+                scope.categories = categories.map(function(category){
+                    return category.title;
+                });
+            });
         }
     };
 });
