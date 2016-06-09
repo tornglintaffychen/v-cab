@@ -1,8 +1,5 @@
 'use strict';
-var crypto = require('crypto');
-var _ = require('lodash');
 var Sequelize = require('sequelize');
-// var Review = require('../index').Review
 
 module.exports = function (db) {
     // Katie review:let's make sure all of these are editable by the admin
@@ -12,11 +9,6 @@ module.exports = function (db) {
             type: Sequelize.STRING,
             allowNull: false
         },
-        // categories: {
-        //     type: Sequelize.ARRAY(Sequelize.STRING),
-        //     allowNull: false,
-        //     // defaultValue: ["uncategorized"]  // error for "uncategorized =>fix is either [] or ["uncategorized"]
-        // },
         inventory: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -42,7 +34,7 @@ module.exports = function (db) {
             }
         }
     }, {
-        // get average rating   
+        // get average rating
         getterMethods: {
             starRating: function () {
                 var currProductId = this.id;

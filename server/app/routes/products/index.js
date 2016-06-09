@@ -60,8 +60,7 @@ router.get('/search', function (req, res, next) {
                 res.status(404).send("No Similiar Products Found");
             }
         })
-
-
+        .catch(next)
 });
 
 //Can we just include in the find one?
@@ -81,10 +80,7 @@ router.get('/:id/reviews', function (req, res, next) {
                 res.status(404).send("No Reviews Found");
             }
         })
-        //checking invalid id
-        .catch(function (err) {
-            res.status(500).send("Invalid Id");
-        });
+        .catch(next)
 });
 
 
@@ -105,10 +101,7 @@ router.get('/:id/reviews', function (req, res, next) {
                 res.status(404).send("No Reviews Found");
             }
         })
-        //checking invalid id
-        .catch(function (err) {
-            res.status(500).send("Invalid Id");
-        });
+        .catch(next)
 });
 
 module.exports = router;
