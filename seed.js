@@ -6,6 +6,7 @@ var User = db.model('user');
 var Product = db.model('product');
 var Order = db.model('order');
 var Review = db.model('review');
+var Category = db.model('category');
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
@@ -66,8 +67,6 @@ var seedProducts = function () {
 
     var products = [{
             title: 'KBuechs',
-            //            year: '1982'
-            categories: ['-O', 'smoked', 'spiked', 'inexpensive'],
             inventory: 47,
             photoUrl: "images/kbuechs.jpg",
             price: 1.50,
@@ -75,8 +74,6 @@ var seedProducts = function () {
             description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive'
         }, {
             title: 'Lorimited Edition',
-            //            year: null,
-            categories: ['+O', 'premium','rare', 'limited', 'highly-rated'],
             inventory: 6,
             photoUrl: "images/default.jpg",
             price: 79.99,
@@ -85,8 +82,6 @@ var seedProducts = function () {
 
         }, {
             title: 'The Taff',
-            //            year: null,
-            categories: ['stylish'],
             inventory: 8,
             photoUrl: "images/default.jpg",
             price: 42.30,
@@ -159,6 +154,19 @@ var seedReviews = function () {
     return Promise.all(creatingReviews);
 }
 
+var seedCategory = function () {
+    var categories = [{
+        title: "+O"
+    }, {
+        title: "-O"
+    }];
+
+    var createCategories = categories.map(function (cat) {
+        return Category.create(cat);
+    });
+
+    return Promise.all(createCategories)
+}
 
 //var seedAll = [seedUsers(), seedProducts(), seedReviews()]
 
@@ -178,8 +186,11 @@ db.sync({
         return seedReviews()
     })
     .then(function () {
-            console.log(chalk.green('Seed successful!'));
-            process.exit(0);
+        return seedCategory()
+    })
+    .then(function () {
+        console.log(chalk.green('Seed successful!'));
+        process.exit(0);
     })
     .catch(function (err) {
         console.error(err);
