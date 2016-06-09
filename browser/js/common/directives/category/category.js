@@ -4,10 +4,10 @@
 //     })
 // })
 
-app.factory('categoryFty', function ($http) {
+app.factory('categoryFactory', function ($http) {
     return {
-        getAllCate: function () {
-            $http.get('/api/categories')
+        getAllCategories: function () {
+            return $http.get('/api/categories')
         }
     }
 })
