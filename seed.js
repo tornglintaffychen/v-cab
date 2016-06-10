@@ -111,11 +111,27 @@ var data = {
         }, {
             title: "espresso"
         }]
+    }, {
+        title: 'Healthy Choice',
+        inventory: 10,
+        photoUrl: "images/default.jpg",
+        price: 200,
+        returnable: false,
+        description: 'This is a very healthy blood from a very healthy vegan lady.',
+        categories: [{
+            title: "espresso"
+        }, {
+            title: "spicy"
+        }, {
+            title: "vegan"
+        }]
     }],
     orders: [{
         userId: 1
     }, {
         userId: 2
+    }, {
+        userId: 3
     }],
     reviews: [{
         text: 'holy crap this was great the BEST BEST BEST BEST BEST BEST BEST BEST BEST',
@@ -179,6 +195,13 @@ db.sync({
                         title: 'The Taff',
                         price: 42.30,
                         quantity: 1
+                    })
+                    OrderProduct.create({
+                        orderId: order.id,
+                        productId: 4,
+                        title: 'Healthy Choice',
+                        price: 200,
+                        quantity: 9
                     })
                 })
         })

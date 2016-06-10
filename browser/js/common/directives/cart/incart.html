@@ -7,10 +7,10 @@
             <li >
                 {{product.price | currency }}
             </li>
-            <!-- tc: write a function for updateQty -->
-            <select ng-model="product.quantity" ng-options="num for num in nums" ng-change="updateQty(num)">
+            <select ng-model="product.quantity" ng-options="num for num in nums" ng-change="updateQty(product)">
             </select>
-            <button class="glyphicon glyphicon-remove"></button>
+
+            <button class="glyphicon glyphicon-remove" ng-click="remove(product)"></button>
         </ul>
     </form>
 </div>

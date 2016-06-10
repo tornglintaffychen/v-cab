@@ -76,8 +76,8 @@ router.put('/:id/editItem', function (req, res, next) {
         .catch(next)
 });
 
-// tc: delete one item in the shopping cart
-router.delete('/:id/deleteItem', function (req, res, next) {
+// tc: delete one item in the shopping cart, interesting enought that it's a put route
+router.put('/:id/deleteItem', function (req, res, next) {
     OrderProduct.destroy({
         where: {
             orderId: req.params.id,
@@ -131,21 +131,6 @@ router.delete('/product/:id', function (req, res, next) {
         .catch(next);
 
 });
-// tc: instead of create and update, we use findOrCreate?
-// maybe not.
-// router.post('/:id', function (req, res, next) {
-//     Order.findOrCreate({
-//             where: {
-//                 id: req.params.id
-//             }
-//         })
-//         .then(function (order) {
-//             Order.update(req.body, {
-//                 where: {
-//                     id: order.id
-//                 }
-//             })
-//         })
-// })
+
 
 module.exports = router;
