@@ -1,4 +1,5 @@
 'use strict'
+
 //state for single product
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
