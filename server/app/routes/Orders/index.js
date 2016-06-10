@@ -34,10 +34,11 @@ router.post('/', function (req, res, next) {
     console.log(chalk.yellow(req.body))
         // tc: assume logged in nothing in a cart
     Order.create({
+            // tc-bk: is req.session.cookie working?
             userId: req.session.cookie.userId
         })
         .then(function (order) {
-            // tc: we can make req.body just like the object that we need to pass in the OrderProduct.create(), so we don't need to write this object here (?)
+            // tc-bk: check front end send the prodcut in correct format
             return OrderProduct.create(req.body.product)
         })
         .then(function (createdOrder) {
@@ -47,7 +48,43 @@ router.post('/', function (req, res, next) {
 });
 
 // tc: this is only to add product to the OrderProduct table with exist id
-// router.post()
+router.post('/:id/addToCart', function (req, res, next) {
+    OrderProduct.create({
+            orderId: req.params.id,
+            productId: req.body.productId,
+            price: req.body.price,
+            title: req.body.title,
+            quantity: req.body.quantiy
+        })
+        .then(function (item) {
+            res.json(item)
+        })
+        .catch(next)
+})
+
+// tc: edit one item in the shopping cart
+router.put('/:id/editItem', function (req, res, next) {
+    OrderProduct.update(req.body, {
+            where: {
+                orderId: req.params.id,
+                productId: req.body.productId
+            }
+        })
+        .then(function (updatedItem) {
+            res.json(updatedItem)
+        })
+        .catch(next)
+});
+
+// tc: delete one item in the shopping cart
+router.delete('/:id/deleteItem', function (req, res, next) {
+    OrderProduct.destroy({
+        where: {
+            orderId: req.params.id,
+            productId: req.body.productId
+        }
+    })
+});
 
 router.get('/:id/products', function (req, res, next) {
     OrderProduct.findAll({
@@ -57,17 +94,16 @@ router.get('/:id/products', function (req, res, next) {
         })
         .then(function (order) {
             res.json(order);
-        });
+        })
+        .catch(next)
 });
 
-router.put('/:id', function (req, res, next) {
 
-});
 
 // admin should be able to edit everything in the order
 // users should be able to cancel order 30 mins limit
 router.put('/:orderid/product/:productid', function (req, res, next) {
-    OrderProduct.findOne({
+    OrderProduct.update(req.body, {
             where: {
                 productId: req.params.productid,
                 orderId: req.params.orderid
