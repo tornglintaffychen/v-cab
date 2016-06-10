@@ -20,11 +20,7 @@ app.directive('categoryView', function (CategoryFactory, ProductFactory) {
             .then(function(categories) {
                 scope.categories = categories;
             });
-            // scope.addToSelectedCategory = ProductFactory.addCategory;
-						scope.setCurrentCategory = function(category){
-							ProductFactory.currentCategory = category;
-							console.log(ProductFactory.currentCategory);
-						}
+
         }
     };
 });

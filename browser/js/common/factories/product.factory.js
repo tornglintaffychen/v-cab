@@ -38,14 +38,5 @@ app.factory('ProductFactory', function ($http) {
             });
     };
 
-		//LA: simple category fetch for views - possibly remove later
-		ProductFactory.currentCategory = 'all'
-		ProductFactory.getCurrentCategory = function () {
-			return ProductFactory.currentCategory;
-		}
-		ProductFactory.setCurrentCategory = function(newCategory){
-			ProductFactory.currentCategory = newCategory;
-		}
-
     return ProductFactory;
 });
