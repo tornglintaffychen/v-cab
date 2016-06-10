@@ -99,9 +99,11 @@ var seedProducts = function () {
     return Promise.all(creatingProducts);
 }
 
-function createOrder(products) {
+function createOrder(products, userId) {
     // var orderThese = products.slice(0, 3)
-    Order.create()
+    Order.create({
+            userId: userId
+        })
         .then(function (order) {
             products.forEach(product => {
                 OrderProduct.create({
@@ -115,8 +117,8 @@ function createOrder(products) {
 }
 
 var seedOrders = function (products) {
-    for (var i = 3; i > 0; i--) {
-        createOrder(products.slice(i))
+    for (var i = 3; i >= 0; i--) {
+        createOrder(products.slice(0, i), i)
     }
 }
 
