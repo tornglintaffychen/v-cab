@@ -19,7 +19,7 @@ app.factory('ProductFactory', function ($http) {
     };
 
     //sv
-    ProductFactory.getCurrCategories = function () {
+    ProductFactory.getCurrentCategories = function () {
         return currCategories;
     };
 
@@ -37,6 +37,15 @@ app.factory('ProductFactory', function ($http) {
                 console.error(error.message);
             });
     };
+
+		//LA: simple category fetch for views - possibly remove later
+		var currentCategory = 'all'
+		ProductFactory.getCurrentCategory = function () {
+			return currentCategory;
+		}
+		ProductFactory.setCurrentCategory = function(newCategory){
+			currentCategory = newCategory;
+		}
 
     return ProductFactory;
 });
