@@ -34,6 +34,7 @@ db.Product.belongsToMany(db.Category, {
 db.Order.belongsTo(db.User);
 db.User.hasMany(db.Order);
 
-db.Product.belongsToMany(db.Order, {
+
+db.Order.belongsToMany(db.Product, {
     through: db.OrderProduct
 });

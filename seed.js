@@ -1,5 +1,3 @@
-/* As of 6/7/16, this seed file creates entries for each model, as well as creating entries that are based solely on the object-model relationships. */
-
 var chalk = require('chalk');
 var db = require('./server/db');
 var User = db.model('user');
@@ -10,10 +8,8 @@ var Category = db.model('category');
 var OrderProduct = db.model('OrderProduct')
 var Promise = require('sequelize').Promise;
 
-var seedUsers = function () {
-    //  currently the seed generates 7 users (including 2 admins)
-
-    var users = [{
+var data = {
+    users: [{
         firstName: 'Grace',
         lastName: 'Hopper',
         email: 'grace@hopper.org',
@@ -51,112 +47,8 @@ var seedUsers = function () {
         email: 'qw@er.ty',
         password: 'yiop',
         isAdmin: true,
-    }];
-
-
-
-    var creatingUsers = users.map(function (userObj) {
-        return User.create(userObj);
-    });
-
-    return Promise.all(creatingUsers);
-
-};
-
-var seedProducts = function (createdCategories) {
-    var numofProj = 4;
-    //this means that whenever we seed the DB we can assume the IDs are 1-4. increment this when you add to the seed!
-
-    var products = [{
-            title: 'KBuechs',
-            inventory: 47,
-            photoUrl: "images/kbuechs.jpg",
-            price: 1.50,
-            returnable: true,
-            description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive'
-        }, {
-            title: 'Lorimited Edition',
-            inventory: 6,
-            photoUrl: "images/default.jpg",
-            price: 79.99,
-            returnable: false,
-            description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated'
-
-        }, {
-            title: 'The Taff',
-            inventory: 8,
-            photoUrl: "images/default.jpg",
-            price: 42.30,
-            returnable: false,
-            description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.'
-        }
-
-    ];
-    var creatingProducts = products.map(function (productObj) {
-        return Product.create(productObj)
-            .then(function (product) {
-                for (var i = 0; i < 3; i++) {
-                    product.setCategories(createdCategories.slice(0, i))
-                }
-            });
-    });
-
-    return Promise.all(creatingProducts);
-}
-
-function createOrder(products, userId) {
-    Order.create({
-            userId: userId
-        })
-        .then(function (order) {
-            products.forEach(product => {
-                OrderProduct.create({
-                    productId: product.id,
-                    orderId: order.id,
-                    quantity: 5,
-                    price: product.price,
-                    title: product.title
-                })
-            })
-        })
-}
-
-var seedOrders = function (products) {
-    for (var i = 3; i >= 0; i--) {
-        createOrder(products, i)
-
-    }
-}
-
-var seedReviews = function () {
-    var reviews = [{
-        text: 'holy crap this was great the BEST BEST BEST BEST BEST BEST BEST BEST BEST',
-        rating: 3,
-        userId: 1,
-        productId: 2
-
-    }, {
-        text: 'holy crap this was the BEST BEST BEST BEST BEST BEST BEST BEST',
-        rating: 5,
-        userId: 1,
-        productId: 1
-
-    }, {
-        text: 'holy crap this was the worst the worst the worst the worst EVER EVER EVER EVER',
-        rating: 1,
-        userId: 2,
-        productId: 1
-    }];
-
-    var creatingReviews = reviews.map(function (reviewObj) {
-        return Review.create(reviewObj);
-    });
-
-    return Promise.all(creatingReviews);
-}
-
-var seedCategory = function () {
-    var categories = [{
+    }],
+    categories: [{
         title: "+O"
     }, {
         title: "-O"
@@ -178,32 +70,126 @@ var seedCategory = function () {
         title: "doubled"
     }, {
         title: "full body"
-    }];
+    }],
+    products: [{
+        title: 'KBuechs',
+        inventory: 47,
+        photoUrl: "images/kbuechs.jpg",
+        price: 1.50,
+        returnable: true,
+        description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive',
+        categories: [{
+            title: "+O"
+        }, {
+            title: "full body"
+        }]
+    }, {
+        title: 'Lorimited Edition',
+        inventory: 6,
+        photoUrl: "images/default.jpg",
+        price: 79.99,
+        returnable: false,
+        description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated',
+        categories: [{
+            title: "espresso"
+        }, {
+            title: "spicy"
+        }, {
+            title: "dry"
+        }]
 
-    var createCategories = categories.map(function (cat) {
-        return Category.create(cat);
-    });
+    }, {
+        title: 'The Taff',
+        inventory: 8,
+        photoUrl: "images/default.jpg",
+        price: 42.30,
+        returnable: false,
+        description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.',
+        categories: [{
+            title: "B"
+        }, {
+            title: "vegan"
+        }, {
+            title: "espresso"
+        }]
+    }],
+    orders: [{
+        userId: 1
+    }, {
+        userId: 2
+    }],
+    reviews: [{
+        text: 'holy crap this was great the BEST BEST BEST BEST BEST BEST BEST BEST BEST',
+        rating: 3,
+        userId: 1,
+        productId: 2
 
-    return Promise.all(createCategories)
+    }, {
+        text: 'holy crap this was the BEST BEST BEST BEST BEST BEST BEST BEST',
+        rating: 5,
+        userId: 1,
+        productId: 1
+
+    }, {
+        text: 'holy crap this was the worst the worst the worst the worst EVER EVER EVER EVER',
+        rating: 1,
+        userId: 2,
+        productId: 1
+    }]
 }
+
 
 db.sync({
         force: true
     })
     .then(function () {
-        return seedUsers()
+        console.log("Dropped old data, now inserting data");
+        var createUsers = data['users'].map(function (userObj) {
+            return User.create(userObj)
+        })
+        return Promise.all(createUsers)
     })
     .then(function () {
-        return seedCategory()
-    })
-    .then(function (createdCategories) {
-        return seedProducts(createdCategories)
-    })
-    .then(function (createdProducts) {
-        return seedOrders(createdProducts)
+        var createCategories = data['categories'].map(function (categoryObj) {
+            return Category.create(categoryObj)
+        })
+        return Promise.all(createCategories)
     })
     .then(function () {
-        return seedReviews()
+        var createProducts = data['products'].map(function (productObj) {
+            return Product.create(productObj, {
+                include: [Category]
+            })
+        });
+        return Promise.all(createProducts);
+    })
+    .then(function () {
+        var createOrders = data['orders'].map(function (orderObj) {
+            return Order.create(orderObj)
+                .then(function (order) {
+                    OrderProduct.create({
+                        orderId: order.id,
+                        productId: 2,
+                        title: 'Lorimited Edition',
+                        price: 79.99,
+                        quantity: 2
+                    })
+                    OrderProduct.create({
+                        orderId: order.id,
+                        productId: 3,
+                        title: 'The Taff',
+                        price: 42.30,
+                        quantity: 1
+                    })
+                })
+        })
+        return Promise.all(createOrders);
+    })
+    .then(function () {
+        var createReviews = data['reviews'].map(function (reviewObj) {
+            return Review.create(reviewObj)
+        })
+        return Promise.all(createReviews);
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
