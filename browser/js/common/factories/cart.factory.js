@@ -49,12 +49,17 @@ app.factory('CartFactory', function ($http) {
 
     }
 
+    function submitOrder() {
+
+    }
+
     return {
         getOrder: getOrder,
         getItems: getItems,
         getItemCount: getItemCount,
         updateQty: updateQty,
         removeFromCart: removeFromCart,
-        currentCartId: currentCartId
+        currentCartId: currentCartId,
+        submitOrder: submitOrder
     }
 });
