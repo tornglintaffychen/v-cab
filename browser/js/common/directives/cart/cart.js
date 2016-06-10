@@ -6,7 +6,6 @@ app.directive('cart', function (CartFactory) {
         templateUrl: '/js/common/directives/cart/cart.html',
         link: function (s, e, a) {
             s.itemCount = CartFactory.getItemCount();
-            //s.itemCount = 1
         }
     }
 })
