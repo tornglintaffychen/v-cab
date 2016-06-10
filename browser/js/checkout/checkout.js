@@ -17,7 +17,8 @@ app.config(function ($stateProvider) {
 })
 
 app.controller("checkoutCtrl", function ($scope, user, AuthService) {
-	$scope.name;
+	$scope.user = user;
+	$scope.address = user.address;
 	console.log(user);
 	// AuthService.getLoggedInUser()
 	// .then(function(user){

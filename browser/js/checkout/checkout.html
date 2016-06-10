@@ -1,4 +1,14 @@
 <div class="container">
-	<p ng-show="name">{{ name }}</p>
-	<h6>checkout</h6>
+	
+	<hr>
+	<h3>checkout</h3>
+	<!-- if someone's loggin in and has address show address block -->
+	<div ng-show="user && address">
+		<p>{{ user.firstName }} {{ user.lastName }}</p>
+	</div>
+	
+	<div ng-show="user && address">
+		<input placeholder="">{{ user.firstName }} {{ user.lastName }}</p>
+	</div>
+
 </div>
