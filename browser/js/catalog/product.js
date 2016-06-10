@@ -1,19 +1,5 @@
 'use strict'
-<<<<<<< HEAD:browser/js/catalogue/product.js
 
-// //product controller for single product
-app.controller('ProductCtrl', function ($scope, oneProduct) {
-    $scope.product = oneProduct;
-});
-
-// //products controller for all products
-app.controller('ProductsCtrl', function ($scope, ProductFactory) {
-    ProductFactory.fetchAll()
-    .then(function(products){
-        $scope.products = products;
-    });
-    $scope.selectedCats = ProductFactory.getCurrCats;
-=======
 //state for single product
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
@@ -52,5 +38,4 @@ app.controller('ProductCtrl', function ($scope, singleProduct) {
 // //products controller for all products
 app.controller('ProductsCtrl', function ($scope, allProducts) {
     $scope.products = allProducts;
->>>>>>> master:browser/js/catalog/product.js
 });

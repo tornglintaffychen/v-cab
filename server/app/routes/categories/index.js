@@ -4,7 +4,7 @@ var router = express.Router();
 var rootPath = '../../../';
 var Category = require(rootPath + 'db').Category;
 var Product = require(rootPath + 'db').Product;
-///get all cats
+///get all Categories
 router.get("/", function (req, res, next) {
 	Category.findAll()
 	.then(function(categories){

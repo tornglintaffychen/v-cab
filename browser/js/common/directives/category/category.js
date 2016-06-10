@@ -1,9 +1,4 @@
 app.factory('CategoryFactory', function ($http) {
-
-    var selectedCats = null;
-
-
-app.factory('categoryFactory', function ($http) {
     return {
         getAllCategories: function () {
             return $http.get('/api/categories')
@@ -21,11 +16,11 @@ app.directive('categoryView', function (CategoryFactory, ProductFactory) {
         },
         templateUrl: 'js/common/directives/category/category.html',
         link: function (scope) {
-            CategoryFactory.getAllCats()
+            CategoryFactory.getAllCategories()
             .then(function(categories) {
                 scope.categories = categories;
             });
-            scope.addToSelectedCats = ProductFactory.addCategory;
+            scope.addToSelectedCategory = ProductFactory.addCategory;
         }
     };
 });

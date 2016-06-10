@@ -2,7 +2,7 @@
 
 app.factory('ProductFactory', function ($http) {
     var ProductFactory = {};
-    var currCats = [];
+    var currCategories = [];
 
     function getData(res) {
         return res.data;
@@ -15,12 +15,12 @@ app.factory('ProductFactory', function ($http) {
 
     //sv
     ProductFactory.addCategory = function (category) {
-        currCats.push(category);
+        currCategories.push(category);
     };
 
     //sv
-    ProductFactory.getCurrCats = function () {
-        return currCats;
+    ProductFactory.getCurrCategories = function () {
+        return currCategories;
     };
 
     ProductFactory.fetchById = function (id) {
