@@ -4,29 +4,24 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var secrets = require('./secrets.js');
 
 module.exports = function (app, db) {
-
-    var User = db.define('user');
+    require('../../../db/models/user')(db);
+    var User = db.models.user;
+ 
 
     var facebookCredentials = {
         clientID: secrets.facebook.clientID,
         clientSecret: secrets.facebook.clientSecret,
-        callbackURL: "http://vcab.testing:1337"
+        callbackURL: "/auth/facebook/callback"
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
+      
+        console.log("FACEBOOK");
+        console.dir(User);
 
-        User.findOne({
+        User.create({
                 where: {
                     facebook_id: profile.id
-                }
-            })
-            .then(function (user) {
-                if (user) {
-                    return user;
-                } else {
-                    return User.create({
-                        facebook_id: profile.id
-                    });
                 }
             })
             .then(function (userToLogin) {
