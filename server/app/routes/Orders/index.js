@@ -3,7 +3,7 @@ var router = express.Router();
 
 var rootPath = '../../../';
 var Order = require(rootPath + 'db').Order;
-
+var OrderProduct = require(rootPath + 'db').OrderProduct;
 
 // Only admins
 router.get('/', function (req, res, next) {
@@ -11,10 +11,10 @@ router.get('/', function (req, res, next) {
             where: req.query
         })
         .then(function (orders) {
-            res.json(orders)
+            res.json(orders);
         })
         .catch(next);
-})
+});
 
 router.get('/:id', function (req, res, next) {
     Order.findOne({
@@ -33,20 +33,41 @@ router.post('/', function (req, res, next) {
         .then(function (order) {
             res.json(order)
         })
-        .catch(next)
-})
+        .catch(next);
+});
 
+router.get('/:id/products', function (req, res, next) {
+    OrderProduct.findAll({
+            where: {
+                orderId: req.params.id
+            }
+        })
+        .then(function (order) {
+            res.json(order);
+        });
+});
+
+router.put('/:id', function (req, res, next) {
+
+});
 // admin should be able to edit everything in the order
 // users should be able to cancel order 30 mins limit
-router.put('/:id', function (req, res, next) {
-    Order.update(req.body, {
-            where: {
-                id: req.params.id
-            },
-            include: [Product]
-        })
-        .catch(next);
-})
+router.put('/update/:id', function (req, res, next) {
+    console.log("put", req.body)
+    OrderProduct.findOne({
+        where: {
+            productId: req.params.id
+        }
+    })
+    .then(function(product){
+        return product.update(req.body.product);
+    })
+    .then(function (product) {
+        res.json(product);
+    })
+    .catch(next);
+
+});
 
 // tc: instead of create and update, we use findOrCreate?
 // maybe not.

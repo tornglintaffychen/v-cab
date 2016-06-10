@@ -2,26 +2,41 @@
 
 // communicates between main page and the cart icon overlay
 app.factory('CartFactory', function ($http) {
-    
+    var itemCount = 0;
+
     function getData(response) {
         return response.data;
     }
 
     function getOrder (orderId) {
-        return $http.get('/api/orders/' + orderId)
+        return $http.get('/api/order/' + orderId)
                 .then(getData); 
     }
 
     function getItems (orderId) {
-        return $http.get('/api/orders/' + orderId)
-                .then(getData); 
+        return $http.get('/api/order/' + orderId + '/products')
+                .then(function(response){
+                    itemCount = response.data.length;
+                    return response.data;
+                    }); 
+    }
+
+    function getItemCount () {
+        return itemCount;
+    }
+    function increaseQuantity (orderId, product) {
+        return $http.put('/api/order/update/'+ orderId, {product})
+        .then(getData);
     }
 
     return {
         getOrder: getOrder, 
-        getItems: getItems
+        getItems: getItems, 
+        getItemCount: getItemCount,
+        increaseQuantity: increaseQuantity
     }
 });
+
 // app.factory('CartFactory', function ($http) {
 
 //     function getData(response) {

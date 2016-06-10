@@ -5,7 +5,8 @@ app.directive('cart', function (CartFactory) {
         restrict: 'E',
         templateUrl: '/js/common/directives/cart/cart.html',
         link: function (s, e, a) {
-            s.itemCount = CartFactory.itemCount()
+             s.itemCount = CartFactory.getItemCount();
+             //s.itemCount = 1
         }
     }
 })
@@ -15,28 +16,34 @@ app.config(function ($stateProvider) {
         url: "/cart",
         templateUrl: "/js/common/directives/cart/incart.html",
         controller: "CartController",
-        // resolve: {
-        //     productList: function (CartFactory) {
-        //         return CartFactory.getOrder(1)
-        //             .then(function (list) {
-        //                 // CartFactory.productList = list
-        //                 return list;
-        //             })
-        //
-        //     }
-        // }
-    })
-})
+        resolve: {
+            products: function (CartFactory) {
+                return CartFactory.getItems(1)
+                    .then(function (list) {
+                        return list;
+                    });
+        
+            }
+        }
+    });
+});
 
-app.controller('CartController', function ($scope, CartFactory) {
-
+app.controller('CartController', function ($scope, products, CartFactory) {
+    $scope.toUpdate = null;
     $scope.orderId = 1;
-    $scope.products = [];
-    // CartFactory.getOrder()
-    // .then(function(order){
-    //     console.log(order);
-    // });
-  
+    $scope.products = products;
+      console.log($scope.products);
+    //$scope.select = ;
+    $scope.update = function (product) {
+        if (product.quantity !== ""){
+            // console.log(product);
+            CartFactory.increaseQuantity($scope.orderId, product)
+            .then(stuff => {
+                console.log(stuff)
+            });
+
+        }
+    };
 
     // $scope.actualProduct = CartFactory.actualProduct;
     // $scope.qty = CartFactory.productList.productQty;
@@ -57,4 +64,15 @@ app.controller('CartController', function ($scope, CartFactory) {
     // //
     // }
 
-})
+});
+
+       // resolve: {
+        //     productList: function (CartFactory) {
+        //         return CartFactory.getOrder(1)
+        //             .then(function (list) {
+        //                 // CartFactory.productList = list
+        //                 return list;
+        //             })
+        //
+        //     }
+        // }
