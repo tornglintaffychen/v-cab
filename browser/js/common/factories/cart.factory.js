@@ -28,7 +28,8 @@ app.factory('CartFactory', function ($http) {
         return itemCount;
     }
     function increaseQuantity (orderId, product) {
-        return $http.put('/api/order/'+ orderId + '/product/'+ product.productId, {product})
+
+        return $http.put('/api/order/'+ orderId + '/product/'+ product.productId, product)
         .then(getData);
     }
 
