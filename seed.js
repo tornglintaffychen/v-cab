@@ -63,7 +63,7 @@ var seedUsers = function () {
 
 };
 
-var seedProducts = function () {
+var seedProducts = function (createdCategories) {
     var numofProj = 4;
     //this means that whenever we seed the DB we can assume the IDs are 1-4. increment this when you add to the seed!
 
@@ -93,14 +93,18 @@ var seedProducts = function () {
 
     ];
     var creatingProducts = products.map(function (productObj) {
-        return Product.create(productObj);
+        return Product.create(productObj)
+            .then(function (product) {
+                for (var i = 0; i < 3; i++) {
+                    product.setCategories(createdCategories.slice(0, i))
+                }
+            });
     });
 
     return Promise.all(creatingProducts);
 }
 
 function createOrder(products, userId) {
-    // var orderThese = products.slice(0, 3)
     Order.create({
             userId: userId
         })
@@ -110,7 +114,8 @@ function createOrder(products, userId) {
                     productId: product.id,
                     orderId: order.id,
                     quantity: 5,
-                    price: product.price
+                    price: product.price,
+                    title: product.title
                 })
             })
         })
@@ -118,7 +123,8 @@ function createOrder(products, userId) {
 
 var seedOrders = function (products) {
     for (var i = 3; i >= 0; i--) {
-        createOrder(products.slice(0, i), i)
+        createOrder(products, i)
+
     }
 }
 
@@ -154,6 +160,24 @@ var seedCategory = function () {
         title: "+O"
     }, {
         title: "-O"
+    }, {
+        title: "A"
+    }, {
+        title: "B"
+    }, {
+        title: "vegan"
+    }, {
+        title: "espresso"
+    }, {
+        title: "spicy"
+    }, {
+        title: "dry"
+    }, {
+        title: "crisp"
+    }, {
+        title: "doubled"
+    }, {
+        title: "full body"
     }];
 
     var createCategories = categories.map(function (cat) {
@@ -170,16 +194,16 @@ db.sync({
         return seedUsers()
     })
     .then(function () {
-        return seedProducts()
+        return seedCategory()
+    })
+    .then(function (createdCategories) {
+        return seedProducts(createdCategories)
     })
     .then(function (createdProducts) {
         return seedOrders(createdProducts)
     })
     .then(function () {
         return seedReviews()
-    })
-    .then(function () {
-        return seedCategory()
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
