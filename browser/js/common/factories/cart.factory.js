@@ -1,6 +1,9 @@
 // Factory
 
 // communicates between main page and the cart icon overlay
+
+// tc: product view page, add-to-cart needs to use this factory as well (?)
+
 app.factory('CartFactory', function ($http) {
     var itemCount = 0;
 
@@ -8,33 +11,45 @@ app.factory('CartFactory', function ($http) {
         return response.data;
     }
 
-    function getOrder (orderId) {
+    function getOrder(orderId) {
         return $http.get('/api/order/' + orderId)
-                .then(getData); 
+            .then(getData);
     }
 
-    function getItems (orderId) {
+    function getItems(orderId) {
         return $http.get('/api/order/' + orderId + '/products')
-                .then(function(response){
-                    itemCount = response.data.length;
-                    return response.data;
-                    }); 
+            .then(function (response) {
+                itemCount = response.data.length;
+                return response.data;
+            });
     }
-    function removeFromCart () {
-        return $http.delete('/api/order/update/'+ orderId, {product})
-        .then(getData);
+
+    function removeFromCart() {
+        return $http.delete('/api/order/update/' + orderId, {
+                product
+            })
+            .then(getData);
     }
-    function getItemCount () {
+
+    function getItemCount() {
         return itemCount;
     }
-    function increaseQuantity (orderId, product) {
-        return $http.put('/api/order/'+ orderId + '/product/'+ product.productId, {product})
-        .then(getData);
+
+    function increaseQuantity(orderId, product) {
+        return $http.put('/api/order/' + orderId + '/product/' + product.productId, {
+                product
+            })
+            .then(getData);
     }
 
+    function addToCart(product) {
+        // if (currentCartId) use the same orderId to add row the OrderProduct table
+        // else Order.create then add info to OrderProduct table
+        return $http.
+    }
     return {
-        getOrder: getOrder, 
-        getItems: getItems, 
+        getOrder: getOrder,
+        getItems: getItems,
         getItemCount: getItemCount,
         increaseQuantity: increaseQuantity,
         removeFromCart: removeFromCart
