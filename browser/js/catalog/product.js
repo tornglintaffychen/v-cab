@@ -3,11 +3,11 @@
 //state for single product
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
-        url: '/products/:productId',
-        templateUrl: 'js/catalog/products.html',
+        url: '/products/:id',
+        templateUrl: 'js/detail/templates/product.html',
         controller: 'ProductCtrl',
         resolve: {
-					//LA: changed from oneProduct to singleProduct
+            //LA: changed from oneProduct to singleProduct
             singleProduct: function (ProductFactory, $stateParams) {
                 return ProductFactory.fetchById($stateParams.id);
             }
@@ -19,7 +19,7 @@ app.config(function ($stateProvider) {
 app.config(function ($stateProvider) {
     $stateProvider.state('home.products', {
         url: '/products',
-				controller: 'ProductsCtrl',
+        controller: 'ProductsCtrl',
         templateUrl: 'js/catalog/products.html',
         resolve: {
             allProducts: function (ProductFactory) {
