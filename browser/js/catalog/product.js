@@ -36,6 +36,7 @@ app.controller('ProductCtrl', function ($scope, singleProduct) {
 })
 
 // //products controller for all products
-app.controller('ProductsCtrl', function ($scope, allProducts) {
+app.controller('ProductsCtrl', function ($scope, allProducts, ProductFactory) {
     $scope.products = allProducts;
+		$scope.currentCategory = ProductFactory.currentCategory;
 });

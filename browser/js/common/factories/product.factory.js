@@ -39,12 +39,12 @@ app.factory('ProductFactory', function ($http) {
     };
 
 		//LA: simple category fetch for views - possibly remove later
-		var currentCategory = 'all'
+		ProductFactory.currentCategory = 'all'
 		ProductFactory.getCurrentCategory = function () {
-			return currentCategory;
+			return ProductFactory.currentCategory;
 		}
 		ProductFactory.setCurrentCategory = function(newCategory){
-			currentCategory = newCategory;
+			ProductFactory.currentCategory = newCategory;
 		}
 
     return ProductFactory;
