@@ -28,24 +28,33 @@ app.config(function ($stateProvider) {
     })
 })
 
-app.controller('CartController', function ($scope, productList, CartFactory) {
-    $scope.actualProduct = CartFactory.actualProduct;
-    $scope.qty = CartFactory.productList.productQty;
+app.controller('CartController', function ($scope, CartFactory) {
+
+    $scope.orderId = 1;
+    $scope.products = [];
+    // CartFactory.getOrder()
+    // .then(function(order){
+    //     console.log(order);
+    // });
+  
+
+    // $scope.actualProduct = CartFactory.actualProduct;
+    // $scope.qty = CartFactory.productList.productQty;
 
 
     // tc: should be = CartFactory.itemCount() hard coded 1 just for seeing
-    $scope.currentCartId = CartFactory.currentCartId;
+    // $scope.currentCartId = CartFactory.currentCartId;
 
-    $scope.updateCart = function (orderId) {
-        return CartFactory.updateCart(orderId)
-    }
+    // $scope.updateCart = function (orderId) {
+    //     return CartFactory.updateCart(orderId)
+    // }
 
-    // $scope.getOrder = function (orderId) {
-    //     CartFactory.getOrder(orderId)
-    //         .then(function (updatedList) {
-    //             $scope.productList = updatedList;
-    //         })
-    //
+    // // $scope.getOrder = function (orderId) {
+    // //     CartFactory.getOrder(orderId)
+    // //         .then(function (updatedList) {
+    // //             $scope.productList = updatedList;
+    // //         })
+    // //
     // }
 
 })

@@ -1,9 +1,3 @@
-// app.config(function ($stateProvider) {
-//     $stateProvider.state('category', {
-//         url: '/:category'
-//     })
-// })
-
 app.factory('categoryFactory', function ($http) {
     return {
         getAllCategories: function () {

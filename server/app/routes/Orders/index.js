@@ -23,18 +23,10 @@ router.get('/:id', function (req, res, next) {
             }
         })
         .then(function (order) {
-            order.currentProducts
-                .then(function (products) {
-
-                    var orderObj = {
-                        orderInfo: order,
-                        productInfo: products
-                    }
-                    res.json(orderObj)
-                })
+            res.json(order);
         })
         .catch(next);
-})
+});
 
 router.post('/', function (req, res, next) {
     Order.create(req.body)
@@ -50,7 +42,8 @@ router.put('/:id', function (req, res, next) {
     Order.update(req.body, {
             where: {
                 id: req.params.id
-            }
+            },
+            include: [Product]
         })
         .catch(next);
 })
