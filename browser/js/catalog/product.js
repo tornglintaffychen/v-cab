@@ -3,7 +3,7 @@
 //state for single product
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
-        url: '/products/:id',
+        url: '/products/:productId',
         templateUrl: 'js/detail/templates/product.html',
         controller: 'ProductCtrl',
         resolve: {
