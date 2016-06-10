@@ -2,13 +2,16 @@
     <form ng-submit="updateCart()">
         <ul ng-repeat="product in products">
             <li>
-                {{product.productId}}
+                {{product.title}}
             </li>
             <li >
                 {{product.price | currency }}
             </li>
             <!-- tc: will remove product if the qty become 0 -->
-            <input type="text" ng-model="product.quantity" ng-keyup="update(product)" placeholder="{{product.quantity}}"/>
+            <!-- <input type="text" ng-model="product.quantity" ng-keyup="update(product)" placeholder="{{product.quantity}}"/> -->
+            <select ng-model="product.quantity">
+                <option ng-repeat="num in nums">{{num}}</option>
+            </select>
             <button class="glyphicon glyphicon-remove"></button>
         </ul>
     </form>

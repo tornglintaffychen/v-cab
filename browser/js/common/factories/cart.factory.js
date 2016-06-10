@@ -6,6 +6,8 @@
 
 app.factory('CartFactory', function ($http) {
     var itemCount = 0;
+    // tc: controller can change the currentCartId (?)
+    var currentCartId = null;
 
     function getData(response) {
         return response.data;
@@ -45,14 +47,16 @@ app.factory('CartFactory', function ($http) {
     function addToCart(product) {
         // if (currentCartId) use the same orderId to add row the OrderProduct table
         // else Order.create then add info to OrderProduct table
-        return $http.
+
     }
+
     return {
         getOrder: getOrder,
         getItems: getItems,
         getItemCount: getItemCount,
         increaseQuantity: increaseQuantity,
-        removeFromCart: removeFromCart
+        removeFromCart: removeFromCart,
+        currentCartId: currentCartId
     }
 });
 
