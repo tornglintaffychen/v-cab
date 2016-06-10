@@ -7,10 +7,8 @@
             <li >
                 {{product.price | currency }}
             </li>
-            <!-- tc: will remove product if the qty become 0 -->
-            <!-- <input type="text" ng-model="product.quantity" ng-keyup="update(product)" placeholder="{{product.quantity}}"/> -->
-            <select ng-model="product.quantity">
-                <option ng-repeat="num in nums">{{num}}</option>
+            <!-- tc: write a function for updateQty -->
+            <select ng-model="product.quantity" ng-options="num for num in nums" ng-change="updateQty(num)">
             </select>
             <button class="glyphicon glyphicon-remove"></button>
         </ul>

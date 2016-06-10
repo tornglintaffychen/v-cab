@@ -32,8 +32,9 @@ router.get('/:id', function (req, res, next) {
 // tc: create a new orderId, put product info to the OrderProduct table
 router.post('/', function (req, res, next) {
     console.log(chalk.yellow(req.body))
+        // tc: assume logged in nothing in a cart
     Order.create({
-            userId: req.session.userId
+            userId: req.session.cookie.userId
         })
         .then(function (order) {
             // tc: we can make req.body just like the object that we need to pass in the OrderProduct.create(), so we don't need to write this object here (?)
@@ -46,6 +47,7 @@ router.post('/', function (req, res, next) {
 });
 
 // tc: this is only to add product to the OrderProduct table with exist id
+// router.post()
 
 router.get('/:id/products', function (req, res, next) {
     OrderProduct.findAll({
