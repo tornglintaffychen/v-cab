@@ -21,6 +21,10 @@ app.config(function ($stateProvider) {
 app.controller("checkoutCtrl", function ($scope, AddressFactory, user, AuthService ) {
 	$scope.user = user;
 	$scope.address = user.address;
+	$scope.change = false;
+	$scope.toggle = function () {
+		$scope.change = !$scope.change;
+	}
 	console.log(user);
 
 });
