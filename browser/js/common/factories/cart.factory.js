@@ -20,8 +20,8 @@ app.factory('CartFactory', function ($http) {
                     return response.data;
                     }); 
     }
-    function removeFromCart () {
-        return $http.delete('/api/order/update/'+ orderId, {product})
+    function removeFromCart (orderId, productId) {
+        return $http.delete('/api/order/'+ orderId +"/product/"+productId)
         .then(getData);
     }
     function getItemCount () {
