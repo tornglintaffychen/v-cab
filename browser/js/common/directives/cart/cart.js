@@ -44,6 +44,7 @@ app.controller('CartController', function ($scope, products, CartFactory) {
 
         }
     };
+    $scope.remove = CartFactory.removeFromCart;
 
     // $scope.actualProduct = CartFactory.actualProduct;
     // $scope.qty = CartFactory.productList.productQty;

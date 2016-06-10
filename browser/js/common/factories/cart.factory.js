@@ -20,12 +20,15 @@ app.factory('CartFactory', function ($http) {
                     return response.data;
                     }); 
     }
-
+    function removeFromCart () {
+        return $http.delete('/api/order/update/'+ orderId, {product})
+        .then(getData);
+    }
     function getItemCount () {
         return itemCount;
     }
     function increaseQuantity (orderId, product) {
-        return $http.put('/api/order/update/'+ orderId, {product})
+        return $http.put('/api/order/'+ orderId + '/product/'+ product.productId, {product})
         .then(getData);
     }
 
@@ -33,7 +36,8 @@ app.factory('CartFactory', function ($http) {
         getOrder: getOrder, 
         getItems: getItems, 
         getItemCount: getItemCount,
-        increaseQuantity: increaseQuantity
+        increaseQuantity: increaseQuantity,
+        removeFromCart: removeFromCart
     }
 });
 

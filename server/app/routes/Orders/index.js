@@ -52,11 +52,11 @@ router.put('/:id', function (req, res, next) {
 });
 // admin should be able to edit everything in the order
 // users should be able to cancel order 30 mins limit
-router.put('/update/:id', function (req, res, next) {
-    console.log("put", req.body)
+router.put('/:orderid/product/:productid', function (req, res, next) {
     OrderProduct.findOne({
         where: {
-            productId: req.params.id
+            productId: req.params.productid,
+            orderId: req.params.orderid
         }
     })
     .then(function(product){
@@ -68,7 +68,18 @@ router.put('/update/:id', function (req, res, next) {
     .catch(next);
 
 });
+router.delete('/product/:id', function (req, res, next) {
+    OrderProduct.destroy({
+        where: {
+            productId: req.params.id
+        }
+    })
+    .then(function (product) {
+        res.json(product);
+    })
+    .catch(next);
 
+});
 // tc: instead of create and update, we use findOrCreate?
 // maybe not.
 // router.post('/:id', function (req, res, next) {
