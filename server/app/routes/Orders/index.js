@@ -29,7 +29,8 @@ router.get('/:id', function (req, res, next) {
         .catch(next);
 });
 
-// tc: create a new orderId, put product info to the OrderProduct table
+// tc-bk: create a new orderId, put product info to the OrderProduct table
+// not sure how to keep track the userId, unlogged in users yet
 router.post('/', function (req, res, next) {
     console.log(chalk.yellow(req.body))
         // tc: assume logged in nothing in a cart
@@ -47,7 +48,7 @@ router.post('/', function (req, res, next) {
         .catch(next);
 });
 
-// tc: this is only to add product to the OrderProduct table with exist id
+// this is only to add product to the OrderProduct table with exist id
 router.post('/:id/addToCart', function (req, res, next) {
     OrderProduct.create({
             orderId: req.params.id,
@@ -62,7 +63,7 @@ router.post('/:id/addToCart', function (req, res, next) {
         .catch(next)
 })
 
-// tc: edit one item in the shopping cart
+// edit one item in the shopping cart
 router.put('/:id/editItem', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
@@ -76,14 +77,17 @@ router.put('/:id/editItem', function (req, res, next) {
         .catch(next)
 });
 
-// tc: delete one item in the shopping cart, interesting enought that it's a put route
+// delete one item in the shopping cart, interesting enought that it's a put route
 router.put('/:id/deleteItem', function (req, res, next) {
     OrderProduct.destroy({
-        where: {
-            orderId: req.params.id,
-            productId: req.body.productId
-        }
-    })
+            where: {
+                orderId: req.params.id,
+                productId: req.body.productId
+            }
+        })
+        .then(function (removed) {
+            res.json(removed)
+        })
 });
 
 router.get('/:id/products', function (req, res, next) {
@@ -119,17 +123,15 @@ router.put('/:orderid/product/:productid', function (req, res, next) {
 
 });
 
-router.delete('/product/:id', function (req, res, next) {
-    OrderProduct.destroy({
+// clear the shopping cart
+router.delete('/:id', function (req, res, next) {
+    console.log(req.params.id)
+    Order.destroy({
             where: {
-                productId: req.params.id
+                id: req.params.id
             }
         })
-        .then(function (product) {
-            res.json(product);
-        })
         .catch(next);
-
 });
 
 
