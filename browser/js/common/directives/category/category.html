@@ -1,10 +1,10 @@
-<div class="col-md-1">
-    <div>
-        <h3>Categories:</h3>
-    <ul ng-repeat="category in categories" >
-            <a><li ng-click="setCurrentCategory(category.title)">
-                {{category.title}}
-            </li></a>
-        </ul>
-    </div>
+<div class="container">
+	<h3>Categories:</h3>
+		<ul class ="nav nav-pills">
+		<li  ng-repeat="category in categories" role="category" ng-click="setCurrentCategory(category.title)">
+				<a>
+				{{category.title}}
+				</a>
+			</li>
+		</ul>
 </div>

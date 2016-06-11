@@ -5,7 +5,8 @@ module.exports = function (db) {
     db.define('category', {
         title: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+						// unique: true
         }
     });
 };

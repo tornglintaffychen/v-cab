@@ -188,18 +188,21 @@ db.sync({
     })
     .then(function () {
         console.log("Dropped old data, now inserting data");
+				console.log("Creating users");
         var createUsers = data['users'].map(function (userObj) {
             return User.create(userObj)
         })
         return Promise.all(createUsers)
     })
     .then(function () {
+			console.log("Creating categories");
         var createCategories = data['categories'].map(function (categoryObj) {
             return Category.create(categoryObj)
         })
         return Promise.all(createCategories)
     })
     .then(function () {
+			console.log("Creating products");
         var createProducts = data['products'].map(function (productObj) {
             return Product.create(productObj, {
                 include: [Category]
@@ -208,6 +211,7 @@ db.sync({
         return Promise.all(createProducts);
     })
     .then(function () {
+			console.log("Creating orders");
         var createOrders = data['orders'].map(function (orderObj) {
             return Order.create(orderObj)
                 .then(function (order) {
