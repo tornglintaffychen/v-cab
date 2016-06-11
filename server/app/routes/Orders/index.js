@@ -36,14 +36,45 @@ function addProductToOrder (orderId, reqObj) {
         productId: reqObj.id,
         price: reqObj.price,
         title: reqObj.title,
-        quantity: reqObj.inventory
+        quantity: 1
     });
 }
 
-//sv we're repeating a lot let's make some model hooks at some point
-function  addOrderToSession (orderId, reqObj) {
-
+function createOrUpdateOrderProduct (orderId, reqObj) {
+   
+    return OrderProduct.findOne({
+        where: {
+            orderId: orderId,
+            productId: reqObj.id
+        }
+    })
+    .then(function(product){
+        if (product) {
+            console.log("update", product.quantity);
+            return product.update({quantity: product.quantity+1})
+            .then(function(updatedProduct) {
+                return updatedProduct;
+            });
+        }
+        else {
+            console.log("addProductToOrder");
+            return addProductToOrder (orderId, reqObj);
+        }
+    });
 }
+//sv we're repeating a lot let's make some model hooks at some point
+// function findOrCreateOrder (userId, req) {
+//     console.log("CHECK DUPLICATE PRODUCTS", req.session);
+//     // return Order.findOne({
+//     //         where: {
+//     //             userId: userId,
+//     //             status: 'inCart'
+//     //         }
+//     //     }).
+//     //     then(function (){
+
+//     //     });
+// }
 
 // find all orders 
 router.get('/', function (req, res, next) {
@@ -59,7 +90,7 @@ router.get('/', function (req, res, next) {
 //find all products by order id
 router.get('/products', function (req, res, next) {
     console.log("?????????????????");
-    console.log("SESSIONSSSS", req.session);
+    console.log("SESSIONSSSS", fin);
     OrderProduct.findAll({
             where: {
                 orderId: req.session.orderId
@@ -88,22 +119,27 @@ router.post('/addToCart', function (req, res, next) {
         .then(function (inCartOrder) {
 
             if (inCartOrder) {
-                console.log("order exists", inCartOrder);
+                
                 var id = inCartOrder.id;
-                addProductToOrder (id, req.body)
-                .then(function (addedProduct) {
-                    req.session.orderId = addedProduct.orderId;
+                req.session.orderId = id;
+
+                console.log("order exists", req.session);
+
+                createOrUpdateOrderProduct(id, req.body)
+                .then(function(addedProduct) {
+                    console.log("ADDEDPRODUCT", addedProduct);
                     res.json(addedProduct);
                 })
                 .catch(next);
+
             } else {
                 console.log("no order");
                 // if not, create Order first then add to OrderProduct
                 Order.create({
-                        userId: createdUser.id
+                    userId: createdUser.id
                 })
                 .then(function (createdOrder) {
-                    //returning 
+                    checkDuplicates (createdOrder.id, req.body);
                     return addProductToOrder (createdOrder.id, req.body);
                 })
                 .then(function (addedProduct) {
