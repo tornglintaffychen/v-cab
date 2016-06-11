@@ -1,13 +1,14 @@
 'use strict';
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var chalk = require('chalk')
 
 module.exports = function (app, db) {
 
     var User = db.model('user');
-
-    // When passport.authenticate('local') is used, this function will receive
-    // the email and password to run the actual authentication logic.
+    var Order = db.model('order')
+        // When passport.authenticate('local') is used, this function will receive
+        // the email and password to run the actual authentication logic.
     var strategyFn = function (email, password, done) {
         User.findOne({
                 where: {
@@ -47,7 +48,20 @@ module.exports = function (app, db) {
             // req.logIn will establish our session.
             req.logIn(user, function (loginErr) {
                 if (loginErr) return next(loginErr);
-                // We respond with a response object that has user with _id and email.
+                // attaching inCart oder id to the req.session
+                var uId = req.user.id
+                Order.findOne({
+                        where: {
+                            userId: uId,
+                            status: 'inCart'
+                        }
+                    })
+                    .then(function (order) {
+                        req.session.orderId = order.id
+                        console.log(chalk.red("when log in"))
+                        console.dir(req.session)
+                    })
+                    // We respond with a response object that has user with _id and email.
                 res.status(200).send({
                     user: user.sanitize()
                 });

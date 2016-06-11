@@ -17,10 +17,11 @@ app.factory('CartFactory', function ($http) {
         $http.get('/api/users/' + userId)
             .then(getData)
             .then(function (user) {
+                console.log('hi')
                 return user.orders.filter(function (order) {
                     return order.status === "inCart"
                 })[0].id;
-            });
+            })
     }
 
     function getItems() {
@@ -70,7 +71,7 @@ app.factory('CartFactory', function ($http) {
         removeFromCart: removeFromCart,
         submitOrder: submitOrder,
         clearCart: clearCart,
-        clearCart: clearCart,
+        getInCartId: getInCartId,
         userId: userId
     }
 });
