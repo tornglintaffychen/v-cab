@@ -9,7 +9,7 @@ var OrderProduct = require(rootPath + 'db').OrderProduct;
 var chalk = require('chalk');
 
 //sv I just moved this bit out while I was reading to make it easier to see
-function findOrCreateUser (req) {
+function findOrCreateUser (req, res, next) {
     // user will be either req.user (logged in),
     // or we create one and log her in
     var user = req.user ? Promise.resolve(req.user) :
@@ -18,13 +18,12 @@ function findOrCreateUser (req) {
             lastName: 'Swan'
         })
         .then(function (createdUser) {
-            req.logIn(createdUser, function (loginErr) {
-                if (loginErr) return next(loginErr);
-                // We respond with a response object that has user with _id and email.
-                res.status(200).send({
-                    user: createdUser.sanitize()
-                });
-            });
+            // req.logIn(createdUser, function (loginErr) {
+            //     if (loginErr) return next(loginErr);
+            //     res.status(200).send({
+            //         user: createdUser.sanitize()
+            //     });
+            // });
             return createdUser;
         });
 
@@ -77,9 +76,9 @@ router.get('/products', function (req, res, next) {
 router.post('/addToCart', function (req, res, next) {
     
     //sv- moved this bit out just for now
-    var user = findOrCreateUser(req);
+    var user = findOrCreateUser(req, next);
     user.then(function(createdUser) {
-        console.log(createdUser.id);
+        console.log("HERE", createdUser.id);
         Order.findOne({
             where: {
                 userId: createdUser.id,
