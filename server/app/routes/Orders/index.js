@@ -68,12 +68,12 @@ function createOrUpdateOrderProduct (orderId, reqObj) {
 // find all orders 
 router.get('/', function (req, res, next) {
     Order.findAll({
-            where: req.query
-        })
-        .then(function (orders) {
-            res.json(orders);
-        })
-        .catch(next);
+        where: req.query
+    })
+    .then(function (orders) {
+        res.json(orders);
+    })
+    .catch(next);
 });
 
 //find all products by order id
