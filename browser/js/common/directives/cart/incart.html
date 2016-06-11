@@ -1,0 +1,21 @@
+<div>
+    <form name="shoppingCart">
+
+        <ul ng-repeat="product in products">
+            <li>
+                {{product.title}}
+            </li>
+            <li >
+                {{product.price | currency }}
+            </li>
+            
+            <select ng-model="product.quantity" ng-options="num for num in nums" ng-change="updateQty(product)">
+            </select>
+
+            <button class="glyphicon glyphicon-remove" ng-click="remove(product)"></button>
+        </ul>
+        <div class="col-xs-10 col-xs-offset-2">
+            <button type="submit" class="btn btn-success">Proceed to Checkout</button>
+        </div>
+    </form>
+</div>

@@ -26,6 +26,7 @@ app.factory('CartFactory', function ($http) {
             });
     }
 
+
     function removeFromCart(product, orderId) {
         return $http.put('/api/order/' + orderId + '/deleteItem',
                 product)
@@ -53,6 +54,7 @@ app.factory('CartFactory', function ($http) {
 
     function clearCart(orderId) {
         return $http.delete('/api/order/' + orderId)
+
     }
 
     return {
@@ -63,6 +65,8 @@ app.factory('CartFactory', function ($http) {
         removeFromCart: removeFromCart,
         currentCartId: currentCartId,
         submitOrder: submitOrder,
-        clearCart: clearCart
+        clearCart: clearCart,
+        submitOrder: submitOrder
+
     }
 });

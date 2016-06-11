@@ -99,7 +99,6 @@ var data = {
         }, {
             title: "dry"
         }]
-
     }, {
         id: 3,
         title: 'The Taff',
@@ -115,7 +114,8 @@ var data = {
         }, {
             title: "espresso"
         }]
-    },{
+
+    }, {
         id: 4,
         title: 'Samantharama',
         inventory: 19,
@@ -128,11 +128,28 @@ var data = {
         }, {
             title: "crisp"
         }]
+    }, {
+        title: 'Healthy Choice',
+        inventory: 10,
+        photoUrl: "images/default.jpg",
+        price: 200,
+        returnable: false,
+        description: 'This is a very healthy blood from a very healthy vegan lady.',
+        categories: [{
+            title: "espresso"
+        }, {
+            title: "spicy"
+        }, {
+            title: "vegan"
+
+        }]
     }],
     orders: [{
         userId: 1
     }, {
         userId: 2
+    }, {
+        userId: 3
     }],
     reviews: [{
         text: 'holy crap this was great the BEST BEST BEST BEST BEST BEST BEST BEST BEST',
@@ -151,13 +168,12 @@ var data = {
         rating: 1,
         userId: 5,
         productId: 1
-    },{
+    }, {
         text: 'beutiful. :)',
         rating: 4,
         userId: 2,
         productId: 4
-    },
-    {
+    }, {
         text: 'bad stuff. it serves no purpose',
         rating: 2,
         userId: 7,
@@ -207,6 +223,13 @@ db.sync({
                         title: 'The Taff',
                         price: 42.30,
                         quantity: 1
+                    })
+                    OrderProduct.create({
+                        orderId: order.id,
+                        productId: 4,
+                        title: 'Healthy Choice',
+                        price: 200,
+                        quantity: 9
                     })
                 })
         })

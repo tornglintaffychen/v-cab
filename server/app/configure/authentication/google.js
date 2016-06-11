@@ -6,8 +6,8 @@ var secrets = require('./secrets.js');
 
 module.exports = function (app, db) {
     ///ASHI mad important
-    require('../../../db/models/user')(db)
-    var User = db.models.user
+    require('../../../db/models/user')(db);
+    var User = db.models.user;
 
     var googleCredentials = {
         clientID: secrets.google.clientID,
