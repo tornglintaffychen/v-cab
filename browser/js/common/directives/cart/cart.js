@@ -34,7 +34,6 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
     $scope.products = products;
 
 
-
     $scope.updateQty = function (product) {
         CartFactory.updateQty(product.orderId, product)
         $state.reload()

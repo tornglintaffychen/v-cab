@@ -1,4 +1,4 @@
-app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) {
+app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, CartFactory) {
 
     return {
         restrict: 'E',
@@ -19,6 +19,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             }];
 
             scope.userId = null;
+            scope.itemCount = CartFactory.itemCount;
 
             scope.isLoggedIn = function () {
                 return AuthService.isAuthenticated();
@@ -33,11 +34,15 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             var setUser = function () {
                 AuthService.getLoggedInUser().then(function (user) {
                     // tc-cm: if we don't write the if statement, front end logs error
-                    if (user !== null) scope.userId = user.id;
+                    if (user !== null) {
+                        CartFactory.currentUserId = user.id;
+                        scope.userId = CartFactory.currentUserId;
+                    }
                 });
             };
 
             var removeUser = function () {
+                CartFactory.currentUserId = null;
                 scope.userId = null;
             };
 
