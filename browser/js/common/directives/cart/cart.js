@@ -1,14 +1,14 @@
 'use strict';
 
-app.directive('cart', function (CartFactory) {
+app.directive('cart', function (CartFactory, $state) {
     return {
         restrict: 'E',
         templateUrl: '/js/common/directives/cart/cart.html',
         link: function (s, e, a) {
             s.itemCount = CartFactory.getItemCount();
         }
-    }
-})
+    };
+});
 
 app.config(function ($stateProvider) {
     $stateProvider.state('inCart', {

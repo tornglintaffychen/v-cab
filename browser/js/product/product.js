@@ -5,14 +5,15 @@ app.factory('ProductFactory', function ($http) {
     function getData(res) {
         return res.data;
     }
-
-    return {
-        getProduct: function (productId) {
-            $http.get('/api/order/' + productId)
-                .then(getData)
-        }
+    function getProduct (productId) {
+        $http.get('/api/order/' + productId)
+            .then(getData);
     }
-})
+    
+    return {
+        getProduct: getProduct
+    };
+});
 
 // we need to have $scope.product
 app.controller('ProductCtrl', function (ProductFactory, $scope) {

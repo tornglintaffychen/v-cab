@@ -19,8 +19,8 @@ app.factory('CartFactory', function ($http) {
             .then(function (user) {
                 return user.orders.filter(function (order) {
                     return order.status === "inCart"
-                })[0].id
-            })
+                })[0].id;
+            });
     }
 
     function getItems(orderId) {
@@ -53,7 +53,7 @@ app.factory('CartFactory', function ($http) {
     }
 
     function clearCart(orderId) {
-        return $http.delete('/api/order/' + orderId)
+        return $http.delete('/api/order/' + orderId);
     }
 
     function submitOrder() {
