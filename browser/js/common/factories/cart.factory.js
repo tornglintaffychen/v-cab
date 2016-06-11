@@ -13,6 +13,13 @@ app.factory('CartFactory', function ($http) {
         return response.data;
     }
 
+    // this function is for the prodcuts / product controller
+    function addToCart(product) {
+        $http.post('/api/order/addToCart', product)
+            .then(getData)
+
+    }
+
     function getOrder(orderId) {
         return $http.get('/api/order/' + orderId)
             .then(getData);
@@ -28,8 +35,7 @@ app.factory('CartFactory', function ($http) {
 
 
     function removeFromCart(product, orderId) {
-        return $http.put('/api/order/' + orderId + '/deleteItem',
-                product)
+        return $http.put('/api/order/' + orderId + '/deleteItem', product)
             .then(getData);
     }
 
@@ -42,22 +48,18 @@ app.factory('CartFactory', function ($http) {
             .then(getData);
     }
 
-    function addToCart(product) {
-        // if (currentCartId) use the same orderId to add row the OrderProduct table
-        // else Order.create then add info to OrderProduct table
-
+    function clearCart(orderId) {
+        return $http.delete('/api/order/' + orderId)
     }
 
     function submitOrder() {
         return $http.put('/')
+            .then(getData)
     }
 
-    function clearCart(orderId) {
-        return $http.delete('/api/order/' + orderId)
-
-    }
 
     return {
+        addToCart: addToCart,
         getOrder: getOrder,
         getItems: getItems,
         getItemCount: getItemCount,
@@ -66,7 +68,6 @@ app.factory('CartFactory', function ($http) {
         currentCartId: currentCartId,
         submitOrder: submitOrder,
         clearCart: clearCart,
-        submitOrder: submitOrder
-
+        clearCart: clearCart
     }
 });

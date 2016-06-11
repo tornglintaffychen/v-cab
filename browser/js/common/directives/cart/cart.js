@@ -6,7 +6,6 @@ app.directive('cart', function (CartFactory) {
         templateUrl: '/js/common/directives/cart/cart.html',
         link: function (s, e, a) {
             s.itemCount = CartFactory.getItemCount();
-            //s.itemCount = 1
         }
     }
 })
@@ -34,6 +33,8 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
     $scope.orderId = 1;
     $scope.products = products;
 
+
+
     $scope.updateQty = function (product) {
         console.log(product)
         CartFactory.updateQty(product.orderId, product)
@@ -41,8 +42,19 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
     };
 
     $scope.remove = function (product) {
-        CartFactory.removeFromCart(product, $scope.orderId);
-        $state.reload()
+        CartFactory.removeFromCart(product, $scope.orderId)
+            .then(function (removed) {
+                $scope.products = $scope.products.filter(function (p) {
+                    return p.productId !== removed.productId
+                })
+            })
+            .then(function () {
+                // will delete the row in database Order table if the deleted item is the last one in the cart
+                if ($scope.products.length === 1) {
+                    CartFactory.clearCart($scope.orderId)
+                }
+                $state.reload()
+            })
             //  tc-bk: need to update the bottle number
     }
 });

@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 
 var rootPath = '../../../';
+var User = require(rootPath + 'db').User;
 var Order = require(rootPath + 'db').Order;
 var OrderProduct = require(rootPath + 'db').OrderProduct;
 var chalk = require('chalk')
-    // Only admins
+
+// Only admins
 router.get('/', function (req, res, next) {
     Order.findAll({
             where: req.query
@@ -23,46 +26,77 @@ router.get('/:id', function (req, res, next) {
             }
         })
         .then(function (order) {
-            console.log(chalk.yellow(order))
             res.json(order);
         })
         .catch(next);
 });
 
-// tc: create a new orderId, put product info to the OrderProduct table
-router.post('/', function (req, res, next) {
-    console.log(chalk.yellow(req.body))
-        // tc: assume logged in nothing in a cart
-    Order.create({
-            // tc-bk: is req.session.cookie working?
-            userId: req.session.cookie.userId
+// add to cart for everyone, keep track of users,
+router.post('/addToCart', function (req, res, next) {
+    // user will be either req.user (logged in), or we create one and log her in
+    var user = req.user ? Promise.resolve(req.user) :
+        User.create({
+            firstName: 'Bella',
+            lastName: 'Swan'
         })
-        .then(function (order) {
-            // tc-bk: check front end send the prodcut in correct format
-            return OrderProduct.create(req.body.product)
+        .then(function (createdUser) {
+            req.logIn(createdUser, function (loginErr) {
+                if (loginErr) return next(loginErr);
+                // We respond with a response object that has user with _id and email.
+                res.status(200).send({
+                    user: createdUser.sanitize()
+                });
+            });
+            return createdUser;
         })
-        .then(function (createdOrder) {
-            res.json(createdOrder)
-        })
-        .catch(next);
+
+    // then we use this user to check if she has orderId with inCart status, if yes, just add to OrderProduct
+    user.then(createdUser => {
+        Order.findAll({
+                where: {
+                    userId: createdUser.id,
+                    status: 'inCart'
+                }
+            })
+            .then(function (inCartOrder) {
+                if (inCartOrder.length) {
+                    OrderProduct.create({
+                            orderId: inCartOrder[0].id,
+                            productId: req.body.productId,
+                            price: req.body.price,
+                            title: req.body.title,
+                            quantity: req.body.quantity
+                        })
+                        .then(function (order) {
+                            req.session.order = order
+                            res.json(order)
+                        })
+                        .catch(next)
+                } else {
+                    // if not, create Order first then add to OrderProduct
+                    Order.create({
+                            userId: createdUser.id
+                        })
+                        .then(function (createdOrder) {
+                            OrderProduct.create({
+                                orderId: createdOrder.id,
+                                productId: req.body.productId,
+                                price: req.body.price,
+                                title: req.body.title,
+                                quantity: req.body.quantity
+                            })
+                        })
+                        .then(function (order) {
+                            req.session.order = order
+                            res.json(order)
+                        })
+                        .catch(next)
+                }
+            })
+    })
 });
 
-// tc: this is only to add product to the OrderProduct table with exist id
-router.post('/:id/addToCart', function (req, res, next) {
-    OrderProduct.create({
-            orderId: req.params.id,
-            productId: req.body.productId,
-            price: req.body.price,
-            title: req.body.title,
-            quantity: req.body.quantiy
-        })
-        .then(function (item) {
-            res.json(item)
-        })
-        .catch(next)
-})
-
-// tc: edit one item in the shopping cart
+// edit one item in the shopping cart
 router.put('/:id/editItem', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
@@ -76,14 +110,17 @@ router.put('/:id/editItem', function (req, res, next) {
         .catch(next)
 });
 
-// tc: delete one item in the shopping cart, interesting enought that it's a put route
+// delete one item in the shopping cart, interesting enought that it's a put route
 router.put('/:id/deleteItem', function (req, res, next) {
     OrderProduct.destroy({
-        where: {
-            orderId: req.params.id,
-            productId: req.body.productId
-        }
-    })
+            where: {
+                orderId: req.params.id,
+                productId: req.body.productId
+            }
+        })
+        .then(function (removed) {
+            res.json(removed)
+        })
 });
 
 router.get('/:id/products', function (req, res, next) {
@@ -119,17 +156,14 @@ router.put('/:orderid/product/:productid', function (req, res, next) {
 
 });
 
-router.delete('/product/:id', function (req, res, next) {
-    OrderProduct.destroy({
+// clear the shopping cart
+router.delete('/:id', function (req, res, next) {
+    Order.destroy({
             where: {
-                productId: req.params.id
+                id: req.params.id
             }
         })
-        .then(function (product) {
-            res.json(product);
-        })
         .catch(next);
-
 });
 
 

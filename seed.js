@@ -129,6 +129,7 @@ var data = {
             title: "crisp"
         }]
     }, {
+        id: 5,
         title: 'Healthy Choice',
         inventory: 10,
         photoUrl: "images/default.jpg",
