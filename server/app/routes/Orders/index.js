@@ -30,16 +30,21 @@ function findOrCreateUser (req) {
 
     return user; 
 }
-//sv
-function addProductToOrder (id, reqObj) {
+//sv//names weren't matching up with model - inventory vs quantity 
+function addProductToOrder (orderId, reqObj) {
     return OrderProduct.create({
-        orderId: id,
+        orderId: orderId,
         productId: reqObj.id,
         price: reqObj.price,
         title: reqObj.title,
         quantity: reqObj.inventory
     });
 }
+
+function  addOrderToSession (orderId, reqObj) {
+
+}
+
 // find all orders 
 router.get('/', function (req, res, next) {
     Order.findAll({
@@ -51,23 +56,25 @@ router.get('/', function (req, res, next) {
         .catch(next);
 });
 
-
-//svare we ever using this?
-router.get('/:id', function (req, res, next) {
-    OrderProduct.findOne({
+//find all products by order id
+router.get('/products', function (req, res, next) {
+    console.log("?????????????????");
+    console.log("SESSIONSSSS", req.session);
+    OrderProduct.findAll({
             where: {
-                orderId: req.params.id
+                orderId: req.session.orderId
             }
-        })
-        .then(function (order) {
-            res.json(order);
-        })
-        .catch(next);
+    })
+    .then(function (order) {
+        console.log("returieve items from order", order);
+        res.json(order);
+    })
+    .catch(next);
 });
 
 // add to cart
 router.post('/addToCart', function (req, res, next) {
-    console.log("?????????????????");
+    
     //sv- moved this bit out just for now
     var user = findOrCreateUser(req);
     user.then(function(createdUser) {
@@ -96,11 +103,11 @@ router.post('/addToCart', function (req, res, next) {
                         userId: createdUser.id
                 })
                 .then(function (createdOrder) {
+                    //returning 
                     return addProductToOrder (createdOrder.id, req.body);
                 })
                 .then(function (addedProduct) {
                     req.session.orderId = addedProduct.orderId;
-                    console.log("AFTER MAKE ORDER SESSION", req.session);
                     res.json(addedProduct);
                 })
                 .catch(next);
@@ -130,27 +137,11 @@ router.put('/:id/deleteItem', function (req, res, next) {
                 orderId: req.params.id,
                 productId: req.body.productId
             }
-        })
-        .then(function (removed) {
-            res.json(removed)
-        })
+    })
+    .then(function (removed) {
+        res.json(removed);
+    });
 });
-
-
-//find all products by order id
-router.get('/:id/products', function (req, res, next) {
-    console.log("SESSIONSSSS", req.session);
-    OrderProduct.findAll({
-            where: {
-                orderId: req.params.id
-            }
-        })
-        .then(function (order) {
-            res.json(order);
-        })
-        .catch(next);
-});
-
 
 
 // admin should be able to edit everything in the order
@@ -182,5 +173,16 @@ router.delete('/:id', function (req, res, next) {
         .catch(next);
 });
 
-
+//svare we ever using this?
+// router.get('/:id', function (req, res, next) {
+//     OrderProduct.findOne({
+//             where: {
+//                 orderId: req.params.id
+//             }
+//         })
+//         .then(function (order) {
+//             res.json(order);
+//         })
+//         .catch(next);
+// });
 module.exports = router;

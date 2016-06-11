@@ -17,7 +17,7 @@ app.config(function ($stateProvider) {
         controller: "CartController",
         resolve: {
             products: function (CartFactory) {
-                return CartFactory.getItems(1)
+                return CartFactory.getItems()
                     .then(function (list) {
                         return list;
                     });
@@ -33,12 +33,6 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
     $scope.userId = CartFactory.userId
     $scope.products = products;
 
-    // $scope.getProducts = CartFactory.getItems;
-    // $scope.getProducts(1)
-    //     .then(function (items) {
-    //         // CartFactory.itemCount = items.length
-    //         $scope.products = items;
-    //     })
     $scope.updateQty = function (product) {
         CartFactory.updateQty(product.orderId, product)
         $state.reload()
@@ -49,15 +43,15 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
             .then(function (removed) {
                 $scope.products = $scope.products.filter(function (p) {
                     return p.productId !== removed.productId
-                })
+                });
             })
             .then(function () {
                 // will delete the row in database Order table if the deleted item is the last one in the cart
                 if ($scope.products.length === 1) {
                     CartFactory.clearCart($scope.orderId)
                 }
-                $state.reload()
-            })
+                $state.reload();
+            });
             //  tc-bk: need to update the bottle number
     }
 });

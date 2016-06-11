@@ -23,8 +23,8 @@ app.factory('CartFactory', function ($http) {
             });
     }
 
-    function getItems(orderId) {
-        return $http.get('/api/order/' + orderId + '/products')
+    function getItems() {
+        return $http.get('/api/order/products')
             .then(function (response) {
                 itemCount = response.data.length;
                 return response.data;
