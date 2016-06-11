@@ -8,6 +8,7 @@ var Order = require(rootPath + 'db').Order;
 var OrderProduct = require(rootPath + 'db').OrderProduct;
 var chalk = require('chalk');
 
+
 //sv I just moved this bit out while I was reading to make it easier to see
 function findOrCreateUser (req, res, next) {
     // user will be either req.user (logged in),
@@ -29,6 +30,7 @@ function findOrCreateUser (req, res, next) {
 
     return user; 
 }
+//sv we should make some class methods
 //sv//names weren't matching up with model - inventory vs quantity 
 function addProductToOrder (orderId, reqObj) {
     return OrderProduct.create({
@@ -62,19 +64,6 @@ function createOrUpdateOrderProduct (orderId, reqObj) {
         }
     });
 }
-//sv we're repeating a lot let's make some model hooks at some point
-// function findOrCreateOrder (userId, req) {
-//     console.log("CHECK DUPLICATE PRODUCTS", req.session);
-//     // return Order.findOne({
-//     //         where: {
-//     //             userId: userId,
-//     //             status: 'inCart'
-//     //         }
-//     //     }).
-//     //     then(function (){
-
-//     //     });
-// }
 
 // find all orders 
 router.get('/', function (req, res, next) {
@@ -90,14 +79,14 @@ router.get('/', function (req, res, next) {
 //find all products by order id
 router.get('/products', function (req, res, next) {
     console.log("?????????????????");
-    console.log("SESSIONSSSS", fin);
+    console.log("SESSIONSSSS", req.session);
     OrderProduct.findAll({
-            where: {
-                orderId: req.session.orderId
-            }
+        where: {
+            orderId: req.session.orderId
+        }
     })
     .then(function (order) {
-        console.log("returieve items from order", order);
+        console.log("retrieve items from order", order);
         res.json(order);
     })
     .catch(next);
@@ -117,30 +106,26 @@ router.post('/addToCart', function (req, res, next) {
             }
         })
         .then(function (inCartOrder) {
-
+            //sv if order exists
             if (inCartOrder) {
-                
-                var id = inCartOrder.id;
-                req.session.orderId = id;
-
-                console.log("order exists", req.session);
-
-                createOrUpdateOrderProduct(id, req.body)
+                //add id to session
+                req.session.orderId = inCartOrder.id;
+                //sv add item to table
+                createOrUpdateOrderProduct(inCartOrder.id, req.body)
                 .then(function(addedProduct) {
-                    console.log("ADDEDPRODUCT", addedProduct);
                     res.json(addedProduct);
                 })
                 .catch(next);
 
             } else {
+
                 console.log("no order");
                 // if not, create Order first then add to OrderProduct
                 Order.create({
                     userId: createdUser.id
                 })
                 .then(function (createdOrder) {
-                    checkDuplicates (createdOrder.id, req.body);
-                    return addProductToOrder (createdOrder.id, req.body);
+                    return createOrUpdateOrderProduct(createdOrder.id, req.body);
                 })
                 .then(function (addedProduct) {
                     req.session.orderId = addedProduct.orderId;
