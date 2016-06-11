@@ -11,9 +11,13 @@ describe('AddressFactory', function() {
 	    sinon.stub($log, 'warn', function() {});
   	}));
 
-  	it('test', function () {
+  	it('works', function () {
   		expect(AddressFactory).to.be.an('object');
   	});
   
-  
+    it('gets FullName', function () {
+      expect(AddressFactory.getFullName("sam", "vinci")).to.equal('Sam Vinci');
+    });
+
+
 });

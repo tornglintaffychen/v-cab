@@ -7,6 +7,7 @@ var OrderProduct = require(rootPath + 'db').OrderProduct;
 var chalk = require('chalk')
     // Only admins
 router.get('/', function (req, res, next) {
+   console.log("USERTEST", req.session);
     Order.findAll({
             where: req.query
         })
@@ -17,6 +18,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:id', function (req, res, next) {
+
     OrderProduct.findOne({
             where: {
                 orderId: req.params.id
@@ -31,7 +33,7 @@ router.get('/:id', function (req, res, next) {
 
 // tc: create a new orderId, put product info to the OrderProduct table
 router.post('/', function (req, res, next) {
-    console.log(chalk.yellow(req.body))
+    console.log(chalk.yellow(req.user));
         // tc: assume logged in nothing in a cart
     Order.create({
             // tc-bk: is req.session.cookie working?

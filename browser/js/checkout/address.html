@@ -1,22 +1,15 @@
-<div class="container">
 	
-	<hr>
-	<!-- if someone's loggin in and has address show address block -->
-	<div ng-show="user && user.address && !change">
-		<h4>Shipping Address</h4>
-		<p>{{ user.fullName }}</p>
-		<p>{{ user.address }}</p>
-		<button  class="btn btn-default" ng-disabled="change"ng-click="toggle()">Change</button>
-		<button class="btn btn-danger" ng-show="change">Use This Address</button>
-	</div>
 	<form ng-show="!user.address || change">
+	
 		<h4>Add new address</h4>
+
  		<div class="form-group">
 			<label for="exampleInputEmail1">First Name</label>
 			<input ng-model="firstname" placeholder="firstname"/>
 			<label for="exampleInputEmail1">Last Name</label>
 			<input ng-model="lastname" placeholder="lastname"/>
 		</div>
+
 		<div class="form-group">
 			<label for="exampleInputEmail1">Address</label>
 			<input ng-model="street" placeholder="street"/>
@@ -26,5 +19,3 @@
 		</div>
 		<button class="btn btn-danger">Use This Address</button>
 	</form>
-
-</div>
