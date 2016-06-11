@@ -19,7 +19,7 @@ app.factory('ProductFactory', function ($http) {
     };
 
     //sv
-    ProductFactory.getCurrCategories = function () {
+    ProductFactory.getCurrentCategories = function () {
         return currCategories;
     };
 

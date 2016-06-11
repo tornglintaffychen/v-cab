@@ -2,7 +2,7 @@
     <div>
         <h3>Categories:</h3>
     <ul ng-repeat="category in categories" >
-            <a><li ng-click="addToSelectedCategories(category)">
+            <a><li ng-click="setCurrentCategory(category.title)">
                 {{category.title}}
             </li></a>
         </ul>

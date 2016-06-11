@@ -4,10 +4,10 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
         url: '/products/:productId',
-        templateUrl: 'js/catalog/products.html',
+        templateUrl: 'js/detail/templates/product.html',
         controller: 'ProductCtrl',
         resolve: {
-					//LA: changed from oneProduct to singleProduct
+            //LA: changed from oneProduct to singleProduct
             singleProduct: function (ProductFactory, $stateParams) {
                 return ProductFactory.fetchById($stateParams.id);
             }
@@ -17,9 +17,9 @@ app.config(function ($stateProvider) {
 
 // state for all products
 app.config(function ($stateProvider) {
-    $stateProvider.state('home.products', {
+    $stateProvider.state('products', {
         url: '/products',
-				controller: 'ProductsCtrl',
+        controller: 'ProductsCtrl',
         templateUrl: 'js/catalog/products.html',
         resolve: {
             allProducts: function (ProductFactory) {
@@ -36,6 +36,7 @@ app.controller('ProductCtrl', function ($scope, singleProduct) {
 })
 
 // //products controller for all products
-app.controller('ProductsCtrl', function ($scope, allProducts) {
+app.controller('ProductsCtrl', function ($scope, CategoryFactory, allProducts ) {
     $scope.products = allProducts;
+		
 });
