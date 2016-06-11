@@ -8,6 +8,7 @@ app.factory('CartFactory', function ($http) {
     var itemCount = 0;
     // tc: controller can change the currentCartId (?)
     var currentCartId = null;
+    var currentUserId = null;
 
     function getData(response) {
         return response.data;

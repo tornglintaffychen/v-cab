@@ -1,11 +1,11 @@
 'use strict';
 
-app.filter('category', function(CategoryFactory){
-	return function (categories) {
-		return categories.filter((category) => {
-			console.log(category);
-			return category === CategoryFactory.currentCategory})
-	}
+app.filter('category', function (CategoryFactory) {
+    return function (categories) {
+        return categories.filter((category) => {
+            return category === CategoryFactory.currentCategory
+        })
+    }
 })
 
 

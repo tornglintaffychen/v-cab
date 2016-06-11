@@ -6,22 +6,19 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
         templateUrl: 'js/common/directives/navbar/navbar.html',
         link: function (scope) {
 
-            scope.items = [
-                // { label: 'Home', state: 'home' },
-                {
-                    label: 'About us',
-                    state: 'about'
-                },
-                // { label: 'Documentation', state: 'docs' },
-                {
-                    label: 'Members Only',
-                    state: 'membersOnly',
-                    auth: true
-                }
+            scope.items = [{
+                label: 'About us',
+                state: 'about'
+            }, {
+                label: 'Products',
+                state: 'products'
+            }, {
+                label: 'My Account',
+                state: 'myAccount',
+                auth: true
+            }];
 
-            ];
-
-            scope.user = null;
+            scope.userId = null;
 
             scope.isLoggedIn = function () {
                 return AuthService.isAuthenticated();
@@ -35,12 +32,13 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
             var setUser = function () {
                 AuthService.getLoggedInUser().then(function (user) {
-                    scope.user = user;
+                    // tc-cm: if we don't write the if statement, front end logs error
+                    if (user !== null) scope.userId = user.id;
                 });
             };
 
             var removeUser = function () {
-                scope.user = null;
+                scope.userId = null;
             };
 
             setUser();

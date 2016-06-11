@@ -1,7 +1,7 @@
 ### cartTodo:
 
 ** Routes: **
-- [ ] first time adding an item to cart - create new Order, send info to OrderProduct
+- [x] first time adding an item to cart - create new Order, send info to OrderProduct
 - [x] adding an item to an exist cart with orderId - OrderProduct.post
 - [x] edit an item inside the cart - OrderProduct.put, findOne using orderId and productId, then update
 - [x] delete an item inside the cart - OrderProduct.delete, findOne using orderId and productId, then delete
@@ -24,9 +24,9 @@ Session:
 -----
 
 
-- [ ] check session set up if there's req.user.id - user.id (when sign in)
-- [ ] need to send req.session.userId to front end as the currentUserId
-- [ ] how to assign userId for non-signedIn user? how to persist their carts?  
+- [x] check session set up if there's req.user.id - user.id (when sign in)
+
+- [x] how to assign userId for non-signedIn user? how to persist their carts?  
 Ashi said it's good to just assign an id even they are not registered, but what is our approach?
 
 - [ ] for displaying the cart, we need to get all rows with the same orderId

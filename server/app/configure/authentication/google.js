@@ -16,31 +16,24 @@ module.exports = function (app, db) {
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
-        console.log("?????????????????????????");
-        console.log(profile.name.givenName);
-        console.log(profile.name.familyName);
-        console.log(profile.emails[0].value);
-        console.dir(User);
-
         User.findOne({
-            where:{
-                google_id: profile.id
-            } 
+                where: {
+                    google_id: profile.id
+                }
             })
             .then(function (userToLogin) {
                 if (userToLogin) {
                     done(null, userToLogin);
-                }
-                else {
+                } else {
                     User.create({
-                        google_id: profile.id,
-                        firstName: profile.name.givenName,
-                        lastName: profile.name.familyName
-                    })
-                    .then(function(user){
-                        done(null, user);
-                    });
-                }                
+                            google_id: profile.id,
+                            firstName: profile.name.givenName,
+                            lastName: profile.name.familyName
+                        })
+                        .then(function (user) {
+                            done(null, user);
+                        });
+                }
             })
             .catch(function (err) {
                 console.error('Error creating user from Google authentication', err);
