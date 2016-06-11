@@ -1,70 +1,140 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 
 var rootPath = '../../../';
+var User = require(rootPath + 'db').User;
 var Order = require(rootPath + 'db').Order;
 var OrderProduct = require(rootPath + 'db').OrderProduct;
-var chalk = require('chalk')
-    // Only admins
+var chalk = require('chalk');
+
+
+//sv I just moved this bit out while I was reading to make it easier to see
+function findOrCreateUser (req, res, next) {
+    // user will be either req.user (logged in),
+    // or we create one and log her in
+    var user = req.user ? Promise.resolve(req.user) :
+        User.create({
+            firstName: 'Bella',
+            lastName: 'Swan'
+        })
+        .then(function (createdUser) {
+            req.logIn(createdUser, function (loginErr) {
+                if (loginErr) return next(loginErr);
+                res.status(200).send({
+                    user: createdUser.sanitize()
+                });
+            });
+            return createdUser;
+        });
+
+    return user; 
+}
+//sv we should make some class methods
+//sv//names weren't matching up with model - inventory vs quantity 
+function addProductToOrder (orderId, reqObj) {
+    return OrderProduct.create({
+        orderId: orderId,
+        productId: reqObj.id,
+        price: reqObj.price,
+        title: reqObj.title,
+        quantity: 1
+    });
+}
+
+function createOrUpdateOrderProduct (orderId, reqObj) {
+   
+    return OrderProduct.findOne({
+        where: {
+            orderId: orderId,
+            productId: reqObj.id
+        }
+    })
+    .then(function(product){
+        if (product) {
+            console.log("update", product.quantity);
+            return product.update({quantity: product.quantity+1})
+            .then(function(updatedProduct) {
+                return updatedProduct;
+            });
+        }
+        else {
+            console.log("addProductToOrder");
+            return addProductToOrder (orderId, reqObj);
+        }
+    });
+}
+
+// find all orders 
 router.get('/', function (req, res, next) {
-   console.log("USERTEST", req.session);
     Order.findAll({
-            where: req.query
-        })
-        .then(function (orders) {
-            res.json(orders);
-        })
-        .catch(next);
+        where: req.query
+    })
+    .then(function (orders) {
+        res.json(orders);
+    })
+    .catch(next);
 });
 
-router.get('/:id', function (req, res, next) {
+//find all products by order id
+router.get('/products', function (req, res, next) {
+    console.log("?????????????????");
+    console.log("SESSIONSSSS", req.session);
+    OrderProduct.findAll({
+        where: {
+            orderId: req.session.orderId
+        }
+    })
+    .then(function (order) {
+        console.log("retrieve items from order", order);
+        res.json(order);
+    })
+    .catch(next);
+});
 
-    OrderProduct.findOne({
+// add to cart
+router.post('/addToCart', function (req, res, next) {
+    //sv- moved this bit out just for now
+    var user = findOrCreateUser(req, res, next);
+    user.then(function(createdUser) {
+        console.log("HERE", createdUser.id);
+        Order.findOne({
             where: {
-                orderId: req.params.id
+                userId: createdUser.id,
+                status: 'inCart'
             }
         })
-        .then(function (order) {
-            console.log(chalk.yellow(order))
-            res.json(order);
-        })
-        .catch(next);
+        .then(function (inCartOrder) {
+            //sv if order exists
+            if (inCartOrder) {
+                //sv add id to session
+                req.session.orderId = inCartOrder.id;
+                //sv add item to table
+                createOrUpdateOrderProduct(inCartOrder.id, req.body)
+                .then(function(addedProduct) {
+                    res.json(addedProduct);
+                })
+                .catch(next);
+
+            } else {
+                //sv if not, create Order 
+                Order.create({
+                    userId: createdUser.id
+                })
+                .then(function (createdOrder) {
+                    req.session.orderId = createdOrder.id;
+                    return createOrUpdateOrderProduct(createdOrder.id, req.body);
+                })
+                .then(function (addedProduct) {
+                    res.json(addedProduct);
+                })
+                .catch(next);
+            }
+        });
+    });
 });
 
-// tc: create a new orderId, put product info to the OrderProduct table
-router.post('/', function (req, res, next) {
-    console.log(chalk.yellow(req.user));
-        // tc: assume logged in nothing in a cart
-    Order.create({
-            // tc-bk: is req.session.cookie working?
-            userId: req.session.cookie.userId
-        })
-        .then(function (order) {
-            // tc-bk: check front end send the prodcut in correct format
-            return OrderProduct.create(req.body.product)
-        })
-        .then(function (createdOrder) {
-            res.json(createdOrder)
-        })
-        .catch(next);
-});
-
-// tc: this is only to add product to the OrderProduct table with exist id
-router.post('/:id/addToCart', function (req, res, next) {
-    OrderProduct.create({
-            orderId: req.params.id,
-            productId: req.body.productId,
-            price: req.body.price,
-            title: req.body.title,
-            quantity: req.body.quantiy
-        })
-        .then(function (item) {
-            res.json(item)
-        })
-        .catch(next)
-})
-
-// tc: edit one item in the shopping cart
+// edit one item in the shopping cart
 router.put('/:id/editItem', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
@@ -73,33 +143,23 @@ router.put('/:id/editItem', function (req, res, next) {
             }
         })
         .then(function (updatedItem) {
-            res.json(updatedItem)
+            res.json(updatedItem);
         })
-        .catch(next)
+        .catch(next);
 });
 
-// tc: delete one item in the shopping cart, interesting enought that it's a put route
+// delete one item in the shopping cart, interesting enought that it's a put route
 router.put('/:id/deleteItem', function (req, res, next) {
     OrderProduct.destroy({
-        where: {
-            orderId: req.params.id,
-            productId: req.body.productId
-        }
-    })
-});
-
-router.get('/:id/products', function (req, res, next) {
-    OrderProduct.findAll({
             where: {
-                orderId: req.params.id
+                orderId: req.params.id,
+                productId: req.body.productId
             }
-        })
-        .then(function (order) {
-            res.json(order);
-        })
-        .catch(next)
+    })
+    .then(function (removed) {
+        res.json(removed);
+    });
 });
-
 
 
 // admin should be able to edit everything in the order
@@ -121,18 +181,14 @@ router.put('/:orderid/product/:productid', function (req, res, next) {
 
 });
 
-router.delete('/product/:id', function (req, res, next) {
-    OrderProduct.destroy({
+// clear the shopping cart
+router.delete('/:id', function (req, res, next) {
+    Order.destroy({
             where: {
-                productId: req.params.id
+                id: req.params.id
             }
         })
-        .then(function (product) {
-            res.json(product);
-        })
         .catch(next);
-
 });
-
 
 module.exports = router;

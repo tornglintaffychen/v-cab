@@ -8,6 +8,12 @@ app.factory('ProductFactory', function ($http) {
         return res.data;
     }
 
+    ProductFactory.addToCart = function (product) {
+        console.log("product", product);
+        $http.post('/api/order/addToCart', product)
+        .then(getData);
+    };
+
     ProductFactory.fetchAll = function () {
         return $http.get('/api/products')
             .then(getData);
@@ -19,7 +25,7 @@ app.factory('ProductFactory', function ($http) {
     };
 
     //sv
-    ProductFactory.getCurrCategories = function () {
+    ProductFactory.getCurrentCategories = function () {
         return currCategories;
     };
 
@@ -28,7 +34,7 @@ app.factory('ProductFactory', function ($http) {
             .then(getData)
             .catch(function (error) {
                 console.error(error.message)
-            })
+            });
     };
     ProductFactory.fetchProductsByCategory = function (categoryid) {
         return $http.get('/api/catagories/' + categoryid)

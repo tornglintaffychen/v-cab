@@ -7,31 +7,39 @@
 app.factory('CartFactory', function ($http) {
     var itemCount = 0;
     // tc: controller can change the currentCartId (?)
-    var currentCartId = null;
+    var userId = null;
 
     function getData(response) {
         return response.data;
     }
 
-    function getOrder(orderId) {
-        return $http.get('/api/order/' + orderId)
-            .then(getData);
+    function getInCartId(userId) {
+        $http.get('/api/users/' + userId)
+            .then(getData)
+            .then(function (user) {
+                return user.orders.filter(function (order) {
+                    return order.status === "inCart"
+                })[0].id;
+            });
     }
 
-    function getItems(orderId) {
-        return $http.get('/api/order/' + orderId + '/products')
+    function getItems() {
+        return $http.get('/api/order/products')
             .then(function (response) {
                 itemCount = response.data.length;
                 return response.data;
             });
     }
 
+    // this function is for the prodcuts / product controller
+    function addToCart(product) {
+        $http.post('/api/order/addToCart', product)
+            .then(getData)
+
+    }
 
     function removeFromCart(product, orderId) {
-        console.log("p: ", product, "id: ", orderId)
-
-        return $http.put('/api/order/' + orderId + '/deleteItem',
-                product)
+        return $http.put('/api/order/' + orderId + '/deleteItem', product)
             .then(getData);
     }
 
@@ -44,23 +52,25 @@ app.factory('CartFactory', function ($http) {
             .then(getData);
     }
 
-    function addToCart(product) {
-        // if (currentCartId) use the same orderId to add row the OrderProduct table
-        // else Order.create then add info to OrderProduct table
-
+    function clearCart(orderId) {
+        return $http.delete('/api/order/' + orderId);
     }
 
     function submitOrder() {
-
+        return $http.put('/')
+            .then(getData)
     }
 
+
     return {
-        getOrder: getOrder,
+        addToCart: addToCart,
         getItems: getItems,
         getItemCount: getItemCount,
         updateQty: updateQty,
         removeFromCart: removeFromCart,
-        currentCartId: currentCartId,
-        submitOrder: submitOrder
+        submitOrder: submitOrder,
+        clearCart: clearCart,
+        clearCart: clearCart,
+        userId: userId
     }
 });
