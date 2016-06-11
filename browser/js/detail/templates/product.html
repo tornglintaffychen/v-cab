@@ -8,11 +8,19 @@
 			{{ product.description}}
 		</h4>
 		<h4>
-			star rating here
 		</h4>
-<!-- 		<h6>
-		User Reviews for {{ product.title }}
-		</h6> -->
+		<div ng-repeat="category in product.categories">
+			{{categories.title}}
+		</div>
+	<h4> 
+		User Reviews:
+	</h4> 
+		<p ng-repeat="review in product.reviews">
+		Rating: {{review.rating}}
+		<br>{{ review.text }}
+<!-- 		this doesn't work yet
+ --><!-- 		<br>user: {{review.userId}}
+ -->		</p>
 	</div>
 </div>
 

@@ -72,24 +72,26 @@ var data = {
         title: "full body"
     }],
     products: [{
+        id: 1,
         title: 'KBuechs',
         inventory: 47,
-        photoUrl: "images/kbuechs.jpg",
+        photoUrl: "images/kbuechs.png",
         price: 1.50,
         returnable: true,
-        description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive',
+        description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
         categories: [{
             title: "+O"
         }, {
             title: "full body"
         }]
     }, {
+        id: 2,
         title: 'Lorimited Edition',
         inventory: 6,
-        photoUrl: "images/default.jpg",
+        photoUrl: "images/lori.png",
         price: 79.99,
         returnable: false,
-        description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated',
+        description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete.',
         categories: [{
             title: "espresso"
         }, {
@@ -99,9 +101,10 @@ var data = {
         }]
 
     }, {
+        id: 3,
         title: 'The Taff',
         inventory: 8,
-        photoUrl: "images/default.jpg",
+        photoUrl: "images/taffy.png",
         price: 42.30,
         returnable: false,
         description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.',
@@ -112,6 +115,19 @@ var data = {
         }, {
             title: "espresso"
         }]
+    },{
+        id: 4,
+        title: 'Samantharama',
+        inventory: 19,
+        photoUrl: "images/sam.png",
+        price: 16.66,
+        returnable: false,
+        description: 'Frankly, we love this new offering. Our distributors have found something crisp and refreshing that is bright on the palate without the acidity normally associated with ',
+        categories: [{
+            title: "dry"
+        }, {
+            title: "crisp"
+        }]
     }],
     orders: [{
         userId: 1
@@ -121,19 +137,30 @@ var data = {
     reviews: [{
         text: 'holy crap this was great the BEST BEST BEST BEST BEST BEST BEST BEST BEST',
         rating: 3,
-        userId: 1,
+        userId: 2,
         productId: 2
 
     }, {
-        text: 'holy crap this was the BEST BEST BEST BEST BEST BEST BEST BEST',
+        text: 'something indescribable',
         rating: 5,
-        userId: 1,
-        productId: 1
+        userId: 4,
+        productId: 3
 
     }, {
-        text: 'holy crap this was the worst the worst the worst the worst EVER EVER EVER EVER',
+        text: 'the worst absolutely the worst more than bad terrible',
         rating: 1,
+        userId: 5,
+        productId: 1
+    },{
+        text: 'beutiful. :)',
+        rating: 4,
         userId: 2,
+        productId: 4
+    },
+    {
+        text: 'bad stuff. it serves no purpose',
+        rating: 2,
+        userId: 7,
         productId: 1
     }]
 }
