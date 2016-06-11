@@ -6,7 +6,6 @@ app.factory("AddressFactory", function ($http) {
 	function getData(response) {
         return response.data;
     }
-    
     function getFullName (firstname, lastname) {
 		console.log("her,", firstname, lastname)
 		return capatilize(firstname) +" "+capatilize(lastname);
@@ -30,6 +29,9 @@ app.factory("AddressFactory", function ($http) {
 				user.addressObj = addressObj;
 				return user;
 			});
+	}
+	function setAddress () {
+
 	}
 	return {
 		getFullName: getFullName,

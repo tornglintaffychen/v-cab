@@ -1,39 +1,20 @@
 //ui-view from incart
 //for now I just stuck it in home
-app.config(function ($stateProvider) {
-    $stateProvider.state("checkout", {
-        url: "/checkout",
-        templateUrl: "js/checkout/checkout.html",
-        controller: "checkoutCtrl",
-        resolve: {
-            user: function (AuthService, AddressFactory) {
-				return AuthService.getLoggedInUser()
-				.then(function(user){
-					if (user.firstName !== "Bella") {
-						user.fullName = AddressFactory.getFullName(user.firstName, user.lastName);
-
-					}
-                    return AddressFactory.formatAddress(user);
-				})
-                .then(function(user) {
-                    return user;
-                });
-			}
-	    }
-	 });
-});
-
-
-
 //assuming logged in
 app.controller("checkoutCtrl", function ($scope, AddressFactory, user, AuthService ) {
 	$scope.user = user;
+    $scope.shippingInfo = {}
 	$scope.states = AddressFactory.getStates();
 	$scope.toggle = function () {
 		$scope.change = !$scope.change;
 	};
-    $scope.shipToAddress = function () {
-
+    $scope.setAddress = function (address) {
+        if (address) {
+            $scope.shippingInfo = { 
+                address: "no change"
+            };
+        }
+        //else //validate= state.go
     };
 	console.log(user);
 
