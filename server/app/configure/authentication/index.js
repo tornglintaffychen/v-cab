@@ -65,6 +65,8 @@ module.exports = function (app, db) {
 
     // Simple /logout route.
     app.get('/logout', function (req, res) {
+        //sv we need to talk this
+        req.session.orderId = null;
         req.logout();
         res.status(200).end();
     });

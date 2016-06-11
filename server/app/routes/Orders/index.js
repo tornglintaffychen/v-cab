@@ -41,6 +41,7 @@ function addProductToOrder (orderId, reqObj) {
     });
 }
 
+//sv we're repeating a lot let's make some model hooks at some point
 function  addOrderToSession (orderId, reqObj) {
 
 }
@@ -173,16 +174,4 @@ router.delete('/:id', function (req, res, next) {
         .catch(next);
 });
 
-//svare we ever using this?
-// router.get('/:id', function (req, res, next) {
-//     OrderProduct.findOne({
-//             where: {
-//                 orderId: req.params.id
-//             }
-//         })
-//         .then(function (order) {
-//             res.json(order);
-//         })
-//         .catch(next);
-// });
 module.exports = router;
