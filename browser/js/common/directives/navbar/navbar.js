@@ -18,7 +18,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
                 auth: true
             }];
 
-            scope.userId = null;
+            scope.user = null;
             scope.itemCount = CartFactory.itemCount;
 
             scope.isLoggedIn = function () {
@@ -35,15 +35,14 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
                 AuthService.getLoggedInUser().then(function (user) {
                     // tc-cm: if we don't write the if statement, front end logs error
                     if (user !== null) {
-                        CartFactory.currentUserId = user.id;
-                        scope.userId = CartFactory.currentUserId;
+                        scope.user = user;
                     }
                 });
             };
 
             var removeUser = function () {
                 CartFactory.currentUserId = null;
-                scope.userId = null;
+                scope.user = null;
             };
 
             setUser();
