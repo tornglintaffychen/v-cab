@@ -65,6 +65,8 @@ router.get('/:id', function (req, res, next) {
 
 router.get('/address/:string', function(req, res, next) {
     var string = req.params.string;
+    console.log("here", string)
+
     res.json(parser.parseLocation(string));
 });
 

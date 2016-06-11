@@ -9,14 +9,37 @@ app.config(function ($stateProvider) {
             user: function (AuthService, AddressFactory) {
 				return AuthService.getLoggedInUser()
 				.then(function(user){
-					if (user) {
+					if (user.firstName !== "Bella") {
 						user.fullName = AddressFactory.getFullName(user.firstName, user.lastName);
+
 					}
-					return (user);
-				});
+
+                    return AddressFactory.formatAddress(user.address, user)
+				})
+                .then(function(user) {
+                    console.log(user)
+                    return user
+                });
+                // .then(function(user){
+                //     console.log(user)
+                //     return AddressFactory.formatAddress(user.address)
+                // })
+                // .then(function(address){
+                //     console.log(address)
+                //     return user
+                // });
+
+   //              .then(function(user){
+   //                  console.log("1", user)
+   //                  return AddressFactory.formatAddress(user)
+   //              })
+   //              .then(function(user){
+   //                  console.log(user);
+   //                  return user;
+   //              });
 			}
-		}
-	});
+	    }
+	 });
 });
 
 
@@ -26,6 +49,11 @@ app.controller("checkoutCtrl", function ($scope, AddressFactory, user, AuthServi
 	$scope.user = user;
 	$scope.change = false;
 	$scope.states = AddressFactory.getStates();
+
+    // AddressFactory.formatAddress(user.address)
+    // .then(function(address){
+    //     console.log(address);
+    // });
 
 	$scope.toggle = function () {
 		$scope.change = !$scope.change;
