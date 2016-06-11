@@ -36,6 +36,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
                     // tc-cm: if we don't write the if statement, front end logs error
                     if (user !== null) {
                         scope.user = user;
+                        CartFactory.userId = user.id;
                     }
                 });
             };

@@ -7,23 +7,20 @@
 app.factory('CartFactory', function ($http) {
     var itemCount = 0;
     // tc: controller can change the currentCartId (?)
-    var currentCartId = null;
-    var currentUserId = null;
+    var userId = null;
 
     function getData(response) {
         return response.data;
     }
 
-    // this function is for the prodcuts / product controller
-    function addToCart(product) {
-        $http.post('/api/order/addToCart', product)
+    function getInCartId(userId) {
+        $http.get('/api/users/' + userId)
             .then(getData)
-
-    }
-
-    function getOrder(orderId) {
-        return $http.get('/api/order/' + orderId)
-            .then(getData);
+            .then(function (user) {
+                return user.orders.filter(function (order) {
+                    return order.status === "inCart"
+                })[0].id
+            })
     }
 
     function getItems(orderId) {
@@ -34,6 +31,12 @@ app.factory('CartFactory', function ($http) {
             });
     }
 
+    // this function is for the prodcuts / product controller
+    function addToCart(product) {
+        $http.post('/api/order/addToCart', product)
+            .then(getData)
+
+    }
 
     function removeFromCart(product, orderId) {
         return $http.put('/api/order/' + orderId + '/deleteItem', product)
@@ -61,14 +64,13 @@ app.factory('CartFactory', function ($http) {
 
     return {
         addToCart: addToCart,
-        getOrder: getOrder,
         getItems: getItems,
         getItemCount: getItemCount,
         updateQty: updateQty,
         removeFromCart: removeFromCart,
-        currentCartId: currentCartId,
         submitOrder: submitOrder,
         clearCart: clearCart,
-        clearCart: clearCart
+        clearCart: clearCart,
+        userId: userId
     }
 });

@@ -30,10 +30,15 @@ app.config(function ($stateProvider) {
 app.controller('CartController', function ($scope, products, CartFactory, $state) {
     $scope.nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     $scope.toUpdate = null;
-    $scope.orderId = 1;
+    $scope.userId = CartFactory.userId
     $scope.products = products;
 
-
+    // $scope.getProducts = CartFactory.getItems;
+    // $scope.getProducts(1)
+    //     .then(function (items) {
+    //         // CartFactory.itemCount = items.length
+    //         $scope.products = items;
+    //     })
     $scope.updateQty = function (product) {
         CartFactory.updateQty(product.orderId, product)
         $state.reload()
