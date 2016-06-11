@@ -13,30 +13,11 @@ app.config(function ($stateProvider) {
 						user.fullName = AddressFactory.getFullName(user.firstName, user.lastName);
 
 					}
-
-                    return AddressFactory.formatAddress(user.address, user)
+                    return AddressFactory.formatAddress(user);
 				})
                 .then(function(user) {
-                    console.log(user)
-                    return user
+                    return user;
                 });
-                // .then(function(user){
-                //     console.log(user)
-                //     return AddressFactory.formatAddress(user.address)
-                // })
-                // .then(function(address){
-                //     console.log(address)
-                //     return user
-                // });
-
-   //              .then(function(user){
-   //                  console.log("1", user)
-   //                  return AddressFactory.formatAddress(user)
-   //              })
-   //              .then(function(user){
-   //                  console.log(user);
-   //                  return user;
-   //              });
 			}
 	    }
 	 });
@@ -47,17 +28,13 @@ app.config(function ($stateProvider) {
 //assuming logged in
 app.controller("checkoutCtrl", function ($scope, AddressFactory, user, AuthService ) {
 	$scope.user = user;
-	$scope.change = false;
 	$scope.states = AddressFactory.getStates();
-
-    // AddressFactory.formatAddress(user.address)
-    // .then(function(address){
-    //     console.log(address);
-    // });
-
 	$scope.toggle = function () {
 		$scope.change = !$scope.change;
 	};
+    $scope.shipToAddress = function () {
+
+    };
 	console.log(user);
 
 });
