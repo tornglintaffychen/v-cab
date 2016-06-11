@@ -19,12 +19,12 @@ function findOrCreateUser (req, res, next) {
             lastName: 'Swan'
         })
         .then(function (createdUser) {
-            // req.logIn(createdUser, function (loginErr) {
-            //     if (loginErr) return next(loginErr);
-            //     res.status(200).send({
-            //         user: createdUser.sanitize()
-            //     });
-            // });
+            req.logIn(createdUser, function (loginErr) {
+                if (loginErr) return next(loginErr);
+                res.status(200).send({
+                    user: createdUser.sanitize()
+                });
+            });
             return createdUser;
         });
 
@@ -94,9 +94,8 @@ router.get('/products', function (req, res, next) {
 
 // add to cart
 router.post('/addToCart', function (req, res, next) {
-    
     //sv- moved this bit out just for now
-    var user = findOrCreateUser(req, next);
+    var user = findOrCreateUser(req, res, next);
     user.then(function(createdUser) {
         console.log("HERE", createdUser.id);
         Order.findOne({
@@ -108,7 +107,7 @@ router.post('/addToCart', function (req, res, next) {
         .then(function (inCartOrder) {
             //sv if order exists
             if (inCartOrder) {
-                //add id to session
+                //sv add id to session
                 req.session.orderId = inCartOrder.id;
                 //sv add item to table
                 createOrUpdateOrderProduct(inCartOrder.id, req.body)
@@ -118,8 +117,7 @@ router.post('/addToCart', function (req, res, next) {
                 .catch(next);
 
             } else {
-                console.log("no order");
-                // if not, create Order first then add to OrderProduct
+                //sv if not, create Order 
                 Order.create({
                     userId: createdUser.id
                 })
