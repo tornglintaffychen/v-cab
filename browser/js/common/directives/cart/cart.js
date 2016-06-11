@@ -35,7 +35,12 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
 
     $scope.updateQty = function (product) {
         CartFactory.updateQty(product.orderId, product)
-        $state.reload()
+        $state.reload();
+    };
+
+    $scope.proceedToCheckOut = function () {
+        console.log("hi")
+        $state.go('checkout');
     };
 
     $scope.remove = function (product) {
