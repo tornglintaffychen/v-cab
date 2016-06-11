@@ -1,6 +1,7 @@
 app.config(function ($stateProvider) {
     $stateProvider.state("checkout", {
         url: "/checkout",
+        abstract: true,
         templateUrl: "js/checkout/checkout.html",
         controller: "checkoutCtrl",
 
