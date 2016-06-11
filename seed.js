@@ -75,7 +75,7 @@ var data = {
         id: 1,
         title: 'KBuechs',
         inventory: 47,
-        photoUrl: "images/kbuechs.png",
+        photoUrl: "images/default.jpg",
         price: 1.50,
         returnable: true,
         description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
@@ -88,7 +88,7 @@ var data = {
         id: 2,
         title: 'Lorimited Edition',
         inventory: 6,
-        photoUrl: "images/lori.png",
+        photoUrl: "images/default.jpg",
         price: 79.99,
         returnable: false,
         description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete.',
@@ -99,12 +99,11 @@ var data = {
         }, {
             title: "dry"
         }]
-
     }, {
         id: 3,
         title: 'The Taff',
         inventory: 8,
-        photoUrl: "images/taffy.png",
+        photoUrl: "images/default.jpg",
         price: 42.30,
         returnable: false,
         description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.',
@@ -115,11 +114,12 @@ var data = {
         }, {
             title: "espresso"
         }]
-    },{
+
+    }, {
         id: 4,
         title: 'Samantharama',
         inventory: 19,
-        photoUrl: "images/sam.png",
+        photoUrl: "images/default.jpg",
         price: 16.66,
         returnable: false,
         description: 'Frankly, we love this new offering. Our distributors have found something crisp and refreshing that is bright on the palate without the acidity normally associated with ',
@@ -128,11 +128,29 @@ var data = {
         }, {
             title: "crisp"
         }]
+    }, {
+        id: 5,
+        title: 'Healthy Choice',
+        inventory: 10,
+        photoUrl: "images/default.jpg",
+        price: 200,
+        returnable: false,
+        description: 'This is a very healthy blood from a very healthy vegan lady.',
+        categories: [{
+            title: "espresso"
+        }, {
+            title: "spicy"
+        }, {
+            title: "vegan"
+
+        }]
     }],
     orders: [{
         userId: 1
     }, {
         userId: 2
+    }, {
+        userId: 3
     }],
     reviews: [{
         text: 'holy crap this was great the BEST BEST BEST BEST BEST BEST BEST BEST BEST',
@@ -151,13 +169,12 @@ var data = {
         rating: 1,
         userId: 5,
         productId: 1
-    },{
+    }, {
         text: 'beutiful. :)',
         rating: 4,
         userId: 2,
         productId: 4
-    },
-    {
+    }, {
         text: 'bad stuff. it serves no purpose',
         rating: 2,
         userId: 7,
@@ -207,6 +224,13 @@ db.sync({
                         title: 'The Taff',
                         price: 42.30,
                         quantity: 1
+                    })
+                    OrderProduct.create({
+                        orderId: order.id,
+                        productId: 4,
+                        title: 'Healthy Choice',
+                        price: 200,
+                        quantity: 9
                     })
                 })
         })

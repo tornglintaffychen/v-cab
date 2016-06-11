@@ -3,7 +3,7 @@
 //state for single product
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
-        url: '/products/:id',
+        url: '/products/:productId',
         templateUrl: 'js/detail/templates/product.html',
         controller: 'ProductCtrl',
         resolve: {
@@ -17,7 +17,7 @@ app.config(function ($stateProvider) {
 
 // state for all products
 app.config(function ($stateProvider) {
-    $stateProvider.state('home.products', {
+    $stateProvider.state('products', {
         url: '/products',
         controller: 'ProductsCtrl',
         templateUrl: 'js/catalog/products.html',
@@ -36,6 +36,7 @@ app.controller('ProductCtrl', function ($scope, singleProduct) {
 })
 
 // //products controller for all products
-app.controller('ProductsCtrl', function ($scope, allProducts) {
+app.controller('ProductsCtrl', function ($scope, CategoryFactory, allProducts ) {
     $scope.products = allProducts;
+		
 });

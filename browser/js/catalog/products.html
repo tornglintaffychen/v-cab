@@ -1,11 +1,26 @@
-
-<div class="col-md-3"   ng-repeat='product in products'>
+<category-view ></category-view>
+<!-- LA: View for all the products -->
+<!-- <products-view></products-view> -->
+<span class="col-md-1"></span>
+<!-- <ui-view></ui-view> -->
+{{currentCategory}}
+<div class="col-md-3"   ng-repeat='product in products | filter'>
 <a ui-sref = "product({productId:product.id})">
 	<img  class="col-md-12" src="{{product.photoUrl}}" />
 	<h1 class="col-md-6" > {{product.title}} </h1>
-	<p class="col-md-6">
+	<!-- <span class="col-md-12"></span> -->
+	<p class="col-md-12">
 		{{product.price | currency}}
 	</p>
-
+	
 </a>
+<span class="col-md-6"></span>
+<span class="col-md-6">
+	<!--la: Make into a directive? -->
+	<button class="btn btn-default" ng-click="">
+		<img height = "10px" src="/js/common/images/teeth-logo-black.png" />
+		Add to Cart
+	</button>
+</span>
+<span class="col-md-1"></span>
 </div>

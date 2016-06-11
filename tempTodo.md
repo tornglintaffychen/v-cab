@@ -1,0 +1,5 @@
+- [ ] filter category to show product, did someone do it yet?
+- [ ] single product view does not have ctrl or factory.
+- [ ] cart.controller needs to know the current user and current order
+- [ ] how do we remove the angular.js:11821 GET http://vcab.testing:1337/session 401 (Unauthorized) error on browser?
+- [ ] update the number next to cart when edit/delete items in cart

@@ -9,7 +9,7 @@ app.factory('CategoryFactory', function ($http) {
     };
 });
 
-app.directive('categoryView', function (CategoryFactory, ProductFactory) {
+app.directive('categoryView', function (CategoryFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -20,7 +20,6 @@ app.directive('categoryView', function (CategoryFactory, ProductFactory) {
             .then(function(categories) {
                 scope.categories = categories;
             });
-            scope.addToSelectedCategory = ProductFactory.addCategory;
-        }
+      }
     };
 });
