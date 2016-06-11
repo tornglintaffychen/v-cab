@@ -39,7 +39,7 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
     };
 
     $scope.remove = function (product) {
-        CartFactory.removeFromCart(product, $scope.orderId)
+        CartFactory.removeFromCart(product, product.orderId)
             .then(function (removed) {
                 $scope.products = $scope.products.filter(function (p) {
                     return p.productId !== removed.productId
@@ -52,6 +52,6 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
                 }
                 $state.reload();
             });
-            //  tc-bk: need to update the bottle number
+        //  tc-bk: need to update the bottle number
     }
 });
