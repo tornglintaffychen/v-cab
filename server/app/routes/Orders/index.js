@@ -70,7 +70,8 @@ router.post('/addToCart', function (req, res, next) {
     console.log("?????????????????");
     //sv- moved this bit out just for now
     var user = findOrCreateUser(req);
-    user.then(createdUser => {
+    user.then(function(createdUser) {
+        console.log(createdUser.id);
         Order.findOne({
             where: {
                 userId: createdUser.id,
@@ -79,27 +80,26 @@ router.post('/addToCart', function (req, res, next) {
         })
         .then(function (inCartOrder) {
 
-            if (inCartOrder.length) {
+            if (inCartOrder) {
                 console.log("order exists", inCartOrder);
-                var id = inCartOrder[0].id;
+                var id = inCartOrder.id;
                 addProductToOrder (id, req.body)
-                .then(function (order) {
-                    req.session.order = order;
-                    res.json(order);
+                .then(function (addedProduct) {
+                    req.session.orderId = addedProduct.orderId;
+                    res.json(addedProduct);
                 })
                 .catch(next);
             } else {
-                console.log("no order")
+                console.log("no order");
                 // if not, create Order first then add to OrderProduct
                 Order.create({
                         userId: createdUser.id
                 })
                 .then(function (createdOrder) {
-                    // console.log("HERE", req.body);
                     return addProductToOrder (createdOrder.id, req.body);
                 })
                 .then(function (addedProduct) {
-                    req.session.orderId = order.orderId;
+                    req.session.orderId = addedProduct.orderId;
                     console.log("AFTER MAKE ORDER SESSION", req.session);
                     res.json(addedProduct);
                 })
