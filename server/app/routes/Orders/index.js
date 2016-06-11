@@ -118,17 +118,16 @@ router.post('/addToCart', function (req, res, next) {
                 .catch(next);
 
             } else {
-
                 console.log("no order");
                 // if not, create Order first then add to OrderProduct
                 Order.create({
                     userId: createdUser.id
                 })
                 .then(function (createdOrder) {
+                    req.session.orderId = createdOrder.id;
                     return createOrUpdateOrderProduct(createdOrder.id, req.body);
                 })
                 .then(function (addedProduct) {
-                    req.session.orderId = addedProduct.orderId;
                     res.json(addedProduct);
                 })
                 .catch(next);
