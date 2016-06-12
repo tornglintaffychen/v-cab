@@ -60,11 +60,11 @@ module.exports = function (app, db) {
                         req.session.orderId = order.id
                         console.log(chalk.red("when log in"))
                         console.dir(req.session)
+                        res.status(200).send({
+                            user: user.sanitize()
+                        });
                     })
                     // We respond with a response object that has user with _id and email.
-                res.status(200).send({
-                    user: user.sanitize()
-                });
             });
 
         };
