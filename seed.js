@@ -8,6 +8,32 @@ var Category = db.model('category');
 var OrderProduct = db.model('OrderProduct')
 var Promise = require('sequelize').Promise;
 
+//utlitity function
+function generateRandomNum(min,max) {
+	return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function generateOrderProdArray(products) {
+	let prodArray = [];
+	for (var i = 0; i < 3; i++) {
+		let prodIdx = generateRandomNum(0,products.length);
+		//create list of random products
+		let randomProduct = {
+			product:products[prodIdx],
+			orderInfo: {
+				price:products[prodIdx].price,
+				quantity:generateRandomNum(1,20)
+			}
+		}
+		prodArray.push(randomProduct);
+	}
+	return prodArray;
+}
+
+function getData(promResponse) {
+	return JSON.stringify(promResponse);
+}
+
 var data = {
     users: [{
         firstName: 'Grace',
@@ -186,60 +212,48 @@ var data = {
 db.sync({
         force: true
     })
+		//CREATE USERS
     .then(function () {
         console.log("Dropped old data, now inserting data");
 				console.log("Creating users");
-        var createUsers = data['users'].map(function (userObj) {
-            return User.create(userObj)
-        })
-        return Promise.all(createUsers)
+				return User.bulkCreate(data['users']);
     })
-    .then(function () {
+		//CREATE CATEGORIES
+		.then(function () {
 			console.log("Creating categories");
-        var createCategories = data['categories'].map(function (categoryObj) {
-            return Category.create(categoryObj)
-        })
-        return Promise.all(createCategories)
-    })
-    .then(function () {
+			return Category.bulkCreate(data['categories']);
+		})
+		//CREATE PRODUCTS
+		.then(function (createdCategories) {
 			console.log("Creating products");
-        var createProducts = data['products'].map(function (productObj) {
-            return Product.create(productObj, {
-                include: [Category]
-            })
-        });
-        return Promise.all(createProducts);
-    })
-    .then(function () {
+		 	var createProducts = data['products'].map((product) => {
+				return Product.create(product,{
+						include:[Category]
+				})
+			})
+			return Promise.all(createProducts);
+		})
+		//CREATE ORDERS
+		.then(function (createdProducts) {
+			console.log("!!!!!!createdProducts", getData(createdProducts));
 			console.log("Creating orders");
-        var createOrders = data['orders'].map(function (orderObj) {
-            return Order.create(orderObj)
-                .then(function (order) {
-                    OrderProduct.create({
-                        orderId: order.id,
-                        productId: 2,
-                        title: 'Lorimited Edition',
-                        price: 79.99,
-                        quantity: 2
-                    })
-                    OrderProduct.create({
-                        orderId: order.id,
-                        productId: 3,
-                        title: 'The Taff',
-                        price: 42.30,
-                        quantity: 1
-                    })
-                    OrderProduct.create({
-                        orderId: order.id,
-                        productId: 4,
-                        title: 'Healthy Choice',
-                        price: 200,
-                        quantity: 9
-                    })
-                })
-        })
-        return Promise.all(createOrders);
+
+			return	Order.bulkCreate(data['orders'])
+			.then(function () {
+				return	Order.findAll()
+				.then(function (createdOrders) {
+					createdOrders.forEach((order, i)=>{
+						let prodOrdersArray = generateOrderProdArray(createdProducts);
+						console.log("????ProdOrders",getData(prodOrdersArray));
+						for (product of prodOrdersArray) {
+							order.addProduct(product.product, product.orderInfo)
+						}
+					})
+					console.log("!!!created orders", getData(createdOrders));
+				});
+			})
     })
+		//CREATE REVIEWS
     .then(function () {
         var createReviews = data['reviews'].map(function (reviewObj) {
             return Review.create(reviewObj)

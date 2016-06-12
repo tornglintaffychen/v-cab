@@ -25,7 +25,9 @@ db.Review.belongsTo(db.Product);
 db.Product.hasMany(db.Review);
 
 db.Category.belongsToMany(db.Product, {
-    through: 'ProductCategory'
+    // through: 'ProductCategory'
+		through: 'CategoryProduct'
+
 });
 db.Product.belongsToMany(db.Category, {
     through: 'CategoryProduct'

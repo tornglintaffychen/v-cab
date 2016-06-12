@@ -6,7 +6,7 @@ module.exports = function (db) {
         title: {
             type: Sequelize.STRING,
             allowNull: false,
-						// unique: true
+						// primaryKey:true
         }
     });
 };

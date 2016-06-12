@@ -8,9 +8,6 @@ module.exports = function (db) {
         },
         price: {
             type: Sequelize.INTEGER
-        },
-        title: {
-            type: Sequelize.STRING
         }
     });
 };
