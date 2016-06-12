@@ -10,11 +10,28 @@ app.directive('cart', function (CartFactory, $state) {
     };
 });
 
+app.config(function ($stateProvider) {
+    $stateProvider.state('inCart', {
+        url: "/cart",
+        controller: "CartController",
+        templateUrl: "/js/common/directives/cart/incart.html",
+        resolve: {
+            products: function (CartFactory) {
+                return CartFactory.getItems()
+                    .then(function (list) {
+                        return list;
+                    });
+
+            }
+        }
+    });
+});
+
 app.controller('CartController', function ($scope, products, CartFactory, $state) {
     $scope.nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     $scope.toUpdate = null;
-    $scope.userId = CartFactory.userId
-        // $scope.products = products;
+    $scope.userId = CartFactory.userId;
+    $scope.products = products;
 
     $scope.updateQty = function (product) {
         CartFactory.updateQty(product.orderId, product)
@@ -37,22 +54,4 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
             });
         //  tc-bk: need to update the bottle number
     }
-});
-
-
-app.config(function ($stateProvider) {
-    $stateProvider.state('inCart', {
-        url: "/cart",
-        controller: "CartController",
-        templateUrl: "/js/common/directives/cart/incart.html",
-        resolve: {
-            products: function (CartFactory) {
-                return CartFactory.getItems()
-                    .then(function (list) {
-                        return list;
-                    });
-
-            }
-        }
-    });
 });
