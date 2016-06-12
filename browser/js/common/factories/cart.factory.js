@@ -5,8 +5,8 @@
 // tc: product view page, add-to-cart needs to use this factory as well (?)
 
 app.factory('CartFactory', function ($http) {
-    var itemCount = 0;
-    // tc: controller can change the currentCartId (?)
+    var count = 0;
+
     var userId = null;
 
     function getData(response) {
@@ -27,7 +27,7 @@ app.factory('CartFactory', function ($http) {
     function getItems() {
         return $http.get('/api/order/products')
             .then(function (response) {
-                itemCount = response.data.length;
+                // itemCount = response.data.length;
                 return response.data;
             });
     }
@@ -39,7 +39,7 @@ app.factory('CartFactory', function ($http) {
 
     }
 
-    function removeFromCart(product, orderId) {
+    function deleteItem(product, orderId) {
         return $http.put('/api/order/' + orderId + '/deleteItem', product)
             .then(getData);
     }
@@ -48,8 +48,8 @@ app.factory('CartFactory', function ($http) {
         return itemCount;
     }
 
-    function updateQty(orderId, product) {
-        return $http.put('/api/order/' + orderId + '/product/' + product.productId, product)
+    function editItem(orderId, product) {
+        return $http.put('/api/order/' + orderId + '/editItem', product)
             .then(getData);
     }
 
@@ -67,11 +67,12 @@ app.factory('CartFactory', function ($http) {
         addToCart: addToCart,
         getItems: getItems,
         getItemCount: getItemCount,
-        updateQty: updateQty,
-        removeFromCart: removeFromCart,
+        editItem: editItem,
+        deleteItem: deleteItem,
         submitOrder: submitOrder,
         clearCart: clearCart,
         getInCartId: getInCartId,
-        userId: userId
+        userId: userId,
+        count: count
     }
 });

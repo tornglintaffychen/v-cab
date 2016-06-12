@@ -4,8 +4,16 @@ app.directive('cart', function (CartFactory, $state) {
     return {
         restrict: 'E',
         templateUrl: '/js/common/directives/cart/cart.html',
-        link: function (s, e, a) {
-            s.itemCount = CartFactory.getItemCount();
+        link: function (scope) {
+            CartFactory.getItems()
+                .then(function (products) {
+                    scope.products = products;
+                    var count = products.reduce(function (a, b) {
+                        return a + b.quantity
+                    }, 0)
+                    CartFactory.count = count
+                    scope.count = CartFactory.count
+                })
         }
     };
 });
@@ -27,23 +35,26 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('CartController', function ($scope, products, CartFactory, $state) {
+app.controller('CartController', function ($scope, products, CartFactory, $state, $rootScope) {
     $scope.nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     $scope.toUpdate = null;
     $scope.userId = CartFactory.userId;
     $scope.products = products;
 
-    $scope.updateQty = function (product) {
-        CartFactory.updateQty(product.orderId, product)
+    $scope.editItem = function (product) {
+        CartFactory.editItem(product.orderId, product)
         $state.reload()
     };
 
-    $scope.remove = function (product) {
-        CartFactory.removeFromCart(product, product.orderId)
+    $scope.deleteItem = function (product) {
+        CartFactory.deleteItem(product, product.orderId)
             .then(function (removed) {
                 $scope.products = $scope.products.filter(function (p) {
                     return p.productId !== removed.productId
                 });
+                CartFactory.count = $scope.products.reduce(function (a, b) {
+                    return a + b.quantity;
+                }, 0)
             })
             .then(function () {
                 // will delete the row in database Order table if the deleted item is the last one in the cart

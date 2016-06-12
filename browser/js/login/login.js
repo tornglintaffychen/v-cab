@@ -19,16 +19,9 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state, CartFactory, 
 
         AuthService.login(loginInfo)
             .then(function () {
-                CartFactory.getItems()
-                    .then(function (list) {
-                        console.log(list)
-                        $rootScope.products = list
-                        $rootScope.itemCount = list.length
-                    })
-            })
-            .then(function () {
                 $state.go('home');
-            }).catch(function () {
+            })
+            .catch(function () {
                 $scope.error = 'Invalid login credentials.';
             });
 

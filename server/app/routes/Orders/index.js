@@ -10,7 +10,7 @@ var chalk = require('chalk');
 
 
 //sv I just moved this bit out while I was reading to make it easier to see
-function findOrCreateUser (req, res, next) {
+function findOrCreateUser(req, res, next) {
     // user will be either req.user (logged in),
     // or we create one and log her in
     var user = req.user ? Promise.resolve(req.user) :
@@ -28,11 +28,11 @@ function findOrCreateUser (req, res, next) {
             return createdUser;
         });
 
-    return user; 
+    return user;
 }
 //sv we should make some class methods
-//sv//names weren't matching up with model - inventory vs quantity 
-function addProductToOrder (orderId, reqObj) {
+//sv//names weren't matching up with model - inventory vs quantity
+function addProductToOrder(orderId, reqObj) {
     return OrderProduct.create({
         orderId: orderId,
         productId: reqObj.id,
@@ -42,38 +42,39 @@ function addProductToOrder (orderId, reqObj) {
     });
 }
 
-function createOrUpdateOrderProduct (orderId, reqObj) {
-   
+function createOrUpdateOrderProduct(orderId, reqObj) {
+
     return OrderProduct.findOne({
-        where: {
-            orderId: orderId,
-            productId: reqObj.id
-        }
-    })
-    .then(function(product){
-        if (product) {
-            console.log("update", product.quantity);
-            return product.update({quantity: product.quantity+1})
-            .then(function(updatedProduct) {
-                return updatedProduct;
-            });
-        }
-        else {
-            console.log("addProductToOrder");
-            return addProductToOrder (orderId, reqObj);
-        }
-    });
+            where: {
+                orderId: orderId,
+                productId: reqObj.id
+            }
+        })
+        .then(function (product) {
+            if (product) {
+                console.log("update", product.quantity);
+                return product.update({
+                        quantity: product.quantity + 1
+                    })
+                    .then(function (updatedProduct) {
+                        return updatedProduct;
+                    });
+            } else {
+                console.log("addProductToOrder");
+                return addProductToOrder(orderId, reqObj);
+            }
+        });
 }
 
-// find all orders 
+// find all orders
 router.get('/', function (req, res, next) {
     Order.findAll({
-        where: req.query
-    })
-    .then(function (orders) {
-        res.json(orders);
-    })
-    .catch(next);
+            where: req.query
+        })
+        .then(function (orders) {
+            res.json(orders);
+        })
+        .catch(next);
 });
 
 //find all products by order id
@@ -81,60 +82,62 @@ router.get('/products', function (req, res, next) {
     console.log("?????????????????");
     console.log("SESSIONSSSS", req.session);
     OrderProduct.findAll({
-        where: {
-            orderId: req.session.orderId
-        }
-    })
-    .then(function (order) {
-        console.log("retrieve items from order", order);
-        res.json(order);
-    })
-    .catch(next);
+            where: {
+                orderId: req.session.orderId
+            }
+        })
+        .then(function (order) {
+            console.log("retrieve items from order", order);
+            res.json(order);
+        })
+        .catch(next);
 });
 
 // add to cart
 router.post('/addToCart', function (req, res, next) {
     //sv- moved this bit out just for now
     var user = findOrCreateUser(req, res, next);
-    user.then(function(createdUser) {
+    user.then(function (createdUser) {
         console.log("HERE", createdUser.id);
         Order.findOne({
-            where: {
-                userId: createdUser.id,
-                status: 'inCart'
-            }
-        })
-        .then(function (inCartOrder) {
-            //sv if order exists
-            if (inCartOrder) {
-                //sv add id to session
-                req.session.orderId = inCartOrder.id;
-                //sv add item to table
-                createOrUpdateOrderProduct(inCartOrder.id, req.body)
-                .then(function(addedProduct) {
-                    res.json(addedProduct);
-                })
-                .catch(next);
+                where: {
+                    userId: createdUser.id,
+                    status: 'inCart'
+                }
+            })
+            .then(function (inCartOrder) {
+                //sv if order exists
+                if (inCartOrder) {
+                    //sv add id to session
+                    req.session.orderId = inCartOrder.id;
+                    //sv add item to table
+                    createOrUpdateOrderProduct(inCartOrder.id, req.body)
+                        .then(function (addedProduct) {
+                            res.json(addedProduct);
+                        })
+                        .catch(next);
 
-            } else {
-                //sv if not, create Order 
-                Order.create({
-                    userId: createdUser.id
-                })
-                .then(function (createdOrder) {
-                    req.session.orderId = createdOrder.id;
-                    return createOrUpdateOrderProduct(createdOrder.id, req.body);
-                })
-                .then(function (addedProduct) {
-                    res.json(addedProduct);
-                })
-                .catch(next);
-            }
-        });
+                } else {
+                    //sv if not, create Order
+                    Order.create({
+                            userId: createdUser.id
+                        })
+                        .then(function (createdOrder) {
+                            req.session.orderId = createdOrder.id;
+                            return createOrUpdateOrderProduct(createdOrder.id, req.body);
+                        })
+                        .then(function (addedProduct) {
+                            res.json(addedProduct);
+                        })
+                        .catch(next);
+                }
+            });
     });
 });
 
-// edit one item in the shopping cart
+
+// tc: edit one item in the shopping cart or within 30 mins after placing order
+// admin should be able to edit everything in the order
 router.put('/:id/editItem', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
@@ -155,31 +158,14 @@ router.put('/:id/deleteItem', function (req, res, next) {
                 orderId: req.params.id,
                 productId: req.body.productId
             }
-    })
-    .then(function (removed) {
-        res.json(removed);
-    });
+        })
+        .then(function (removed) {
+            res.json(removed);
+        });
 });
 
 
-// admin should be able to edit everything in the order
-// users should be able to cancel order 30 mins limit
-router.put('/:orderid/product/:productid', function (req, res, next) {
-    OrderProduct.update(req.body, {
-            where: {
-                productId: req.params.productid,
-                orderId: req.params.orderid
-            }
-        })
-        .then(function (product) {
-            return product.update(req.body.product);
-        })
-        .then(function (product) {
-            res.json(product);
-        })
-        .catch(next);
 
-});
 
 // clear the shopping cart
 router.delete('/:id', function (req, res, next) {
