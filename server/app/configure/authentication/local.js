@@ -57,7 +57,7 @@ module.exports = function (app, db) {
                         }
                     })
                     .then(function (order) {
-                        req.session.orderId = order.id
+                        if (order) req.session.orderId = order.id
                         console.log(chalk.red("when log in"))
                         console.dir(req.session)
                         res.status(200).send({

@@ -19,10 +19,10 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state, CartFactory) 
 
         AuthService.login(loginInfo)
             .then(function () {
-                CartFactory.getItems()
+                $state.go('home');
             })
             .then(function () {
-                $state.go('home');
+                CartFactory.getItems()
             })
             .catch(function () {
                 $scope.error = 'Invalid login credentials.';
