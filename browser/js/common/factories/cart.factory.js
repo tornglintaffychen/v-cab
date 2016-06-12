@@ -27,7 +27,9 @@ app.factory('CartFactory', function ($http) {
     function getItems() {
         return $http.get('/api/order/products')
             .then(function (response) {
-                // itemCount = response.data.length;
+                count = response.data.reduce(function (a, b) {
+                    return a + b.quantity
+                }, 0)
                 return response.data;
             });
     }
@@ -50,7 +52,10 @@ app.factory('CartFactory', function ($http) {
 
     function editItem(product) {
         return $http.put('/api/order/editItem', product)
-            .then(getData);
+            .then(function (res) {
+                getItems();
+                return res.data;
+            })
     }
 
     function clearCart(orderId) {
