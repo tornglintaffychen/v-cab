@@ -13,8 +13,8 @@ app.factory('CartFactory', function ($http) {
         return response.data;
     }
 
-    function getInCartId(userId) {
-        $http.get('/api/users/' + userId)
+    function getInCartId(uId) {
+        $http.get('/api/users/' + uId)
             .then(getData)
             .then(function (user) {
                 console.log('hi')
@@ -61,7 +61,7 @@ app.factory('CartFactory', function ($http) {
             })
     }
 
-    function clearCart(orderId) {
+    function clearCart() {
         return $http.delete('/api/order/');
     }
 

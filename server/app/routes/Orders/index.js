@@ -155,7 +155,8 @@ router.put('/deleteItem', function (req, res, next) {
         })
         .then(function (removed) {
             res.json(removed);
-        });
+        })
+        .catch(next)
 });
 
 

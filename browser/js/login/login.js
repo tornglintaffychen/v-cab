@@ -8,7 +8,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('LoginCtrl', function ($scope, AuthService, $state, CartFactory, $rootScope) {
+app.controller('LoginCtrl', function ($scope, AuthService, $state, CartFactory) {
 
     $scope.login = {};
     $scope.error = null;
