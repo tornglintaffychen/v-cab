@@ -17,7 +17,6 @@ app.factory('CartFactory', function ($http) {
         $http.get('/api/users/' + uId)
             .then(getData)
             .then(function (user) {
-                console.log('hi')
                 return user.orders.filter(function (order) {
                     return order.status === "inCart"
                 })[0].id;
@@ -37,9 +36,11 @@ app.factory('CartFactory', function ($http) {
     // this function is for the prodcuts / product controller
     function addToCart(product) {
         $http.post('/api/order/addToCart', product)
-            .then(function (res) {
-                getItems();
-                return res.data;
+            .then(function () {
+                return getItems();
+            })
+            .then(function (cart) {
+                return cart
             })
 
     }

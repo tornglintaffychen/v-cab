@@ -21,9 +21,9 @@ function findOrCreateUser(req, res, next) {
         .then(function (createdUser) {
             req.logIn(createdUser, function (loginErr) {
                 if (loginErr) return next(loginErr);
-                res.status(200).send({
-                    user: createdUser.sanitize()
-                });
+                // res.status(200).send({
+                //     user: createdUser.sanitize()
+                // });
             });
             return createdUser;
         });

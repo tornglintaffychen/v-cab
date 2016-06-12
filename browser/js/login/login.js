@@ -22,7 +22,10 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state, CartFactory) 
                 $state.go('home');
             })
             .then(function () {
-                CartFactory.getItems()
+                return CartFactory.getItems()
+            })
+            .then(function (cart) {
+                if (cart) $scope.products = cart
             })
             .catch(function () {
                 $scope.error = 'Invalid login credentials.';
