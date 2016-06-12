@@ -37,7 +37,10 @@ app.factory('CartFactory', function ($http) {
     // this function is for the prodcuts / product controller
     function addToCart(product) {
         $http.post('/api/order/addToCart', product)
-            .then(getData)
+            .then(function (res) {
+                getItems();
+                return res.data;
+            })
 
     }
 

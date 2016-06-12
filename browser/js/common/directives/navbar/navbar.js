@@ -25,15 +25,6 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
                 scope.count = val
             });
 
-            // CartFactory.getItems()
-            //     .then(function (products) {
-            //         scope.products = products;
-            //         var count = products.reduce(function (a, b) {
-            //             return a + b.quantity
-            //         }, 0)
-            //         CartFactory.itemCount = count
-            //     })
-
             scope.isLoggedIn = function () {
                 return AuthService.isAuthenticated();
             };

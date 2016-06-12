@@ -8,12 +8,6 @@ app.factory('ProductFactory', function ($http) {
         return res.data;
     }
 
-    ProductFactory.addToCart = function (product) {
-        console.log("product", product);
-        $http.post('/api/order/addToCart', product)
-        .then(getData);
-    };
-
     ProductFactory.fetchAll = function () {
         return $http.get('/api/products')
             .then(getData);

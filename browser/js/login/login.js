@@ -19,6 +19,9 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state, CartFactory, 
 
         AuthService.login(loginInfo)
             .then(function () {
+                CartFactory.getItems()
+            })
+            .then(function () {
                 $state.go('home');
             })
             .catch(function () {
