@@ -19,7 +19,12 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
             }];
 
             scope.user = null;
-            scope.count = CartFactory.count;
+            scope.$watch(function () {
+                return CartFactory.getCount()
+            }, function (val) {
+                scope.count = val
+            });
+
             // CartFactory.getItems()
             //     .then(function (products) {
             //         scope.products = products;

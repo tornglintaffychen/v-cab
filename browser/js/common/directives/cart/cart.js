@@ -41,13 +41,10 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
     $scope.userId = CartFactory.userId;
     $scope.products = products;
 
-    $scope.editItem = function (product) {
-        CartFactory.editItem(product.orderId, product)
-        $state.reload()
-    };
+    $scope.editItem = CartFactory.editItem
 
     $scope.deleteItem = function (product) {
-        CartFactory.deleteItem(product, product.orderId)
+        CartFactory.deleteItem(product)
             .then(function (removed) {
                 $scope.products = $scope.products.filter(function (p) {
                     return p.productId !== removed.productId
@@ -59,7 +56,7 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
             .then(function () {
                 // will delete the row in database Order table if the deleted item is the last one in the cart
                 if ($scope.products.length === 1) {
-                    CartFactory.clearCart(product.orderId)
+                    CartFactory.clearCart()
                 }
                 $state.reload();
             });

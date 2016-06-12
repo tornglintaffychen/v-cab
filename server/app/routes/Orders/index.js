@@ -52,7 +52,6 @@ function createOrUpdateOrderProduct(orderId, reqObj) {
         })
         .then(function (product) {
             if (product) {
-                console.log("update", product.quantity);
                 return product.update({
                         quantity: product.quantity + 1
                     })
@@ -60,7 +59,6 @@ function createOrUpdateOrderProduct(orderId, reqObj) {
                         return updatedProduct;
                     });
             } else {
-                console.log("addProductToOrder");
                 return addProductToOrder(orderId, reqObj);
             }
         });
@@ -79,15 +77,12 @@ router.get('/', function (req, res, next) {
 
 //find all products by order id
 router.get('/products', function (req, res, next) {
-    console.log("?????????????????");
-    console.log("SESSIONSSSS", req.session);
     OrderProduct.findAll({
             where: {
                 orderId: req.session.orderId
             }
         })
         .then(function (order) {
-            console.log("retrieve items from order", order);
             res.json(order);
         })
         .catch(next);
@@ -98,7 +93,6 @@ router.post('/addToCart', function (req, res, next) {
     //sv- moved this bit out just for now
     var user = findOrCreateUser(req, res, next);
     user.then(function (createdUser) {
-        console.log("HERE", createdUser.id);
         Order.findOne({
                 where: {
                     userId: createdUser.id,
@@ -138,10 +132,10 @@ router.post('/addToCart', function (req, res, next) {
 
 // tc: edit one item in the shopping cart or within 30 mins after placing order
 // admin should be able to edit everything in the order
-router.put('/:id/editItem', function (req, res, next) {
+router.put('/editItem', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
-                orderId: req.params.id,
+                orderId: req.session.orderId,
                 productId: req.body.productId
             }
         })
@@ -152,10 +146,10 @@ router.put('/:id/editItem', function (req, res, next) {
 });
 
 // delete one item in the shopping cart, interesting enought that it's a put route
-router.put('/:id/deleteItem', function (req, res, next) {
+router.put('/deleteItem', function (req, res, next) {
     OrderProduct.destroy({
             where: {
-                orderId: req.params.id,
+                orderId: req.session.orderId,
                 productId: req.body.productId
             }
         })
@@ -168,10 +162,10 @@ router.put('/:id/deleteItem', function (req, res, next) {
 
 
 // clear the shopping cart
-router.delete('/:id', function (req, res, next) {
+router.delete('/', function (req, res, next) {
     Order.destroy({
             where: {
-                id: req.params.id
+                id: req.session.orderId
             }
         })
         .catch(next);

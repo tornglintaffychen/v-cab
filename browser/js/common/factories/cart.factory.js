@@ -39,22 +39,22 @@ app.factory('CartFactory', function ($http) {
 
     }
 
-    function deleteItem(product, orderId) {
-        return $http.put('/api/order/' + orderId + '/deleteItem', product)
+    function deleteItem(product) {
+        return $http.put('/api/order/deleteItem', product)
             .then(getData);
     }
 
-    function getItemCount() {
-        return itemCount;
+    function getCount() {
+        return count;
     }
 
-    function editItem(orderId, product) {
-        return $http.put('/api/order/' + orderId + '/editItem', product)
+    function editItem(product) {
+        return $http.put('/api/order/editItem', product)
             .then(getData);
     }
 
     function clearCart(orderId) {
-        return $http.delete('/api/order/' + orderId);
+        return $http.delete('/api/order/');
     }
 
     function submitOrder() {
@@ -66,7 +66,7 @@ app.factory('CartFactory', function ($http) {
     return {
         addToCart: addToCart,
         getItems: getItems,
-        getItemCount: getItemCount,
+        getCount: getCount,
         editItem: editItem,
         deleteItem: deleteItem,
         submitOrder: submitOrder,
