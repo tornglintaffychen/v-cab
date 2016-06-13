@@ -1,6 +1,24 @@
 //sv
 app.factory("AddressFactory", function () {
     //sv (str, str) => string
+
+    /* EI: for Factories, I like either returning an object like...
+        return {
+            method1: function() { //do stuff },
+            method2: function() { //do more stuff }
+        }
+
+        ...or...
+
+        var MyFactory = {};
+
+        MyFactory.method1 = function() { //do stuff }
+
+        return MyFactory;
+
+        ...this keeps it clear what are factory methods, and what might be functions that you don't want to export
+
+    */
     function getFullName(firstname, lastname) {
         return capatilize(firstname) + " " + capatilize(lastname);
     }

@@ -26,6 +26,7 @@ app.factory('CartFactory', function ($http) {
     function getItems() {
         return $http.get('/api/order/products')
             .then(function (response) {
+                // EI: why include count here? separation of concerns and such... maybe call getCount within this?
                 count = response.data.reduce(function (a, b) {
                     return a + b.quantity
                 }, 0)
@@ -51,6 +52,7 @@ app.factory('CartFactory', function ($http) {
     }
 
     function getCount() {
+        //EI: could have this take in an array, and then count it here
         return count;
     }
 
