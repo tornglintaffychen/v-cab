@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
 
 // either registering or just shop as a guest, we need their info no matter what
 router.post('/', function (req, res, next) {
-    User.create(req.body)
+    User.create(req.body) // tc-cm TODO: maybe findOrCreate
         .then(function (added) {
             res.json(added);
         })
