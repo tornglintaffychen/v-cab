@@ -7,6 +7,8 @@ app.factory("CheckOutFactory", function($http){
 			return res.data;
 		});
 	}
+	
+	
 
 	function setEmail (email) {
 		mailOptions.email = email;

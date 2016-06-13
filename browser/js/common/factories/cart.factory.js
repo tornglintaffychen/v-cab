@@ -38,6 +38,13 @@ app.factory('CartFactory', function ($http) {
 
     }
 
+    //sv rewrite so products persist
+    function total (products) {
+        return products.reduce(function(a, b){
+            return (a.price*a.quantity)+(b.price*b.quantity)
+        }, 0);
+    }
+
     function removeFromCart(product, orderId) {
         return $http.put('/api/order/' + orderId + '/deleteItem', product)
             .then(getData);
@@ -71,6 +78,7 @@ app.factory('CartFactory', function ($http) {
         submitOrder: submitOrder,
         clearCart: clearCart,
         clearCart: clearCart,
-        userId: userId
+        userId: userId,
+        total: total
     }
 });

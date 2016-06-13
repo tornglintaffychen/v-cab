@@ -11,6 +11,7 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
         if ($state.current.name !== "checkout.confirm") {
             $state.go("checkout.creditcard");
         }
+
     };
 	$scope.next = function() {
         // console.log("here", $state.is)
@@ -24,10 +25,13 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
     
 });
 
-app.controller("confirmCtrl", function($scope, CheckOutFactory, products){
+app.controller("confirmCtrl", function($scope, CheckOutFactory, CartFactory, products){
     $scope.finalInfo = CheckOutFactory.getMailOptions()
     console.log("finalInfo", $scope.finalInfo)
     $scope.products = products;
+    $scope.total = CartFactory.total(products)
+    
+
     console.log("products", $scope.products)
 
     $scope.submit = CheckOutFactory.sendConfirmation;
