@@ -8,22 +8,32 @@
 		<br>
 
 		<div class="col-md-4">
-			<h4>New Shipping Address</h4>
-			<form>
+		<!-- 	doesn't work  -->
+		<!-- 	<div ng-hide="checkOutInfo.$pristine" ng-messages="checkOutInfo.$error">
+				<div ng-show="checkOutInfo.input.email.$error" ng-message="checkOutInfo.email.$error" class="alert alert-warning">Please enter a valid Email</div>
+			</div> -->
+		<!-- 	show s with google -->
+			 		
+			<form name="checkOutInfo">
+				<h4>New Shipping Address</h4>
 		 		<div class="form-group">
 					<label for="exampleInputEmail1">Recieptient Name</label>
-					<input class = "form-control" ng-model="firstname" placeholder="firstname"/>
-					<input class = "form-control" ng-model="lastname" placeholder="lastname"/>
+					<input required class = "form-control" ng-model="firstname" placeholder="firstname"/>
+					<input required class = "form-control" ng-model="lastname" placeholder="lastname"/>
 				</div>
 				<div class="form-group">
 					<label for="exampleInputEmail1">Address</label>
-					<input class = "form-control" ng-model="street" placeholder="street"/>
+					<input required class = "form-control" ng-model="address" placeholder="address"/>
 					<input class = "form-control" ng-model="apt" placeholder="Apt/Suite #"/>
-					<input class = "form-control" ng-model="city" placeholder="city"/>
-					<input class = "form-control" ng-model="zip" placeholder="zip"/>
+					<input required class = "form-control" ng-model="city" placeholder="city"/>
+					<input required class = "form-control" ng-model="zip" placeholder="zip"/>
 					<select class="form-control state" ng-model="state" ng-options="state for state in states"></select>
 				</div>
-				<button ng-click="setAddress()" class="btn btn-default">Use This Address</button>
+				<button ng-submit="setAddress()" class="btn btn-default">Use This Address</button>
+				<h4>Email</h4>
+					<div ng-hide="user.email" class="form-group">
+						<input type="email" class = "form-control" ng-model="email" placeholder="email"/>
+					</div>
 				<button ng-show="user.firstName !== 'Bella'" class="btn btn-default">Save This Address</button>
 			</form>
 		</div>

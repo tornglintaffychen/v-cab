@@ -10,6 +10,11 @@ app.config(function ($stateProvider) {
         url: "/creditcard",
         templateUrl: "js/checkout/creditcard.html"
     })
+    .state("checkout.confirm", {
+        url: "/confirm",
+        templateUrl: "js/checkout/confirm.html",
+        controller: "confirmCtrl"
+    })
     .state("checkout.address", {
     	url: "/address",
     	templateUrl: "js/checkout/address.html",

@@ -8,6 +8,10 @@ app.factory("CheckOutFactory", function($http){
 		});
 	}
 
+	function setEmail (email) {
+		mailOptions.email = email;
+	}
+	
 	function setAddress (address) {
 		mailOptions.address = address;
 	}
