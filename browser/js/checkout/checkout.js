@@ -1,8 +1,12 @@
 //ui-view from incart
 //for now I just stuck it in home
 //assuming logged in
-app.controller("checkoutCtrl", function ($scope, AuthService) {
-	
+app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthService) {
+    $scope.back = function() {
+    };
+	$scope.next = function() {
+    };
+    $scope.submit = CheckOutFactory.sendConfirmation;
 });
 
 app.controller("addressCtrl", function ($scope, AddressFactory, user, AuthService ) {
