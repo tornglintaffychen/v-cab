@@ -1,12 +1,10 @@
 <div class="container">
 	<h1>CheckOut</h1>
-	<button ng-hide="user.firstName !== 'Bella'" ui-sref="signup" class="btn btn-primary">Sign Up to Check Out Faster</button>
+	<button ng-hide="user.firstName !== 'Unregistered'" ui-sref="signup" class="btn btn-primary">Sign Up to Check Out Faster</button>
 	<ui-view></ui-view>
 	<br>
-	<button ng-show="showBack()" ng-click="back()" class="btn btn-primary">back</button>
-	<button ng-show="showNext()" ng-click="next()" class="btn btn-primary">next</button>
-
-
+	<button ng-disabled="!showBack()" ng-click="back()" class="btn btn-primary">back</button>
+	<!-- <button ng-disabled="showNext()" ng-click="next()" class="btn btn-primary">next</button> -->
 </div>
 
 

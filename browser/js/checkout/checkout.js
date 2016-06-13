@@ -24,7 +24,7 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
             $state.go("checkout.creditcard");
         }
     };
-	$scope.next = function() {
+	$scope.next = function(condition) {
         if ($state.is("checkout.address")) {
             $state.go("checkout.creditcard");
         }
@@ -36,17 +36,20 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
 });
 
 app.controller("confirmCtrl", function($scope, CheckOutFactory){
+
     $scope.submit = CheckOutFactory.sendConfirmation;
 });
 
 app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory, user, AuthService ) {
     $scope.user = user;
     console.log(user)
-    // $scope.shippingAddress;
+    $scope.shippingAddress;
     $scope.states = AddressFactory.getStates();
     $scope.state = "New York";
 
+    console.log($scope.userEmail)
     $scope.setAddress = function (address) {
+        console.log(address);
         if (address) {
             CheckOutFactory.setAddress(address);
         }
@@ -56,5 +59,6 @@ app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory
             CheckOutFactory.setAddress(address);
             console.log("street", address);
         }
+        $scope.shippingAddress = address;
     }
 });

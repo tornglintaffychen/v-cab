@@ -23,7 +23,7 @@ app.config(function ($stateProvider) {
             user: function (AuthService, AddressFactory) {
 				return AuthService.getLoggedInUser()
 				.then(function(user){
-					if (user.firstName !== "Bella") {
+					if (user.firstName !== "Unregistered") {
 						user.fullName = AddressFactory.getFullName(user.firstName, user.lastName);
 
 					}

@@ -3,7 +3,7 @@
 		<h4>Shipping Address</h4>
 			<p ng-model="name">{{ user.fullName }}</p>
 			<p>{{ user.address }}</p>
-			<button class="btn btn-default" ng-click="setAddress(user.address)">Use This Address</button>
+			<button class="btn btn-primary" ng-click="setAddress(user.address)">Use This Address</button>
 		</div>
 		<br>
 
@@ -29,12 +29,17 @@
 					<input required class = "form-control" ng-model="zip" placeholder="zip"/>
 					<select class="form-control state" ng-model="state" ng-options="state for state in states"></select>
 				</div>
-				<button ng-submit="setAddress()" class="btn btn-default">Use This Address</button>
-				<h4>Email</h4>
-					<div ng-hide="user.email" class="form-group">
-						<input type="email" class = "form-control" ng-model="email" placeholder="email"/>
-					</div>
-				<button ng-show="user.firstName !== 'Bella'" class="btn btn-default">Save This Address</button>
+				<button ng-submit="setAddress()" class="btn btn-primary">Use This Address</button>
 			</form>
-		</div>
+
+			<div ng-hide="user.email" class="form-group">
+				<form name="emailForm">
+					<label for="exampleInputEmail1">Email</label>
+					<input type="email" class = "form-control" ng-model="userEmail" placeholder="please enter an email" required/>
+					</div>
+				</form>
+			</div>
+<!-- 		//checkOutInfo.$invalid -->
+		<button ng-disabled="emailForm.$invalid || !shippingAddress" ng-click="next()" class="btn btn-primary">next</button>
 	</div>
+
