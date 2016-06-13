@@ -30,7 +30,7 @@ app.controller('SignUpCtrl', function ($scope, SignUp, $state) {
 });
 
 
-//EI: $http.post should get some sort of response back, whether it's a success or failure... you should handle those cases
+//EI: $http.post returns a promise for a response... you should handle either a success or failure
 app.factory("SignUp", function ($http) {
     return {
         createUser: function (data) {
