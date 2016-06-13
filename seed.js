@@ -149,8 +149,12 @@ var data = {
     }]
 }
 
-function catId() {
-    return Math.floor(Math.random() * (11 - 1 + 1)) + 1;
+// function catId() {
+//     return Math.floor(Math.random() * (11 - 1 + 1)) + 1;
+// }
+
+function pId() {
+    return Math.floor(Math.random() * (5 - 1 + 1)) + 1;
 }
 
 db.sync({
@@ -166,6 +170,11 @@ db.sync({
     .then(function () {
         var createCategories = data['categories'].map(function (categoryObj) {
             return Category.create(categoryObj)
+                .then(function (category) {
+                    // shows error because we call the fnc inside the array
+                    // but seed succsss
+                    category.addProducts([pId(), pId(), pId()])
+                })
         })
         return Promise.all(createCategories)
     })
@@ -173,9 +182,11 @@ db.sync({
 
         var createProducts = data['products'].map(function (productObj) {
             return Product.create(productObj)
-                .then(function (product) {
-                    product.addCategories([catId(), catId(), catId()])
-                })
+                // .then(function (product) {
+                // shows error because we call the fnc inside the array
+                // but seed succsss
+                //     product.addCategories([catId(), catId(), catId()])
+                // })
         });
         return Promise.all(createProducts);
     })

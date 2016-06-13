@@ -26,8 +26,7 @@ app.config(function ($stateProvider) {
                 return ProductFactory.fetchAll();
             }
         }
-    });
-
+    })
 });
 
 
@@ -35,10 +34,11 @@ app.config(function ($stateProvider) {
 app.controller('ProductCtrl', function ($scope, singleProduct, CartFactory) {
     $scope.product = singleProduct;
     $scope.addToCart = CartFactory.addToCart;
+
 })
 
 // //products controller for all products
-app.controller('ProductsCtrl', function ($scope, CategoryFactory, allProducts, ProductFactory, CartFactory, $window) {
+app.controller('ProductsCtrl', function ($scope, CategoryFactory, allProducts, ProductFactory, CartFactory) {
     $scope.products = allProducts;
     $scope.addToCart = CartFactory.addToCart;
 });
