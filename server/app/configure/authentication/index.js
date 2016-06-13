@@ -3,7 +3,7 @@ var path = require('path');
 var session = require('express-session');
 var passport = require('passport');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
-
+var chalk = require('chalk')
 var ENABLED_AUTH_STRATEGIES = [
     'local',
     'facebook',
@@ -17,6 +17,7 @@ module.exports = function (app, db) {
     });
 
     var User = db.model('user');
+    var Order = db.model('order');
 
     dbStore.sync();
 
@@ -54,7 +55,20 @@ module.exports = function (app, db) {
     // This is used by the browser application (Angular) to determine if a user is
     // logged in already.
     app.get('/session', function (req, res) {
+        // tc: this will attach inCart order id to session as well, but when get('/products'), the session orderId is still null
         if (req.user) {
+            var uId = req.user.id
+            Order.findOne({
+                    where: {
+                        userId: uId,
+                        status: 'inCart'
+                    }
+                })
+                .then(function (order) {
+                    req.session.orderId = order.id
+                    console.log(chalk.red("when session"))
+                    console.log(req.session)
+                })
             res.send({
                 user: req.user.sanitize()
             });

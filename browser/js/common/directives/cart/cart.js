@@ -1,11 +1,19 @@
 'use strict';
 
-app.directive('cart', function (CartFactory, $state) {
+app.directive('cart', function (CartFactory) {
     return {
         restrict: 'E',
         templateUrl: '/js/common/directives/cart/cart.html',
-        link: function (s, e, a) {
-            s.itemCount = CartFactory.getItemCount();
+        link: function (scope) {
+            CartFactory.getItems()
+                .then(function (products) {
+                    // scope.products = products;
+                    var count = products.reduce(function (a, b) {
+                        return a + b.quantity
+                    }, 0)
+                    CartFactory.count = count
+                    scope.count = CartFactory.count
+                })
         }
     };
 });
@@ -13,8 +21,8 @@ app.directive('cart', function (CartFactory, $state) {
 app.config(function ($stateProvider) {
     $stateProvider.state('inCart', {
         url: "/cart",
-        templateUrl: "/js/common/directives/cart/incart.html",
         controller: "CartController",
+        templateUrl: "/js/common/directives/cart/incart.html",
         resolve: {
             products: function (CartFactory) {
                 return CartFactory.getItems()
@@ -30,33 +38,33 @@ app.config(function ($stateProvider) {
 app.controller('CartController', function ($scope, products, CartFactory, $state) {
     $scope.nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     $scope.toUpdate = null;
-    $scope.userId = CartFactory.userId
+    $scope.userId = CartFactory.userId;
     $scope.products = products;
-
-    $scope.updateQty = function (product) {
-        CartFactory.updateQty(product.orderId, product)
-        $state.reload();
-    };
 
     $scope.proceedToCheckOut = function () {
         console.log("hi")
         $state.go('checkout');
     };
 
-    $scope.remove = function (product) {
-        CartFactory.removeFromCart(product, $scope.orderId)
+    $scope.editItem = CartFactory.editItem;
+
+    $scope.deleteItem = function (product) {
+        CartFactory.deleteItem(product)
             .then(function (removed) {
                 $scope.products = $scope.products.filter(function (p) {
                     return p.productId !== removed.productId
                 });
+                CartFactory.count = $scope.products.reduce(function (a, b) {
+                    return a + b.quantity;
+                }, 0)
             })
             .then(function () {
                 // will delete the row in database Order table if the deleted item is the last one in the cart
                 if ($scope.products.length === 1) {
-                    CartFactory.clearCart($scope.orderId)
+                    CartFactory.clearCart()
                 }
                 $state.reload();
             });
-            //  tc-bk: need to update the bottle number
+        //  tc-bk: need to update the bottle number
     }
 });

@@ -19,7 +19,11 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
             }];
 
             scope.user = null;
-            scope.itemCount = CartFactory.itemCount;
+            scope.$watch(function () {
+                return CartFactory.getCount()
+            }, function (val) {
+                scope.count = val
+            });
 
             scope.isLoggedIn = function () {
                 return AuthService.isAuthenticated();

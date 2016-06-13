@@ -79,11 +79,6 @@ var data = {
         price: 1.50,
         returnable: true,
         description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
-        categories: [{
-            title: "+O"
-        }, {
-            title: "full body"
-        }]
     }, {
         id: 2,
         title: 'Lorimited Edition',
@@ -92,13 +87,6 @@ var data = {
         price: 79.99,
         returnable: false,
         description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete.',
-        categories: [{
-            title: "espresso"
-        }, {
-            title: "spicy"
-        }, {
-            title: "dry"
-        }]
     }, {
         id: 3,
         title: 'The Taff',
@@ -107,14 +95,6 @@ var data = {
         price: 42.30,
         returnable: false,
         description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.',
-        categories: [{
-            title: "B"
-        }, {
-            title: "vegan"
-        }, {
-            title: "espresso"
-        }]
-
     }, {
         id: 4,
         title: 'Samantharama',
@@ -123,11 +103,6 @@ var data = {
         price: 16.66,
         returnable: false,
         description: 'Frankly, we love this new offering. Our distributors have found something crisp and refreshing that is bright on the palate without the acidity normally associated with ',
-        categories: [{
-            title: "dry"
-        }, {
-            title: "crisp"
-        }]
     }, {
         id: 5,
         title: 'Healthy Choice',
@@ -136,14 +111,6 @@ var data = {
         price: 200,
         returnable: false,
         description: 'This is a very healthy blood from a very healthy vegan lady.',
-        categories: [{
-            title: "espresso"
-        }, {
-            title: "spicy"
-        }, {
-            title: "vegan"
-
-        }]
     }],
     orders: [{
         userId: 1
@@ -182,6 +149,13 @@ var data = {
     }]
 }
 
+// function catId() {
+//     return Math.floor(Math.random() * (11 - 1 + 1)) + 1;
+// }
+
+function pId() {
+    return Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+}
 
 db.sync({
         force: true
@@ -196,14 +170,23 @@ db.sync({
     .then(function () {
         var createCategories = data['categories'].map(function (categoryObj) {
             return Category.create(categoryObj)
+                .then(function (category) {
+                    // shows error because we call the fnc inside the array
+                    // but seed succsss
+                    category.addProducts([pId(), pId(), pId()])
+                })
         })
         return Promise.all(createCategories)
     })
     .then(function () {
+
         var createProducts = data['products'].map(function (productObj) {
-            return Product.create(productObj, {
-                include: [Category]
-            })
+            return Product.create(productObj)
+                // .then(function (product) {
+                // shows error because we call the fnc inside the array
+                // but seed succsss
+                //     product.addCategories([catId(), catId(), catId()])
+                // })
         });
         return Promise.all(createProducts);
     })
