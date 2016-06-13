@@ -1,19 +1,31 @@
+'use strict'
+
 var express = require('express');
 var router = express.Router();
 var nodemailer = require('nodemailer');
-var wellknown = require('nodemailer-wellknown');
 var secrets = require('../configure/authentication/secrets');
 
-//var config = wellknown('Yahoo', secrets.auth);
+function formatText(name, orderId) {
+	return `Thankyou ${name}!
+			You're has shipped!
+			View order: # ${orderId} 
+			made autoinsertdate
+			`;
+}
 
-router.post('/send', handleSayHello);
+function changeOrderStatus(arr) {
 
-function handleSayHello(req, res) {
+}
+function updateProductInventory(arr) {
+
+}
+
+router.post('/orderConfirmation', function (req, res) {
 	var mailOptions = {
 	    from: secrets.auth.user, // sender address
-	    to: secrets.testReciever.email, // list of receivers
+	    to: req.body.email, // list of receivers
 	    subject: 'Email Example', // Subject line
-	    text: "HELLO WORLD" //, // plaintext body
+	    text: formatText(req.body.name, req.session.orderId) //, // plaintext body
 	};
 
 	var smtpTransport = nodemailer.createTransport({
@@ -30,7 +42,7 @@ function handleSayHello(req, res) {
 		};
 	});
 	// res.json(mailOptions);
-}
+});
 
 //sendgrid
 

@@ -1,15 +1,19 @@
 app.factory("CheckOutFactory", function($http){
 	var mailOptions = {};
 
-	function sendConfirmation () {
-		return $http.post("/email/send")
+	function sendConfirmation (email) {
+		// mailOptions.date = Date.now();
+		return $http.post("/send/orderConfirmation", 
+		mailOptions)
 		.then(function(res){
 			return res.data;
 		});
 	}
 	
-	
-
+	function setName (name) {
+		console.log("NAME", name);
+		mailOptions.name = name;
+	}
 	function setEmail (email) {
 		mailOptions.email = email;
 	}
@@ -22,19 +26,11 @@ app.factory("CheckOutFactory", function($http){
 		return mailOptions;
 	}
 
-	function createText (userName, orderId, address, productList, date) {
-		mailOptions.text = `Thankyou ${userName}
-
-			Your order: ${orderId}
-			date: ${date}
-
-			Will be delivered (date+5-7 days if theres time)`
-	}
-
 	return {
 		sendConfirmation: sendConfirmation, 
 		setAddress: setAddress,
 		setEmail: setEmail,
+		setName: setName,
 		getMailOptions: getMailOptions
 	};
 });

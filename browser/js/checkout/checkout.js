@@ -2,15 +2,7 @@
 //for now I just stuck it in home
 //assuming logged in
 
-//    //sv rewrite so products persist
-    // function total (products) {
-    //     console.log("here", products)
-    //     var total = products.reduce(function(a, b){
-    //         console.log(a, b);
-    //         return a+(b.price*b.quantity);
-    //     }, 0);
 
-    // }
 app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthService) {
 
     $scope.back = function() {
@@ -33,13 +25,11 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
     
 });
 
-app.controller("confirmCtrl", function($scope, CheckOutFactory,  products){
+app.controller("confirmCtrl", function($scope, CheckOutFactory, CartFactory, products){
     $scope.finalInfo = CheckOutFactory.getMailOptions()
     console.log("finalInfo", $scope.finalInfo)
     $scope.products = products;
-    // $scope.total = CartFactory.total($scope.products)
-    
-    console.log("products", $scope.total)
+    $scope.total = CartFactory.total($scope.products);
     $scope.submit = CheckOutFactory.sendConfirmation;
 });
 
@@ -56,11 +46,12 @@ app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory
         
     $scope.setAddress = function (address) {
         if (address) {
+            CheckOutFactory.setName($scope.user.fullName);
             CheckOutFactory.setAddress(address);
         }
         else {
-            var address = $scope.firstname+" "+$scope.lastname+" "+$scope.address +","+ $scope.apt +","+ $scope.city+" "+$scope.state+" "+$scope.zip;
-
+            var address = $scope.address +","+ $scope.apt +","+ $scope.city+" "+$scope.state+" "+$scope.zip;
+            CheckOutFactory.setName($scope.firstname+" "+$scope.lastname);
             CheckOutFactory.setAddress(address);
         }
     };
