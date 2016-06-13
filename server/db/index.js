@@ -25,12 +25,11 @@ db.Review.belongsTo(db.Product);
 db.Product.hasMany(db.Review);
 
 db.Category.belongsToMany(db.Product, {
-    // through: 'ProductCategory'
-		through: 'CategoryProduct'
+		through: 'ProductCategory'
 
 });
 db.Product.belongsToMany(db.Category, {
-    through: 'CategoryProduct'
+    through: 'ProductCategory'
 });
 
 db.Order.belongsTo(db.User);
@@ -38,5 +37,6 @@ db.User.hasMany(db.Order);
 
 
 db.Order.belongsToMany(db.Product, {
-    through: db.OrderProduct
+    through: db.OrderProduct,
+		unique: false
 });

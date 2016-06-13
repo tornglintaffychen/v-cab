@@ -1,6 +1,10 @@
+
 <div class="container">
 	<h3>Categories:</h3>
 		<ul class ="nav nav-pills">
+			<li role="category" ng-click="setCurrentCategory('all')">
+				<a>all </a>
+			</li>
 		<li  ng-repeat="category in categories" role="category" ng-click="setCurrentCategory(category.title)">
 				<a>
 				{{category.title}}

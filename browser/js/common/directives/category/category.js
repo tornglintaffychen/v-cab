@@ -1,25 +1,49 @@
-app.factory('CategoryFactory', function ($http) {
+app.directive('categoryView', function (CategoryFactory) {
     return {
-        getAllCategories: function () {
-            return $http.get('/api/categories')
-						.then(function(categories){
-							return categories.data;
-						});
+        restrict: 'E',
+        scope: {},
+        templateUrl: 'js/common/directives/category/category.html',
+        link: function (scope) {
+            CategoryFactory.getAllCategories()
+                .then(function (categories) {
+                    scope.categories = categories;
+                });
+						//udpate
+						scope.setCurrentCategory = function (categoryTitle){
+							CategoryFactory.currentCategory.title=categoryTitle;
+						}
+            scope.getProductsForCategory = CategoryFactory.getProductsForCategory
         }
     };
 });
 
-app.directive('categoryView', function (CategoryFactory) {
-    return {
-        restrict: 'E',
-        scope: {
-        },
-        templateUrl: 'js/common/directives/category/category.html',
-        link: function (scope) {
-            CategoryFactory.getAllCategories()
-            .then(function(categories) {
-                scope.categories = categories;
-            });
-      }
-    };
-});
+app.config(function ($stateProvider) {
+    $stateProvider.state('category', {
+        url: '/category/:categoryId/:categoryTitle',
+        controller: 'CategoryCtrl',
+        templateUrl: 'js/catalog/productByCategory.html',
+        resolve: {
+            filteredProducts: function (CategoryFactory, $stateParams) {
+                console.log($stateParams)
+                return CategoryFactory.fetchByCategory($stateParams.categoryId)
+                    .then(function (category) {
+                        return category[0].products
+                    })
+            },
+            allCategories: function (CategoryFactory) {
+                return CategoryFactory.getAllCategories()
+            },
+            currentCategory: function ($stateParams) {
+                return $stateParams.categoryTitle;
+            }
+        }
+    })
+})
+
+app.controller('CategoryCtrl', function (CategoryFactory, filteredProducts, $scope, allCategories, CartFactory, currentCategory) {
+    $scope.filteredProducts = filteredProducts;
+    $scope.categories = allCategories;
+    $scope.addToCart = CartFactory.addToCart;
+    $scope.currentCategory = currentCategory;
+
+})

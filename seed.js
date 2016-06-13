@@ -13,6 +13,8 @@ function generateRandomNum(min,max) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
+
+
 function generateOrderProdArray(products) {
 	let prodArray = [];
 	for (var i = 0; i < 3; i++) {
@@ -97,79 +99,33 @@ var data = {
     }, {
         title: "full body"
     }],
-    products: [{
-        id: 1,
+		products: [{
         title: 'KBuechs',
         inventory: 47,
-        photoUrl: "images/default.jpg",
+        photoUrl: "images/kbuechs.jpg",
         price: 1.50,
         returnable: true,
-        description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
-        categories: [{
-            title: "+O"
-        }, {
-            title: "full body"
-        }]
+        description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive',
+        categories: ["+O","full body"]
     }, {
-        id: 2,
         title: 'Lorimited Edition',
         inventory: 6,
         photoUrl: "images/default.jpg",
         price: 79.99,
         returnable: false,
-        description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete.',
-        categories: [{
-            title: "espresso"
-        }, {
-            title: "spicy"
-        }, {
-            title: "dry"
-        }]
+        description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated',
+        categories: [
+            "espresso", "spicy", "dry"
+        ]
+
     }, {
-        id: 3,
         title: 'The Taff',
         inventory: 8,
         photoUrl: "images/default.jpg",
         price: 42.30,
         returnable: false,
         description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.',
-        categories: [{
-            title: "B"
-        }, {
-            title: "vegan"
-        }, {
-            title: "espresso"
-        }]
-
-    }, {
-        id: 4,
-        title: 'Samantharama',
-        inventory: 19,
-        photoUrl: "images/default.jpg",
-        price: 16.66,
-        returnable: false,
-        description: 'Frankly, we love this new offering. Our distributors have found something crisp and refreshing that is bright on the palate without the acidity normally associated with ',
-        categories: [{
-            title: "dry"
-        }, {
-            title: "crisp"
-        }]
-    }, {
-        id: 5,
-        title: 'Healthy Choice',
-        inventory: 10,
-        photoUrl: "images/default.jpg",
-        price: 200,
-        returnable: false,
-        description: 'This is a very healthy blood from a very healthy vegan lady.',
-        categories: [{
-            title: "espresso"
-        }, {
-            title: "spicy"
-        }, {
-            title: "vegan"
-
-        }]
+        categories: [ "B", "vegan", "espresso"]
     }],
     orders: [{
         userId: 1
@@ -195,11 +151,11 @@ var data = {
         rating: 1,
         userId: 5,
         productId: 1
-    }, {
-        text: 'beutiful. :)',
-        rating: 4,
-        userId: 2,
-        productId: 4
+    // }, { //breaking my seed
+    //     text: 'beutiful. :)',
+    //     rating: 4,
+    //     userId: 2,
+    //     productId: 4
     }, {
         text: 'bad stuff. it serves no purpose',
         rating: 2,
@@ -226,40 +182,50 @@ db.sync({
 		//CREATE PRODUCTS
 		.then(function (createdCategories) {
 			console.log("Creating products");
-		 	var createProducts = data['products'].map((product) => {
-				return Product.create(product,{
-						include:[Category]
-				})
-			})
-			return Promise.all(createProducts);
-		})
-		//CREATE ORDERS
-		.then(function (createdProducts) {
-			//what products do we get?
-			console.log("!!!!!!createdProducts", getData(createdProducts));
-			console.log("Creating orders");
 
-			return	Order.bulkCreate(data['orders'])
-			.then(function () {
-				return	Order.findAll()
-				.then(function (createdOrders) {
-					createdOrders.forEach((order, i)=>{
-						let prodOrdersArray = generateOrderProdArray(createdProducts);
-						console.log("????ProdOrders",getData(prodOrdersArray));
-						for (product of prodOrdersArray) {
-							order.addProduct(product.product, product.orderInfo)
-						}
+			return	Category.findAll()
+			.then((foundCategories) => {
+				var createProducts = data['products'].map((product) => {
+					//get the official category info for the attached categories
+					product.categories = foundCategories.filter((cat) => {
+						return product.categories.includes(cat.title);
 					})
-					console.log("!!!created orders", getData(createdOrders));
-				});
+					return Product.create(product)
+					.then((createdProduct) => {
+						//add categories to product
+						return createdProduct.addCategories(product.categories)
+					})
+				})
+				return Promise.all(createProducts);
 			})
+
+		})
+		// CREATE ORDERS
+		.then(function () {
+			return	Order.bulkCreate(data['orders'])
+		})
+		//TODO: Connect products to Orders
+		.then(function(){
+			return Product.findAll()
+			.then(function (createdProducts) {
+					return	Order.findAll()
+					.then(function (createdOrders) {
+						createdOrders.forEach((order)=>{
+							let prodOrdersArray = generateOrderProdArray(createdProducts);
+							return Promise.all(
+								prodOrdersArray.map((product) => {
+									return order.addProduct(product.product, product.orderInfo)
+								}))
+						})
+					});
+				})
+
     })
-		//CREATE REVIEWS
+		// CREATE REVIEWS
     .then(function () {
-        var createReviews = data['reviews'].map(function (reviewObj) {
-            return Review.create(reviewObj)
-        })
-        return Promise.all(createReviews);
+			console.log("Creating reviews");
+				return Review.bulkCreate(data['reviews']);
+
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
