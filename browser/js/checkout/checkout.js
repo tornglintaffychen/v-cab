@@ -9,19 +9,18 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
     $scope.submit = CheckOutFactory.sendConfirmation;
 });
 
-app.controller("addressCtrl", function ($scope, AddressFactory, user, AuthService ) {
+app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory, user, AuthService ) {
     $scope.user = user;
     $scope.shippingInfo = {};
     $scope.states = AddressFactory.getStates();
-    $scope.toggle = function () {
-        $scope.change = !$scope.change;
-    };
+
     $scope.setAddress = function (address) {
         if (address) {
-            $scope.shippingInfo = { 
-                address: "no change"
-            };
+            CheckOutFactory.setAddress(address);
         }
-        //else //validate= state.go
-    };
+        else {
+            var address = $scope.address +","+ $scope.apt +","+ $scope.city+" "+$scope.state+" "+$scope.zip;
+            console.log("street", addressObj);
+        }
+    }
 });

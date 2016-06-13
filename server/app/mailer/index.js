@@ -9,7 +9,6 @@ var secrets = require('../configure/authentication/secrets');
 router.post('/send', handleSayHello);
 
 function handleSayHello(req, res) {
-	console.log("here")
 	var mailOptions = {
 	    from: secrets.auth.user, // sender address
 	    to: secrets.testReciever.email, // list of receivers

@@ -1,9 +1,9 @@
 <div class="row">
-	<div class="col-md-4" ng-show="user.address && !change">
+	<div class="col-md-4" ng-show="user.address">
 		<h4>Shipping Address</h4>
 			<p ng-model="name">{{ user.fullName }}</p>
 			<p>{{ user.address }}</p>
-			<button class="btn btn-default" ng-click="setAddress('existing')">Use This Address</button>
+			<button class="btn btn-default" ng-click="setAddress(user.address)">Use This Address</button>
 		</div>
 		<br>
 
@@ -11,18 +11,19 @@
 			<h4>New Shipping Address</h4>
 			<form>
 		 		<div class="form-group">
-					<label for="exampleInputEmail1">Name</label>
+					<label for="exampleInputEmail1">Recieptient Name</label>
 					<input class = "form-control" ng-model="firstname" placeholder="firstname"/>
 					<input class = "form-control" ng-model="lastname" placeholder="lastname"/>
 				</div>
 				<div class="form-group">
 					<label for="exampleInputEmail1">Address</label>
 					<input class = "form-control" ng-model="street" placeholder="street"/>
+					<input class = "form-control" ng-model="apt" placeholder="Apt/Suite #"/>
 					<input class = "form-control" ng-model="city" placeholder="city"/>
 					<input class = "form-control" ng-model="zip" placeholder="zip"/>
 					<select class="form-control state" ng-model="state" ng-options="state for state in states"></select>
 				</div>
-				<button class="btn btn-default">Use This Address</button>
+				<button ng-click="setAddress()" class="btn btn-default">Use This Address</button>
 				<button ng-show="user.firstName !== 'Bella'" class="btn btn-default">Save This Address</button>
 			</form>
 		</div>
