@@ -45,20 +45,8 @@ app.factory('CartFactory', function ($http) {
 
     }
 
-<<<<<<< HEAD
-    //sv rewrite so products persist
-    function total (products) {
-        return products.reduce(function(a, b){
-            return (a.price*a.quantity)+(b.price*b.quantity)
-        }, 0);
-    }
-
-    function removeFromCart(product, orderId) {
-        return $http.put('/api/order/' + orderId + '/deleteItem', product)
-=======
     function deleteItem(product) {
         return $http.put('/api/order/deleteItem', product)
->>>>>>> master
             .then(getData);
     }
 
@@ -73,7 +61,16 @@ app.factory('CartFactory', function ($http) {
                 return res.data;
             })
     }
+    //sv rewrite so products persist
+    function total (products) {
+        console.log("here", products)
+        var total = products.reduce(function(a, b){
+            console.log(a, b);
+            return a+(b.price*b.quantity);
+        }, 0);
 
+    }
+    
     function clearCart() {
         return $http.delete('/api/order/');
     }
@@ -92,14 +89,8 @@ app.factory('CartFactory', function ($http) {
         deleteItem: deleteItem,
         submitOrder: submitOrder,
         clearCart: clearCart,
-<<<<<<< HEAD
-        clearCart: clearCart,
-        userId: userId,
-        total: total
-=======
         getInCartId: getInCartId,
         userId: userId,
         count: count
->>>>>>> master
     }
 });

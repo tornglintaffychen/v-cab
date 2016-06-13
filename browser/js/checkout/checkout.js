@@ -1,17 +1,25 @@
 //ui-view from incart
 //for now I just stuck it in home
 //assuming logged in
+
+//    //sv rewrite so products persist
+    // function total (products) {
+    //     console.log("here", products)
+    //     var total = products.reduce(function(a, b){
+    //         console.log(a, b);
+    //         return a+(b.price*b.quantity);
+    //     }, 0);
+
+    // }
 app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthService) {
 
     $scope.back = function() {
-
         if ($state.is("checkout.creditcard")) {
             $state.go("checkout.address");
         }
         if ($state.current.name !== "checkout.confirm") {
             $state.go("checkout.creditcard");
         }
-
     };
 	$scope.next = function() {
         // console.log("here", $state.is)
@@ -25,15 +33,13 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
     
 });
 
-app.controller("confirmCtrl", function($scope, CheckOutFactory, CartFactory, products){
+app.controller("confirmCtrl", function($scope, CheckOutFactory,  products){
     $scope.finalInfo = CheckOutFactory.getMailOptions()
     console.log("finalInfo", $scope.finalInfo)
     $scope.products = products;
-    $scope.total = CartFactory.total(products)
+    // $scope.total = CartFactory.total($scope.products)
     
-
-    console.log("products", $scope.products)
-
+    console.log("products", $scope.total)
     $scope.submit = CheckOutFactory.sendConfirmation;
 });
 
