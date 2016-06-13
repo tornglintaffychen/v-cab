@@ -2,6 +2,7 @@ app.factory('CategoryFactory', function ($http) {
 
     var currentProducts;
     var currentCategory= {title: "all"};
+		var currentCategories  = [];
 
     function getAllCategories() {
         return $http.get('/api/categories')
@@ -20,7 +21,8 @@ app.factory('CategoryFactory', function ($http) {
     return {
         getAllCategories: getAllCategories,
         fetchByCategory: fetchByCategory,
-				currentCategory
+				currentCategory,
+				currentCategories
     }
 
 });
