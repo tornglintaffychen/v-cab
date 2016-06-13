@@ -3,6 +3,15 @@ var router = require('express').Router();
 var rootPath = '../../../';
 var Review = require(rootPath + 'db').Review;
 
+/* EI: to protect, create some middleware that checks if a user is an admin, and then put all admin-only routes after it
+
+very rough example:
+router.use(function(){
+    if (!req.user.isAdmin) //send back error or throw error or something
+    else next();
+})
+
+*/
 
 // only admin users can see all reviews
 router.get('/', function (req, res, next) {
