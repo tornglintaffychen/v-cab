@@ -65,6 +65,7 @@ router.get('/search', function (req, res, next) {
 
 //Can we just include in the find one?
 // find all reviews a specific product has
+//YI: now these urls make more sense to me than the ones in the reviews routes
 router.get('/:id/reviews', function (req, res, next) {
     Product.findOne({
             where: {

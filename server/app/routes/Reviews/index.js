@@ -3,6 +3,7 @@ var router = require('express').Router();
 var rootPath = '../../../';
 var Review = require(rootPath + 'db').Review;
 
+//YI: I feel like the urls for this make less sense. like if you just use /review it doesn't make a whole lot of sense since reviews really only make sense in the context of a specific product. I think these would fit better under products.
 
 // only admin users can see all reviews
 router.get('/', function (req, res, next) {
@@ -25,6 +26,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 //create review*sv
+//YI: do you post to /reviews or to /:productId/reviews?
 router.post('/', function (req, res, next) {
     Review.create(req.body)
         .then(function (added) {

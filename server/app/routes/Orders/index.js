@@ -76,6 +76,7 @@ router.get('/', function (req, res, next) {
 });
 
 //find all products by order id
+//YI: this route is confusing to me. its /order/products. what is it used for? is it to view my own cart? if so, the url is confusing.
 router.get('/products', function (req, res, next) {
     OrderProduct.findAll({
             where: {
@@ -132,6 +133,7 @@ router.post('/addToCart', function (req, res, next) {
 
 // tc: edit one item in the shopping cart or within 30 mins after placing order
 // admin should be able to edit everything in the order
+//YI: since put is always edit, there is no need to specify this in the url. it would be be more accurate to make it a put to the specific order's or orderItem's id. same goes for delete.
 router.put('/editItem', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
