@@ -30,6 +30,7 @@ function findOrCreateUser (req, res, next) {
 
     return user; 
 }
+
 //sv we should make some class methods
 //sv//names weren't matching up with model - inventory vs quantity 
 function addProductToOrder (orderId, reqObj) {
@@ -43,7 +44,6 @@ function addProductToOrder (orderId, reqObj) {
 }
 
 function createOrUpdateOrderProduct (orderId, reqObj) {
-   
     return OrderProduct.findOne({
         where: {
             orderId: orderId,

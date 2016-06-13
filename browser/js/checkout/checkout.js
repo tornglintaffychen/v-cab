@@ -1,13 +1,17 @@
 //ui-view from incart
 //for now I just stuck it in home
 //assuming logged in
-app.controller("checkoutCtrl", function ($scope, AddressFactory, user, AuthService ) {
-	$scope.user = user;
-    $scope.shippingInfo = {}
-	$scope.states = AddressFactory.getStates();
-	$scope.toggle = function () {
-		$scope.change = !$scope.change;
-	};
+app.controller("checkoutCtrl", function ($scope, AuthService) {
+	
+});
+
+app.controller("addressCtrl", function ($scope, AddressFactory, user, AuthService ) {
+    $scope.user = user;
+    $scope.shippingInfo = {};
+    $scope.states = AddressFactory.getStates();
+    $scope.toggle = function () {
+        $scope.change = !$scope.change;
+    };
     $scope.setAddress = function (address) {
         if (address) {
             $scope.shippingInfo = { 
@@ -16,6 +20,4 @@ app.controller("checkoutCtrl", function ($scope, AddressFactory, user, AuthServi
         }
         //else //validate= state.go
     };
-	console.log(user);
-
 });

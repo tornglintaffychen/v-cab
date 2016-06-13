@@ -1,16 +1,19 @@
 app.config(function ($stateProvider) {
+
     $stateProvider.state("checkout", {
         url: "/checkout",
-        abstract: true,
         templateUrl: "js/checkout/checkout.html",
-        controller: "checkoutCtrl",
-
-	});
-
-    $stateProvider.state("checkout.address", {
-    	url: "/checkout/address",
+        controller: "checkoutCtrl"
+       
+	})
+    .state("checkout.creditcard", {
+        url: "/creditcard",
+        templateUrl: "js/checkout/creditcard.html"
+    })
+    .state("checkout.address", {
+    	url: "/address",
     	templateUrl: "js/checkout/address.html",
-        controller: "checkoutCtrl",
+        controller: "addressCtrl",
         resolve: {
             user: function (AuthService, AddressFactory) {
 				return AuthService.getLoggedInUser()
@@ -27,14 +30,8 @@ app.config(function ($stateProvider) {
 			}
 	    }
     });
-    $stateProvider.state("checkout.creditcard", {
-    	url: "/checkout/creditcard",
-    	templateUrl: "js/checkout/creditcard.html",
-        controller: "checkoutCtrl"
-    });
+   
      
-
-
 });
 
 
