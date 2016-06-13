@@ -26,10 +26,6 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
             });
 
             scope.isLoggedIn = function () {
-                // AuthService.getLoggedInUser()
-                //     .then(function (user) {
-                //         console.log("user:", user)
-                //     })
                 return AuthService.isAuthenticated();
             };
 
