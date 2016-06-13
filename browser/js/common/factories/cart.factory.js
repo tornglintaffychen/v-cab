@@ -5,52 +5,65 @@
 // tc: product view page, add-to-cart needs to use this factory as well (?)
 
 app.factory('CartFactory', function ($http) {
-    var itemCount = 0;
-    // tc: controller can change the currentCartId (?)
-    var currentCartId = null;
-    var currentUserId = null;
+    var count = 0;
+
+    var userId = null;
 
     function getData(response) {
         return response.data;
     }
 
-    // this function is for the prodcuts / product controller
-    function addToCart(product) {
-        $http.post('/api/order/addToCart', product)
+    function getInCartId(uId) {
+        $http.get('/api/users/' + uId)
             .then(getData)
-
+            .then(function (user) {
+                return user.orders.filter(function (order) {
+                    return order.status === "inCart"
+                })[0].id;
+            })
     }
 
-    function getOrder(orderId) {
-        return $http.get('/api/order/' + orderId)
-            .then(getData);
-    }
-
-    function getItems(orderId) {
-        return $http.get('/api/order/' + orderId + '/products')
+    function getItems() {
+        return $http.get('/api/order/products')
             .then(function (response) {
-                itemCount = response.data.length;
+                count = response.data.reduce(function (a, b) {
+                    return a + b.quantity
+                }, 0)
                 return response.data;
             });
     }
 
+    // this function is for the prodcuts / product controller
+    function addToCart(product) {
+        $http.post('/api/order/addToCart', product)
+            .then(function () {
+                return getItems();
+            })
+            .then(function (cart) {
+                return cart
+            })
 
-    function removeFromCart(product, orderId) {
-        return $http.put('/api/order/' + orderId + '/deleteItem', product)
+    }
+
+    function deleteItem(product) {
+        return $http.put('/api/order/deleteItem', product)
             .then(getData);
     }
 
-    function getItemCount() {
-        return itemCount;
+    function getCount() {
+        return count;
     }
 
-    function updateQty(orderId, product) {
-        return $http.put('/api/order/' + orderId + '/product/' + product.productId, product)
-            .then(getData);
+    function editItem(product) {
+        return $http.put('/api/order/editItem', product)
+            .then(function (res) {
+                getItems();
+                return res.data;
+            })
     }
 
-    function clearCart(orderId) {
-        return $http.delete('/api/order/' + orderId)
+    function clearCart() {
+        return $http.delete('/api/order/');
     }
 
     function submitOrder() {
@@ -61,14 +74,14 @@ app.factory('CartFactory', function ($http) {
 
     return {
         addToCart: addToCart,
-        getOrder: getOrder,
         getItems: getItems,
-        getItemCount: getItemCount,
-        updateQty: updateQty,
-        removeFromCart: removeFromCart,
-        currentCartId: currentCartId,
+        getCount: getCount,
+        editItem: editItem,
+        deleteItem: deleteItem,
         submitOrder: submitOrder,
         clearCart: clearCart,
-        clearCart: clearCart
+        getInCartId: getInCartId,
+        userId: userId,
+        count: count
     }
 });

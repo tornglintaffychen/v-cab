@@ -4,12 +4,12 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
         url: '/products/:productId',
-        templateUrl: 'js/detail/templates/product.html',
+        templateUrl: 'js/catalog/product.html',
         controller: 'ProductCtrl',
         resolve: {
             //LA: changed from oneProduct to singleProduct
             singleProduct: function (ProductFactory, $stateParams) {
-                return ProductFactory.fetchById($stateParams.id);
+                return ProductFactory.fetchById($stateParams.productId)
             }
         }
     })
@@ -27,16 +27,18 @@ app.config(function ($stateProvider) {
             }
         }
     });
+
 });
 
 
 // //product controller for single product
-app.controller('ProductCtrl', function ($scope, singleProduct) {
+app.controller('ProductCtrl', function ($scope, singleProduct, CartFactory) {
     $scope.product = singleProduct;
+    $scope.addToCart = CartFactory.addToCart;
 })
 
 // //products controller for all products
-app.controller('ProductsCtrl', function ($scope, CategoryFactory, allProducts ) {
+app.controller('ProductsCtrl', function ($scope, CategoryFactory, allProducts, ProductFactory, CartFactory, $window) {
     $scope.products = allProducts;
-		
+    $scope.addToCart = CartFactory.addToCart;
 });

@@ -49,8 +49,9 @@ router.get('/:id', function (req, res, next) {
             where: {
                 id: req.params.id
             },
-            include: Review,
-            Order
+            include: [Review,
+                Order
+            ]
         })
         .then(function (user) {
             if (user) {

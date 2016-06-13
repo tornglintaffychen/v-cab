@@ -28,7 +28,7 @@ app.factory('ProductFactory', function ($http) {
             .then(getData)
             .catch(function (error) {
                 console.error(error.message)
-            })
+            });
     };
     ProductFactory.fetchProductsByCategory = function (categoryid) {
         return $http.get('/api/catagories/' + categoryid)

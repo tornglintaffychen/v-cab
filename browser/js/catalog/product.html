@@ -1,0 +1,44 @@
+<div class = "container-fluid">
+	<div class="row">
+		<div class="col-xs-8">
+				<h3>
+					{{ product.title }}
+				</h3>
+				<h4>
+					${{ product.price }}
+				</h4>
+
+				<img ng-src = "{{ product.photoUrl }}">
+
+				<div>
+					<span><b>Product Description: </b></span>
+					<p>
+						{{ product.description}}
+					</p>
+				</div>
+
+				<div>
+					<span><b>Categories:</b></span>
+					<div
+					ng-repeat="category in product.categories">
+					{{ category.title }}
+				</div>
+			</div>
+
+			<div>
+				<span><b>User Reviews:</b></span>
+				<div ng-repeat="review in product.reviews">
+					<span><b>Rating:</b> {{review.rating}}</span>
+					<span>{{ review.text }}</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-4">
+			<button class="btn btn-default" ng-click="addToCart(product)">
+				<img height = "10px" src="/js/common/images/teeth-logo-black.png" />
+				Add to Cart
+			</button>
+		</div>
+	</div>
+</div>
