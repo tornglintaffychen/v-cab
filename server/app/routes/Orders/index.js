@@ -19,7 +19,6 @@ function findOrCreateUser(req, res, next) {
             lastName: 'Swan'
         })
         .then(function (createdUser) {
-            //YI: I'm not sure if I like the idea of logging in unauthenticated users. you don't want them to have the same abilities as logged in users, so I think this shortcut is going to end up creating more trouble than it solves.
             req.logIn(createdUser, function (loginErr) {
                 if (loginErr) return next(loginErr);
                 // res.status(200).send({
