@@ -9,7 +9,7 @@
         <!-- tc-TODO: should filter not inCart status orders only -->
         <div ng-repeat="order in user.orders">
             <p><span>Order Id:</span>
-                {{order.id}}
+                <a ui-sref="myAccount.oneOrder({orderId: order.id})">{{order.id}}</a>
             </p>
             <p><span>Order Status:</span>
                 {{order.status}}
@@ -22,6 +22,5 @@
             {{user.address}}
         </p>
     </div>
-    <div class="col-xs-6">
-    </div>
+    <ui-view></ui-view>
 </div>

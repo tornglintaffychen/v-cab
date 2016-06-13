@@ -1,0 +1,8 @@
+<div class="col-xs-6">
+    <div ng-repeat="product in orderedItems">
+        <!-- tc-TODO: click the product title and will go to that product page -->
+        <p><b><span>Prodcut Name: </span></b><a ng-click="">{{product.tile}}</a></p>
+        <p><b><span>Price: </span></b>{{product.price | currency}}</p>
+        <p><b><span>Order Quantity: </span></b>{{product.quantity}}</p>
+    </div>
+</div>
