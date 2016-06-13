@@ -7,7 +7,7 @@
             {{user.email}}
         </p>
         <!-- tc-TODO: should filter not inCart status orders only -->
-        <div ng-repeat="order in user.orders">
+        <div ng-repeat="order in orders">
             <p><span>Order Id:</span>
                 <a ng-click="goToOrder(order.id)">{{order.id}}</a>
             </p>
@@ -15,7 +15,7 @@
                 {{order.status}}
             </p>
             <p><span>Purchase Date:</span>
-                {{order.purchaseDate}}
+                {{order.purchaseDate | date: 'MM.dd.yyyy'}}
             </p>
         </div>
         <p><span>Address:</span>

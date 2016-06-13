@@ -43,6 +43,10 @@ app.factory('MemberFactory', function ($http) {
 
 app.controller('MemberCtrl', function ($scope, user, MemberFactory, $state) {
     $scope.user = user;
+    $scope.orders = user.orders.filter(function (order) {
+        return order.status !== "inCart"
+    })
+
     $scope.goToOrder = function (id) {
         MemberFactory.getOrder(id)
             .then(function (res) {
@@ -50,4 +54,5 @@ app.controller('MemberCtrl', function ($scope, user, MemberFactory, $state) {
                 $state.go('myAccount.oneOrder')
             })
     }
+
 })
