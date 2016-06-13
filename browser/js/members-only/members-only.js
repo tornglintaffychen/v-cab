@@ -13,9 +13,6 @@ app.config(function ($stateProvider) {
             resolve: {
                 user: function (MemberFactory) {
                     return MemberFactory.getUser()
-                },
-                orderedItems: function (CartFactory) {
-                    return CartFactory.getItems()
                 }
             }
         })
@@ -34,13 +31,23 @@ app.factory('MemberFactory', function ($http) {
             })
     }
 
+    function getOrder(id) {
+        return $http.get('/api/order/' + id)
+    }
     return {
-        getUser: getUser
+        getUser: getUser,
+        getOrder: getOrder
     };
 
 });
 
-app.controller('MemberCtrl', function ($scope, user, orderedItems) {
+app.controller('MemberCtrl', function ($scope, user, MemberFactory, $state) {
     $scope.user = user;
-    $scope.orderedItems = orderedItems;
+    $scope.goToOrder = function (id) {
+        MemberFactory.getOrder(id)
+            .then(function (res) {
+                $scope.orderedItems = res.data;
+                $state.go('myAccount.oneOrder')
+            })
+    }
 })
