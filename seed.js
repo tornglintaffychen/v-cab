@@ -235,6 +235,7 @@ db.sync({
 		})
 		//CREATE ORDERS
 		.then(function (createdProducts) {
+			//what products do we get?
 			console.log("!!!!!!createdProducts", getData(createdProducts));
 			console.log("Creating orders");
 
