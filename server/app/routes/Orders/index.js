@@ -43,12 +43,7 @@ function addProductToOrder(orderId, reqObj) {
     });
 }
 
-<<<<<<< HEAD
 function createOrUpdateOrderProduct (orderId, reqObj) {
-=======
-function createOrUpdateOrderProduct(orderId, reqObj) {
-
->>>>>>> master
     return OrderProduct.findOne({
             where: {
                 orderId: orderId,
