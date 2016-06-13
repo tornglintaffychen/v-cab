@@ -36,20 +36,28 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
 });
 
 app.controller("confirmCtrl", function($scope, CheckOutFactory){
-
     $scope.submit = CheckOutFactory.sendConfirmation;
 });
 
 app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory, user, AuthService ) {
     $scope.user = user;
     console.log(user)
-    $scope.shippingAddress;
+  
+
+    $scope.confirmation = function(){
+        var allInfo = CheckOutFactory.getMailOptions();
+        console.log(allInfo.address, allInfo.email);
+        return allInfo.email && allInfo.address;
+    }
+
     $scope.states = AddressFactory.getStates();
     $scope.state = "New York";
 
-    console.log($scope.userEmail)
+    $scope.setEmail = CheckOutFactory.setEmail;
+        
+    
+
     $scope.setAddress = function (address) {
-        console.log(address);
         if (address) {
             CheckOutFactory.setAddress(address);
         }
@@ -59,6 +67,5 @@ app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory
             CheckOutFactory.setAddress(address);
             console.log("street", address);
         }
-        $scope.shippingAddress = address;
-    }
+    };
 });

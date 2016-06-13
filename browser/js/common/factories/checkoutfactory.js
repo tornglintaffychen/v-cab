@@ -11,12 +11,12 @@ app.factory("CheckOutFactory", function($http){
 	function setEmail (email) {
 		mailOptions.email = email;
 	}
-	
+
 	function setAddress (address) {
 		mailOptions.address = address;
 	}
 
-	function getMailOptions (email) {
+	function getMailOptions () {
 		return mailOptions;
 	}
 
@@ -31,6 +31,8 @@ app.factory("CheckOutFactory", function($http){
 
 	return {
 		sendConfirmation: sendConfirmation, 
-		setAddress: setAddress
+		setAddress: setAddress,
+		setEmail: setEmail,
+		getMailOptions: getMailOptions
 	};
 });

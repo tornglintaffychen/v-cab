@@ -36,10 +36,10 @@
 				<form name="emailForm">
 					<label for="exampleInputEmail1">Email</label>
 					<input type="email" class = "form-control" ng-model="userEmail" placeholder="please enter an email" required/>
-					</div>
+					<button ng-click="setEmail(userEmail)" class="btn btn-primary">Confirm</button>
 				</form>
 			</div>
 <!-- 		//checkOutInfo.$invalid -->
-		<button ng-disabled="emailForm.$invalid || !shippingAddress" ng-click="next()" class="btn btn-primary">next</button>
+		<button ng-disabled="!confirmation()" ng-click="next()" class="btn btn-primary">next</button>
 	</div>
 
