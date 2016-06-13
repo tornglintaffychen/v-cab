@@ -13,7 +13,12 @@ app.config(function ($stateProvider) {
     .state("checkout.confirm", {
         url: "/confirm",
         templateUrl: "js/checkout/confirm.html",
-        controller: "confirmCtrl"
+        controller: "confirmCtrl",
+        resolve:{
+            products: function(CartFactory){
+                return CartFactory.getItems()
+            }
+        }
     })
     .state("checkout.address", {
     	url: "/address",

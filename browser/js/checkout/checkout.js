@@ -2,21 +2,9 @@
 //for now I just stuck it in home
 //assuming logged in
 app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthService) {
-    $scope.showBack = function () {
-        if ($state.is("checkout.address")) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    $scope.showNext = function () {
-        if ($state.is("checkout.confirm")) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+
     $scope.back = function() {
+
         if ($state.is("checkout.creditcard")) {
             $state.go("checkout.address");
         }
@@ -24,39 +12,38 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
             $state.go("checkout.creditcard");
         }
     };
-	$scope.next = function(condition) {
+	$scope.next = function() {
+        // console.log("here", $state.is)
         if ($state.is("checkout.address")) {
             $state.go("checkout.creditcard");
         }
-        if ($state.current.name !== "checkout.creditcard") {
-            $state.go("checkout.confrim");
+        if ($state.is("checkout.creditcard")) {
+            $state.go("checkout.confirm");
         }
     };
     
 });
 
-app.controller("confirmCtrl", function($scope, CheckOutFactory){
+app.controller("confirmCtrl", function($scope, CheckOutFactory, products){
+    $scope.finalInfo = CheckOutFactory.getMailOptions()
+    console.log("finalInfo", $scope.finalInfo)
+    $scope.products = products;
+    console.log("products", $scope.products)
+
     $scope.submit = CheckOutFactory.sendConfirmation;
 });
 
 app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory, user, AuthService ) {
     $scope.user = user;
-    console.log(user)
   
-
     $scope.confirmation = function(){
         var allInfo = CheckOutFactory.getMailOptions();
-        console.log(allInfo.address, allInfo.email);
         return allInfo.email && allInfo.address;
     }
-
     $scope.states = AddressFactory.getStates();
     $scope.state = "New York";
-
     $scope.setEmail = CheckOutFactory.setEmail;
         
-    
-
     $scope.setAddress = function (address) {
         if (address) {
             CheckOutFactory.setAddress(address);
@@ -65,7 +52,6 @@ app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory
             var address = $scope.firstname+" "+$scope.lastname+" "+$scope.address +","+ $scope.apt +","+ $scope.city+" "+$scope.state+" "+$scope.zip;
 
             CheckOutFactory.setAddress(address);
-            console.log("street", address);
         }
     };
 });
