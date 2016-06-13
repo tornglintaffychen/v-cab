@@ -4,12 +4,12 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('product', {
         url: '/products/:productId',
-        templateUrl: 'js/catalog/products.html',
+        templateUrl: 'js/catalog/product.html',
         controller: 'ProductCtrl',
         resolve: {
-					//LA: changed from oneProduct to singleProduct
+            //LA: changed from oneProduct to singleProduct
             singleProduct: function (ProductFactory, $stateParams) {
-                return ProductFactory.fetchById($stateParams.id);
+                return ProductFactory.fetchById($stateParams.productId)
             }
         }
     })
@@ -17,25 +17,28 @@ app.config(function ($stateProvider) {
 
 // state for all products
 app.config(function ($stateProvider) {
-    $stateProvider.state('home.products', {
+    $stateProvider.state('products', {
         url: '/products',
-				controller: 'ProductsCtrl',
+        controller: 'ProductsCtrl',
         templateUrl: 'js/catalog/products.html',
         resolve: {
             allProducts: function (ProductFactory) {
                 return ProductFactory.fetchAll();
             }
         }
-    });
+    })
 });
 
 
 // //product controller for single product
-app.controller('ProductCtrl', function ($scope, singleProduct) {
+app.controller('ProductCtrl', function ($scope, singleProduct, CartFactory) {
     $scope.product = singleProduct;
+    $scope.addToCart = CartFactory.addToCart;
+
 })
 
 // //products controller for all products
-app.controller('ProductsCtrl', function ($scope, allProducts) {
+app.controller('ProductsCtrl', function ($scope, CategoryFactory, allProducts, ProductFactory, CartFactory) {
     $scope.products = allProducts;
+    $scope.addToCart = CartFactory.addToCart;
 });

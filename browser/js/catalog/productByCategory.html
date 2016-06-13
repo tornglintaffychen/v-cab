@@ -1,11 +1,13 @@
 <category-view ></category-view>
-<!-- LA: View for all the products -->
 
-<span class="col-md-1"></span>
-<div class="col-md-3"   ng-repeat='product in products'>
+<!-- LA: View for all the products -->
+<div class="col-md-1"><b>{{currentCategory}}</b></div>
+
+<div class="col-md-3"   ng-repeat='product in filteredProducts'>
 		<a ui-sref = "product({productId:product.id})">
 			<img  class="col-md-12" src="{{product.photoUrl}}" />
 			<h1 class="col-md-6" > {{product.title}} </h1>
+			<!-- <span class="col-md-12"></span> -->
 			<p class="col-md-12">
 				{{product.price | currency}}
 			</p>

@@ -1,0 +1,17 @@
+<div class="container">
+	
+	<hr>
+	<!-- if someone's loggin in and has address show address block -->
+	<div ng-show="user && address">
+		<h5>Shipping Address</h5>
+		<p>{{ user.fullName }}</p>
+		<p>{{ user.address }}</p>
+		<button ng-click="toggle()">Change</button>
+		<button ng-show="change">Use This Address</button>
+	</div>
+	<div ng-show="!address || change">
+		<p>add new address</p>
+		<button>Use This Address</button>
+	</div>
+
+</div>
