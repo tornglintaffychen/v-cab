@@ -1,0 +1,27 @@
+<div class="contianer">
+    <div class="col-xs-6">
+        <p><span>Name:</span>
+            {{user.firstName}} {{user.lastName}}
+        </p>
+        <p><span>Eamil Addrss:</span>
+            {{user.email}}
+        </p>
+        <!-- tc-TODO: should filter not inCart status orders only -->
+        <div ng-repeat="order in user.orders">
+            <p><span>Order Id:</span>
+                {{order.id}}
+            </p>
+            <p><span>Order Status:</span>
+                {{order.status}}
+            </p>
+            <p><span>Purchase Date:</span>
+                {{order.purchaseDate}}
+            </p>
+        </div>
+        <p><span>Address:</span>
+            {{user.address}}
+        </p>
+    </div>
+    <div class="col-xs-6">
+    </div>
+</div>
