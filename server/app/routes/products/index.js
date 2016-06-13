@@ -83,25 +83,4 @@ router.get('/:id/reviews', function (req, res, next) {
         .catch(next)
 });
 
-
-//Can we just include in the find one?
-// find all reviews a specific product has
-router.get('/:id/reviews', function (req, res, next) {
-    Product.findOne({
-            where: {
-                id: req.params.id
-            },
-            include: Review
-        })
-        //sending data back*sv
-        .then(function (product) {
-            if (product) {
-                res.json(product)
-            } else {
-                res.status(404).send("No Reviews Found");
-            }
-        })
-        .catch(next)
-});
-
 module.exports = router;
