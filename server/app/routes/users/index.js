@@ -2,14 +2,46 @@
 
 var router = require('express').Router();
 var rootPath = '../../../';
+var HttpError = require('../../../utils/HttpError')
 var User = require(rootPath + 'db').User;
 var Review = require(rootPath + 'db').Review;
 var Order = require(rootPath + 'db').Order;
 var parser = require('parse-address');
 
+router.param('id', function (req, res, next, id) {
+  User.findById(id)
+  .then(function (user) {
+    if (!user) throw HttpError(404);
+    req.requestedUser = user;
+    next();
+  })
+  .catch(next);
+});
+
+function assertIsLoggedIn (req, res, next) {
+  if (req.user) next();
+  else next(HttpError(401));
+}
+
+function selfOrAdmin (req, res, next){
+    if (req.user){
+        if (req.user === req.requestedUser || req.user.isAdmin) next();
+    }
+    else {
+        next(HttpError(401));
+    }
+}
+
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
+
+
+
 // only admin users can see all users
-router.get('/', function (req, res, next) {
-    User.findAll()
+router.get('/', assertAdmin, function (req, res, next) {
+    User.findAll({})
         .then(function (users) {
             res.json(users);
         })
@@ -25,9 +57,9 @@ router.post('/', function (req, res, next) {
         .catch(next);
 });
 
-//update user
-router.put('/:id', function (req, res, next) {
-    User.findById(req.params.id)
+// update user, only self and admin can update
+router.put('/:id', selfOrAdmin, function (req, res, next) {
+        User.findById(req.params.id)
         .then(function (foundUser) {
             //check it exists*sv
             if (foundUser) {
@@ -43,17 +75,15 @@ router.put('/:id', function (req, res, next) {
         })
         .catch(next);
 });
-//combined*sv
-//get one user, their order and reviews
+
+
+// get one user, their order and reviews
 router.get('/member', function (req, res, next) {
-    User.findOne({
-            where: {
-                id: req.session.passport.user
-            },
+    console.log("hi")
+    User.findById(req.session.passport.user,{
             include: [Review,
                 Order
-            ]
-        })
+            ]})
         .then(function (user) {
             if (user) {
                 res.json(user);

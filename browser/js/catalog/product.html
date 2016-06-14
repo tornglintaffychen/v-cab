@@ -107,6 +107,7 @@
     		 	</span>
 
         		<span ng-if="review.rating == 5">
+<<<<<<< HEAD
 			        Rating: 
 			        <span style="font-color: crimson"> 
 			        	&#9829;&#9829;&#9829;&#9829;&#9829;
@@ -118,11 +119,20 @@
 			        	{{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
 			        </p>
     		 	<span> 						
+=======
+			        Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9829;&#9829;&#9829;</span>
+			        <span>{{ review.text }}</span>
+			        <p>user posted at {{ review.createdAt | date:"longDate" }}</p>
+    		 	<span>
+
+				</div>
+>>>>>>> master
 			</div>
 		</div>
 
+
 		<div>
-			<button class="btn btn-default" ng-click="addToCart(product)" style="background-color: crimson; font-color: white" >
+			<button class="btn btn-default" ng-click="addToCart(product, user.id)" style="background-color: crimson; font-color: white" >
 				<img height = "15px" src="/js/common/images/teeth-logo-white.png" />
 				Add to Cart
 			</button>

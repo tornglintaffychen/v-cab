@@ -84,6 +84,7 @@ router.get('/:id/reviews', function (req, res, next) {
 });
 
 
+
 //Can we just include in the find one?
 // find all reviews a specific product has
 // router.post('/:id/reviews', function (req, res, next) {
@@ -103,5 +104,6 @@ router.get('/:id/reviews', function (req, res, next) {
 //     //     })
 //     //     .catch(next)
 // });
+
 
 module.exports = router;

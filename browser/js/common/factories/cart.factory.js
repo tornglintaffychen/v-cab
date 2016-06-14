@@ -34,8 +34,19 @@ app.factory('CartFactory', function ($http) {
     }
 
     // this function is for the prodcuts / product controller
-    function addToCart(product) {
-        $http.post('/api/order/addToCart', product)
+    // function addToCart(product) {
+    //     $http.post('/api/order/addToCart', product)
+    //         .then(function () {
+    //             return getItems();
+    //         })
+    //         .then(function (cart) {
+    //             return cart
+    //         })
+    //
+    // }
+
+    function addToCart(product, userId) {
+        $http.post('/api/order/' + 'userId', product)
             .then(function () {
                 return getItems();
             })
@@ -45,8 +56,8 @@ app.factory('CartFactory', function ($http) {
 
     }
 
-    function deleteItem(product) {
-        return $http.put('/api/order/deleteItem', product)
+    function deleteItem(userId, productId) {
+        return $http.delete('/api/order/' + userId +'/'+productId)
             .then(getData);
     }
 
