@@ -5,7 +5,7 @@ var rootPath = '../../../';
 var User = require(rootPath + 'db').User;
 var Review = require(rootPath + 'db').Review;
 var Order = require(rootPath + 'db').Order;
-var chalk = require('chalk');
+var parser = require('parse-address');
 
 // only admin users can see all users
 router.get('/', function (req, res, next) {
@@ -64,5 +64,12 @@ router.get('/member', function (req, res, next) {
         .catch(next);
 });
 
+
+router.get('/address/:string', function(req, res, next) {
+    var string = req.params.string;
+    console.log("here", string);
+
+    res.json(parser.parseLocation(string));
+});
 
 module.exports = router;

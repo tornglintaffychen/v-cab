@@ -10,6 +10,7 @@ app.config(function ($urlRouterProvider, $locationProvider) {
     $urlRouterProvider.when('/auth/:provider', function () {
         window.location.reload();
     });
+    $urlRouterProvider.when('/checkout', '/checkout/address');
 });
 
 // This app.run is for controlling access to specific states.

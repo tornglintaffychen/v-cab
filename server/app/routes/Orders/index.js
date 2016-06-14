@@ -30,6 +30,7 @@ function findOrCreateUser(req, res, next) {
 
     return user;
 }
+
 //sv we should make some class methods
 //sv//names weren't matching up with model - inventory vs quantity
 function addProductToOrder(orderId, reqObj) {
@@ -42,8 +43,7 @@ function addProductToOrder(orderId, reqObj) {
     });
 }
 
-function createOrUpdateOrderProduct(orderId, reqObj) {
-
+function createOrUpdateOrderProduct (orderId, reqObj) {
     return OrderProduct.findOne({
             where: {
                 orderId: orderId,
@@ -143,6 +143,7 @@ router.post('/addToCart', function (req, res, next) {
 });
 
 
+
 // tc: edit one item in the shopping cart or within 30 mins after placing order
 // admin should be able to edit everything in the order
 router.put('/editItem', function (req, res, next) {
@@ -171,7 +172,6 @@ router.put('/deleteItem', function (req, res, next) {
         })
         .catch(next)
 });
-
 
 
 

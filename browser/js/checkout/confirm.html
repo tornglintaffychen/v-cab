@@ -1,0 +1,21 @@
+<div class="container">
+	<div>
+		<p><span><b>Name: </b></span> {{finalInfo.name}}</p>
+		<p><span><b>Address: </b></span> {{finalInfo.address}}</p>
+		<p><span><b>Email: </b></span> {{finalInfo.email}}</p>
+	</div>
+	<div>
+		<p><span><b>Items: </b></span></p>
+		<div ng-repeat="product in products">
+			<p><span><b>Name: </b></span> {{product.title}}</p>
+			<p><span><b>Price: </b></span> {{product.price | currency}}</p>
+			<p><span><b>Quantity: </b></span> {{product.quantity}}</p>
+		</div>
+	</div>
+	<div>
+		<p><span><b>Total: </b></span> {{ total | currency }}</p>
+	</div>
+	<button ng-click="submit(products)" class="btn btn-primary">submit</button>
+</div>
+
+
