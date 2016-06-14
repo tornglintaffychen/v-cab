@@ -1,15 +1,18 @@
 app.factory("CheckOutFactory", function($http){
 	var mailOptions = {};
 
-	function sendConfirmation (email) {
-		// mailOptions.date = Date.now();
+	function sendConfirmation (products) {
+		mailOptions.products = products;
 		return $http.post("/send/orderConfirmation", 
 		mailOptions)
 		.then(function(res){
 			return res.data;
 		});
 	}
-	
+	function setName (name) {
+		console.log("NAME", name);
+		mailOptions.name = name;
+	}
 	function setName (name) {
 		console.log("NAME", name);
 		mailOptions.name = name;
@@ -18,8 +21,8 @@ app.factory("CheckOutFactory", function($http){
 		mailOptions.email = email;
 	}
 
-	function setAddress (address) {
-		mailOptions.address = address;
+	function setAddress (addresdrs) {
+		mailOptions.address = adess;
 	}
 
 	function getMailOptions () {
