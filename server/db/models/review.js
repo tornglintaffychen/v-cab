@@ -14,6 +14,6 @@ module.exports = function (db) {
                 min: 1,
                 max: 5,
             }
-        },
+        }
     })
 }

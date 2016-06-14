@@ -1,32 +1,58 @@
 app.config(function ($stateProvider) {
 
-    $stateProvider.state('myAccount', {
-        url: '/members-area',
-        template: '<img ng-repeat="item in stash" width="300" ng-src="{{ item }}" />',
-        controller: function ($scope, SecretStash) {
-            SecretStash.getStash().then(function (stash) {
-                $scope.stash = stash;
-            });
-        },
-        // The following data.authenticate is read by an event listener
-        // that controls access to this state. Refer to app.js.
-        data: {
-            authenticate: true
-        }
-    });
+    $stateProvider
+        .state('myAccount', {
+            url: '/my-account',
+            templateUrl: '/js/members-only/members-only.html',
+            controller: 'MemberCtrl',
+            // The following data.authenticate is read by an event listener
+            // that controls access to this state. Refer to app.js.
+            data: {
+                authenticate: true
+            },
+            resolve: {
+                user: function (MemberFactory) {
+                    return MemberFactory.getUser()
+                }
+            }
+        })
+        .state('myAccount.oneOrder', {
+            templateUrl: 'js/members-only/one-order.html'
+        })
 
 });
 
-app.factory('SecretStash', function ($http) {
+app.factory('MemberFactory', function ($http) {
 
-    var getStash = function () {
-        return $http.get('/api/members/secret-stash').then(function (response) {
-            return response.data;
-        });
-    };
+    function getUser() {
+        return $http.get('/api/users/member')
+            .then(function (res) {
+                return res.data;
+            })
+    }
 
+    function getOrder(id) {
+        return $http.get('/api/order/' + id)
+    }
     return {
-        getStash: getStash
+        getUser: getUser,
+        getOrder: getOrder
     };
 
 });
+
+app.controller('MemberCtrl', function ($scope, user, MemberFactory, $state) {
+    $scope.user = user;
+    $scope.orders = user.orders.filter(function (order) {
+        return order.status !== "inCart"
+    })
+
+    $scope.goToOrder = function (id) {
+        MemberFactory.getOrder(id)
+            .then(function (res) {
+                $scope.orderedItems = res.data;
+                $state.go('myAccount.oneOrder')
+            })
+    }
+
+})

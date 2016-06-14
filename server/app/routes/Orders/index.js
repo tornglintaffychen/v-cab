@@ -15,8 +15,8 @@ function findOrCreateUser(req, res, next) {
     // or we create one and log her in
     var user = req.user ? Promise.resolve(req.user) :
         User.create({
-            firstName: 'Bella',
-            lastName: 'Swan'
+            firstName: 'Unregistered',
+            lastName: 'Person'
         })
         .then(function (createdUser) {
             req.logIn(createdUser, function (loginErr) {
@@ -75,11 +75,24 @@ router.get('/', function (req, res, next) {
         .catch(next);
 });
 
-//find all products by order id
+//find all products by order id for inCart only
 router.get('/products', function (req, res, next) {
     OrderProduct.findAll({
             where: {
                 orderId: req.session.orderId
+            }
+        })
+        .then(function (order) {
+            res.json(order);
+        })
+        .catch(next);
+});
+
+// find all products by order id for any order
+router.get('/:id', function (req, res, next) {
+    OrderProduct.findAll({
+            where: {
+                orderId: req.params.id
             }
         })
         .then(function (order) {
