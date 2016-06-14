@@ -33,8 +33,6 @@ app.factory(ReviewFactory, function ($http) {
 
     return ReviewFactory;
 
-<<<<<<< HEAD
+
 })
-=======
-})
->>>>>>> 0651bf64de0a22b0cd89afc1d1018cfd0b61669b
+
