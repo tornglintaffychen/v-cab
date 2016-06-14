@@ -2,6 +2,7 @@
 
 var router = require('express').Router();
 var rootPath = '../../../';
+var HttpError = require('../../../utils/HttpError')
 var User = require(rootPath + 'db').User;
 var Review = require(rootPath + 'db').Review;
 var Order = require(rootPath + 'db').Order;
@@ -21,9 +22,9 @@ function assertIsLoggedIn (req, res, next) {
   else next(HttpError(401));
 }
 
-function selfOrAdmin (req.res, next){
+function selfOrAdmin (req, res, next){
     if (req.user){
-        if (req.user === req.requestedUser || req.user.isAdmin) next();)
+        if (req.user === req.requestedUser || req.user.isAdmin) next();
     }
     else {
         next(HttpError(401));
@@ -71,17 +72,15 @@ router.put('/:id', selfOrAdmin, function (req, res, next) {
         })
         .catch(next);
 });
-//combined*sv
-//get one user, their order and reviews
-router.get('/:id', selfOrAdmin, function (req, res, next) {
-    User.findOne({
-            where: {
-                id: req.params.id
-            },
+
+
+// get one user, their order and reviews
+router.get('/member', function (req, res, next) {
+    console.log("hi")
+    User.findById(req.session.passport.user,{
             include: [Review,
                 Order
-            ]
-        })
+            ]})
         .then(function (user) {
             if (user) {
                 res.json(user);

@@ -3,11 +3,10 @@ var router = express.Router();
 var passport = require('passport');
 
 var rootPath = '../../../';
+var HttpError = require('../../../utils/HttpError')
 var User = require(rootPath + 'db').User;
 var Order = require(rootPath + 'db').Order;
 var OrderProduct = require(rootPath + 'db').OrderProduct;
-var chalk = require('chalk');
-
 
 //sv I just moved this bit out while I was reading to make it easier to see
 function findOrCreateUser(req, res, next) {
@@ -15,8 +14,8 @@ function findOrCreateUser(req, res, next) {
     // or we create one and log her in
     var user = req.user ? Promise.resolve(req.user) :
         User.create({
-            firstName: 'Bella',
-            lastName: 'Swan'
+            firstName: 'Unregistered',
+            lastName: 'Person'
         })
         .then(function (createdUser) {
             req.logIn(createdUser, function (loginErr) {
@@ -68,16 +67,16 @@ function assertAdmin (req, res, next) {
   else next(HttpError(403));
 }
 
-function selfOrAdmin (req.res, next){
+function selfOrAdmin (req,res, next){
     if (req.user){
-        if (req.user === req.requestedUser || req.user.isAdmin) next();)
+        if (req.user === req.requestedUser || req.user.isAdmin) next();
     }
     else {
         next(HttpError(401));
     }
 }
 
-router.param('userId', function (req, res, next, id) {
+router.param('userId', function (req, res, next, userId) {
   User.findById(userId)
   .then(function (user) {
     if (!user) throw HttpError(404);
@@ -98,11 +97,24 @@ router.get('/', assertAdmin, function (req, res, next) {
         .catch(next);
 });
 
-//find all products by order id
+//find all products by order id for inCart only
 router.get('/products', function (req, res, next) {
     OrderProduct.findAll({
             where: {
                 orderId: req.session.orderId
+            }
+        })
+        .then(function (order) {
+            res.json(order);
+        })
+        .catch(next);
+});
+
+// find all products by order id for any order
+router.get('/:id', function (req, res, next) {
+    OrderProduct.findAll({
+            where: {
+                orderId: req.params.id
             }
         })
         .then(function (order) {
@@ -213,7 +225,7 @@ router.delete('/:userId/:productId', selfOrAdmin, function (req, res, next) {
 
 // clear the shopping cart
 // maybe update cart like this: so only self or admin can clear the cart
-router.delete('/:userId', selfOrAdmin, unction (req, res, next) {
+router.delete('/:userId', selfOrAdmin, function (req, res, next) {
     Order.destroy({
             where: {
                 id: req.session.orderId
