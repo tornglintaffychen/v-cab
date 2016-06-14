@@ -14,15 +14,15 @@ app.factory("CheckOutFactory", function($http){
 		mailOptions.name = name;
 	}
 	function setName (name) {
-		console.log("NAME", name);
+		console.log("NAME", name); 
 		mailOptions.name = name;
 	}
 	function setEmail (email) {
 		mailOptions.email = email;
 	}
 
-	function setAddress (addresdrs) {
-		mailOptions.address = adess;
+	function setAddress (address) {
+		mailOptions.address = address;
 	}
 
 	function getMailOptions () {
