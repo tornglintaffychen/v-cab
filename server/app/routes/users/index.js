@@ -6,9 +6,29 @@ var User = require(rootPath + 'db').User;
 var Review = require(rootPath + 'db').Review;
 var Order = require(rootPath + 'db').Order;
 
+router.param('id', function (req, res, next, id) {
+  User.findById(id)
+  .then(function (user) {
+    if (!user) throw HttpError(404);
+    req.requestedUser = user;
+    next();
+  })
+  .catch(next);
+});
+
+function assertIsLoggedIn (req, res, next) {
+  if (req.user) next();
+  else next(HttpError(401));
+}
+
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
+
 // only admin users can see all users
-router.get('/', function (req, res, next) {
-    User.findAll()
+router.get('/', assertAdmin, function (req, res, next) {
+    User.findAll({})
         .then(function (users) {
             res.json(users);
         })
@@ -24,9 +44,10 @@ router.post('/', function (req, res, next) {
         .catch(next);
 });
 
-//update user
-router.put('/:id', function (req, res, next) {
-    User.findById(req.params.id)
+// update user, only self and admin can update
+router.put('/:id', assertIsLoggedIn, function (req, res, next) {
+    if (req.user.id === req.requestedUser || req.user.isAdmin){
+        User.findById(req.params.id)
         .then(function (foundUser) {
             //check it exists*sv
             if (foundUser) {
@@ -41,6 +62,9 @@ router.put('/:id', function (req, res, next) {
             res.json(edited);
         })
         .catch(next);
+    } else {
+        next(HttpError(401))
+    }
 });
 //combined*sv
 //get one user, their order and reviews
