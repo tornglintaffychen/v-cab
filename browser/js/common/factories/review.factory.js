@@ -42,4 +42,4 @@ app.factory('ReviewFactory', function ($http, ProductFactory, UserFactory) {
     }
     return ReviewFactory;
 
-}
+})
