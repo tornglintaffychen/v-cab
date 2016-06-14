@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 app.factory('ReviewFactory', function ($http) {
-=======
-app.factory('ReviewFactory', function ($http, ProductFactory, UserFactory) {
-    //sv (str, str) => string
->>>>>>> 0651bf64de0a22b0cd89afc1d1018cfd0b61669b
     var ReviewFactory = {};
 
     ReviewFactory.addReview = function(review){
@@ -38,4 +33,4 @@ app.factory('ReviewFactory', function ($http, ProductFactory, UserFactory) {
 
     return ReviewFactory;
 
-})
+}
