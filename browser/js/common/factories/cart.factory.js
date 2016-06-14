@@ -45,8 +45,8 @@ app.factory('CartFactory', function ($http) {
 
     }
 
-    function deleteItem(product) {
-        return $http.put('/api/order/deleteItem', product)
+    function deleteItem(productId) {
+        return $http.delete('/api/order/' + productId)
             .then(getData);
     }
 
@@ -55,7 +55,7 @@ app.factory('CartFactory', function ($http) {
     }
 
     function editItem(product) {
-        return $http.put('/api/order/editItem', product)
+        return $http.put('/api/order/', product)
             .then(function (res) {
                 getItems();
                 return res.data;

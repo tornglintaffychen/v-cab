@@ -19,15 +19,7 @@ router.param('id', function (req, res, next, id) {
   .catch(next);
 });
 
-function assertIsLoggedIn (req, res, next) {
-  if (req.user) next();
-  else next(HttpError(401));
-}
 
-function assertIsUserOrAdmin (req, res, next) {
-  if (req.user === req.requestedUser || req.user.isAdmin) next();
-  else next(HttpError(401));
-}
 
 function assertAdmin (req, res, next) {
   if (req.user && req.user.isAdmin) next();
@@ -91,7 +83,7 @@ function createOrUpdateOrderProduct (orderId, reqObj) {
 }
 
 // find all orders
-router.get('/', function (req, res, next) {
+router.get('/', assertAdmin, function (req, res, next) {
     Order.findAll({
             where: req.query
         })
@@ -115,7 +107,7 @@ router.get('/products', function (req, res, next) {
 });
 
 // find all products by order id for any order
-router.get('/:id', assertIsUserOrAdmin, function (req, res, next) {
+router.get('/:id', function (req, res, next) {
     OrderProduct.findAll({
             where: {
                 orderId: req.params.id
@@ -172,7 +164,7 @@ router.post('/addToCart', function (req, res, next) {
 
 // tc: edit one item in the shopping cart or within 30 mins after placing order
 // admin should be able to edit everything in the order
-router.put('/editItem', function (req, res, next) {
+router.put('/', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
                 orderId: req.session.orderId,
@@ -186,11 +178,11 @@ router.put('/editItem', function (req, res, next) {
 });
 
 // delete one item in the shopping cart, interesting enought that it's a put route
-router.put('/deleteItem', function (req, res, next) {
+router.delete('/:productId', function (req, res, next) {
     OrderProduct.destroy({
             where: {
                 orderId: req.session.orderId,
-                productId: req.body.productId
+                productId: req.params.productId
             }
         })
         .then(function (removed) {
