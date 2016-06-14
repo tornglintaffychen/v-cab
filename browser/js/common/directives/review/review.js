@@ -9,4 +9,4 @@ app.controller("ReviewController", function($scope, $http, UserFactory) {
   		console.error("something went wrong with retrieving User email in review.js! " + error);
   	})
   }
- }
+ })

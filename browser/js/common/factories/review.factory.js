@@ -1,4 +1,4 @@
-app.factory('ReviewFactory', function ($http) {
+app.factory(ReviewFactory, function ($http) {
     var ReviewFactory = {};
 
     ReviewFactory.addReview = function(review){
@@ -33,4 +33,4 @@ app.factory('ReviewFactory', function ($http) {
 
     return ReviewFactory;
 
-}
+})
