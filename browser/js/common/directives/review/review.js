@@ -7,4 +7,5 @@ app.controller("ReviewController", function($scope, UserFactory) {
   	.catch(function(error){
   		console.error("something went wrong with fetching the user email! ", error)
   	})
-  })
+  }
+})
