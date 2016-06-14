@@ -72,16 +72,9 @@ var data = {
         title: "full body"
     }],
     products: [{
-<<<<<<< HEAD
-        id: 1,
-        title: 'KBuechs',
-        inventory: 47,
-        photoUrl: "images/default.jpg",
-=======
         title: 'KBuechs',
         inventory: 47,
         photoUrl: "images/brown.jpg",
->>>>>>> master
         price: 1.50,
         returnable: true,
         description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
@@ -102,29 +95,13 @@ var data = {
         returnable: false,
         description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.',
     }, {
-<<<<<<< HEAD
-        id: 4,
-        title: 'Samantharama',
-        inventory: 19,
-        photoUrl: "images/default.jpg",
-=======
         title: 'Samantharama',
         inventory: 19,
         photoUrl: "images/sam.jpg",
->>>>>>> master
         price: 16.66,
         returnable: false,
         description: 'Frankly, we love this new offering. Our distributors have found something crisp and refreshing that is bright on the palate without the acidity normally associated with ',
     }, {
-<<<<<<< HEAD
-        id: 5,
-        title: 'Healthy Choice',
-        inventory: 10,
-        photoUrl: "images/default.jpg",
-        price: 200,
-        returnable: false,
-        description: 'This is a very healthy blood from a very healthy vegan lady.',
-=======
         title: 'Healthy Choice',
         inventory: 10,
         photoUrl: "images/healthy.jpg",
@@ -180,7 +157,6 @@ var data = {
         price: 14.99,
         returnable: false,
         description: "Out Of Stock"
->>>>>>> master
     }],
     orders: [{
         userId: 1
@@ -224,11 +200,7 @@ var data = {
 // }
 
 function pId() {
-<<<<<<< HEAD
-    return Math.floor(Math.random() * (5 - 1 + 1)) + 1;
-=======
     return Math.floor(Math.random() * (12 - 1 + 1)) + 1;
->>>>>>> master
 }
 
 db.sync({
@@ -247,14 +219,10 @@ db.sync({
                 .then(function (category) {
                     // shows error because we call the fnc inside the array
                     // but seed succsss
-<<<<<<< HEAD
-                    category.addProducts([pId(), pId(), pId()])
-=======
                     var id1 = pId();
                     var id2 = pId();
                     var id3 = pId();
                     category.addProducts([id1, id2, id3])
->>>>>>> master
                 })
         })
         return Promise.all(createCategories)
