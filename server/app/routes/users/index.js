@@ -5,6 +5,7 @@ var rootPath = '../../../';
 var User = require(rootPath + 'db').User;
 var Review = require(rootPath + 'db').Review;
 var Order = require(rootPath + 'db').Order;
+var chalk = require('chalk');
 
 // only admin users can see all users
 router.get('/', function (req, res, next) {
@@ -44,10 +45,10 @@ router.put('/:id', function (req, res, next) {
 });
 //combined*sv
 //get one user, their order and reviews
-router.get('/:id', function (req, res, next) {
+router.get('/member', function (req, res, next) {
     User.findOne({
             where: {
-                id: req.params.id
+                id: req.session.passport.user
             },
             include: [Review,
                 Order
