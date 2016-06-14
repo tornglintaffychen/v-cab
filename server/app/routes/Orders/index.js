@@ -3,7 +3,6 @@ var router = express.Router();
 var passport = require('passport');
 
 var rootPath = '../../../';
-var HttpError = require('../../../utils/HttpError')
 var User = require(rootPath + 'db').User;
 var Order = require(rootPath + 'db').Order;
 var OrderProduct = require(rootPath + 'db').OrderProduct;
@@ -62,7 +61,6 @@ function addProductToOrder(orderId, reqObj) {
     });
 }
 
-
 function createOrUpdateOrderProduct (orderId, reqObj) {
     return OrderProduct.findOne({
             where: {
@@ -83,7 +81,6 @@ function createOrUpdateOrderProduct (orderId, reqObj) {
             }
         });
 }
-
 
 // find all orders
 router.get('/', assertAdmin, function (req, res, next) {
@@ -194,9 +191,10 @@ router.delete('/:productId', function (req, res, next) {
         .catch(next)
 });
 
+
+
 // clear the shopping cart
-// maybe update cart like this: so only self or admin can clear the cart
-router.delete('/:userId', selfOrAdmin, function (req, res, next) {
+router.delete('/', function (req, res, next) {
     Order.destroy({
             where: {
                 id: req.session.orderId

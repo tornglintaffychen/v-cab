@@ -79,7 +79,6 @@ var data = {
         returnable: true,
         description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
     }, {
-        id: 2,
         title: 'Lorimited Edition',
         inventory: 6,
         photoUrl: "images/pure.jpg",
@@ -87,7 +86,6 @@ var data = {
         returnable: false,
         description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete.',
     }, {
-        id: 3,
         title: 'The Taff',
         inventory: 8,
         photoUrl: "images/wine.jpg",
