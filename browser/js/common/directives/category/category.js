@@ -8,10 +8,6 @@ app.directive('categoryView', function (CategoryFactory) {
                 .then(function (categories) {
                     scope.categories = categories;
                 });
-						//update
-						scope.setCurrentCategory = function (categoryTitle){
-							CategoryFactory.currentCategory.title=categoryTitle;
-						}
             scope.getProductsForCategory = CategoryFactory.getProductsForCategory
         }
     };

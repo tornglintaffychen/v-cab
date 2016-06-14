@@ -8,7 +8,7 @@ require('./models/review')(db);
 require('./models/product')(db);
 require('./models/order')(db);
 require('./models/category')(db);
-require('./models/OrderProduct')(db);
+require('./models/orderProduct')(db);
 
 db.User = db.model('user');
 db.Review = db.model('review');
@@ -25,11 +25,10 @@ db.Review.belongsTo(db.Product);
 db.Product.hasMany(db.Review);
 
 db.Category.belongsToMany(db.Product, {
-		through: 'ProductCategory'
-
+    through: 'CategoryProduct'
 });
 db.Product.belongsToMany(db.Category, {
-    through: 'ProductCategory'
+    through: 'CategoryProduct'
 });
 
 db.Order.belongsTo(db.User);
@@ -37,6 +36,5 @@ db.User.hasMany(db.Order);
 
 
 db.Order.belongsToMany(db.Product, {
-    through: db.OrderProduct,
-		unique: false
+    through: db.OrderProduct
 });

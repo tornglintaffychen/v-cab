@@ -29,5 +29,13 @@ app.factory('UserFactory', function ($http) {
         });
     };
 
+    UserFactory.removeUser = function(id){
+        return $http.delete('/api/users' + id)
+        .then(getData)
+        .catch(function(error){
+            console.log("Something went wrong with deleting the user!" + error)
+        })
+    }
+
     return UserFactory;
 });

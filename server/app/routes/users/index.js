@@ -2,6 +2,7 @@
 
 var router = require('express').Router();
 var rootPath = '../../../';
+var HttpError = require('../../../utils/HttpError')
 var User = require(rootPath + 'db').User;
 var Review = require(rootPath + 'db').Review;
 var Order = require(rootPath + 'db').Order;
@@ -27,6 +28,37 @@ function assertAdmin (req, res, next) {
   if (req.user && req.user.isAdmin) next();
   else next(HttpError(403));
 }
+
+router.param('id', function (req, res, next, id) {
+  User.findById(id)
+  .then(function (user) {
+    if (!user) throw HttpError(404);
+    req.requestedUser = user;
+    next();
+  })
+  .catch(next);
+});
+
+function assertIsLoggedIn (req, res, next) {
+  if (req.user) next();
+  else next(HttpError(401));
+}
+
+function selfOrAdmin (req, res, next){
+    if (req.user){
+        if (req.user === req.requestedUser || req.user.isAdmin) next();
+    }
+    else {
+        next(HttpError(401));
+    }
+}
+
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
+
+
 
 // only admin users can see all users
 router.get('/', assertAdmin, function (req, res, next) {
@@ -64,17 +96,15 @@ router.put('/:id', assertIsUserOrAdmin, function (req, res, next) {
         })
         .catch(next);
 });
-//combined*sv
-//get one user, their order and reviews
+
+
+// get one user, their order and reviews
 router.get('/member', function (req, res, next) {
-    User.findOne({
-            where: {
-                id: req.session.passport.user
-            },
+    console.log("hi")
+    User.findById(req.session.passport.user,{
             include: [Review,
                 Order
-            ]
-        })
+            ]})
         .then(function (user) {
             if (user) {
                 res.json(user);
