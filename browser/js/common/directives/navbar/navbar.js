@@ -16,7 +16,11 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
                 label: 'My Account',
                 state: 'myAccount',
                 auth: true
-            }];
+            }, {
+							label: 'Admin',
+							state: 'admin',
+							auth: true
+						}];
 
             scope.user = null;
             scope.$watch(function () {

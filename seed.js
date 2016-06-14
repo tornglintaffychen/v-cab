@@ -102,10 +102,10 @@ var data = {
 		products: [{
         title: 'KBuechs',
         inventory: 47,
-        photoUrl: "images/kbuechs.jpg",
+        photoUrl: "images/default.jpg",
         price: 1.50,
         returnable: true,
-        description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried. -O smoked spiked inexpensive',
+        description: 'Basic, unsubtle, and straightforward. Almost overwhelmingly fruity with the lingering bitterness characteristic of the 1982 East Coast vintages. Not an award-winner and definitely past its prime, but at this price-point and high alcohol volume, who can complaining? Pair with late-night pizza, cheap beer, and anything deep fried.',
         categories: ["+O","full body"]
     }, {
         title: 'Lorimited Edition',
@@ -113,10 +113,8 @@ var data = {
         photoUrl: "images/default.jpg",
         price: 79.99,
         returnable: false,
-        description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete. +O premium rare limited highly-rated',
-        categories: [
-            "espresso", "spicy", "dry"
-        ]
+        description: 'A playful O+ sourced from Jamaica. The Lorimited Edition is is only available to one distributor at a time - we have been lucky enough to acquire seven liters of this highly in-demand product. Limited one purchase per person. Do NOT miss out on this bold, in-your-face drink. It may be hard to pin down, but nothing can compete.',
+        categories: ["espresso", "spicy", "dry"]
 
     }, {
         title: 'The Taff',
@@ -126,6 +124,22 @@ var data = {
         returnable: false,
         description: 'What can we say about this? Known to some as Tong-Lin, The Taff is a compelling product that leaves you dazed. The complexity comes from the intriguing varity between releases.',
         categories: [ "B", "vegan", "espresso"]
+			}, {
+				 title: 'Samantharama',
+				 inventory: 19,
+				 photoUrl: "images/default.jpg",
+				 price: 16.66,
+				 returnable: false,
+				 description: 'Frankly, we love this new offering. Our distributors have found something crisp and refreshing that is bright on the palate without the acidity normally associated with ',
+				 categories: [ "dry","crisp"]
+		 }, {
+				 title: 'Healthy Choice',
+				 inventory: 10,
+				 photoUrl: "images/default.jpg",
+				 price: 200,
+				 returnable: false,
+				 description: 'This is a very healthy blood from a very healthy vegan lady.',
+				 categories: [ "espresso", "spicy","vegan"]
     }],
     orders: [{
         userId: 1
@@ -151,11 +165,11 @@ var data = {
         rating: 1,
         userId: 5,
         productId: 1
-    // }, { //breaking my seed
-    //     text: 'beutiful. :)',
-    //     rating: 4,
-    //     userId: 2,
-    //     productId: 4
+    }, { //breaking my seed
+        text: 'beutiful. :)',
+        rating: 4,
+        userId: 2,
+        productId: 4
     }, {
         text: 'bad stuff. it serves no purpose',
         rating: 2,
@@ -206,21 +220,31 @@ db.sync({
 		})
 		//TODO: Connect products to Orders
 		.then(function(){
-			return Product.findAll()
-			.then(function (createdProducts) {
-					return	Order.findAll()
-					.then(function (createdOrders) {
-						createdOrders.forEach((order)=>{
+			return Promise.all( [
+				Product.findAll(),
+				Order.findAll()
+			])
+			.spread(function( createdProducts, createdOrders ){
+
+						return Promise.all(createdOrders.map((order)=>{
+							//what is the current order
+							console.log("This is the order", getData(order));
+							//create an array of random products
 							let prodOrdersArray = generateOrderProdArray(createdProducts);
+							//Add each product to the current order
 							return Promise.all(
 								prodOrdersArray.map((product) => {
+									console.log("????????", getData(product));
 									return order.addProduct(product.product, product.orderInfo)
+									.then((value) => {console.log(getData(value));})
 								}))
+						}))
+						.catch((err) => {
+							console.error("Houston we have a problem" + err);
 						})
 					});
-				})
-
     })
+
 		// CREATE REVIEWS
     .then(function () {
 			console.log("Creating reviews");
