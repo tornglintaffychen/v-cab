@@ -12,7 +12,7 @@
             <select ng-model="product.quantity" ng-options="num for num in nums" ng-change="editItem(product)">
             </select>
 
-            <button class="glyphicon glyphicon-remove" ng-click="deleteItem(product)"></button>
+            <button class="glyphicon glyphicon-remove" ng-click="deleteItem(user.id, product.id)"></button>
         </ul>
         <div class="col-xs-10 col-xs-offset-2">
             <button type="submit" class="btn btn-success">Proceed to Checkout</button>

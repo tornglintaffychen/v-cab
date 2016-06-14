@@ -6,3 +6,4 @@ public
 coverage
 secrets.js
 .gitignore
+.DS_Store

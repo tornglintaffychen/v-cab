@@ -21,6 +21,15 @@ function assertIsLoggedIn (req, res, next) {
   else next(HttpError(401));
 }
 
+function selfOrAdmin (req.res, next){
+    if (req.user){
+        if (req.user === req.requestedUser || req.user.isAdmin) next();)
+    }
+    else {
+        next(HttpError(401));
+    }
+}
+
 function assertAdmin (req, res, next) {
   if (req.user && req.user.isAdmin) next();
   else next(HttpError(403));
@@ -45,8 +54,7 @@ router.post('/', function (req, res, next) {
 });
 
 // update user, only self and admin can update
-router.put('/:id', assertIsLoggedIn, function (req, res, next) {
-    if (req.user.id === req.requestedUser || req.user.isAdmin){
+router.put('/:id', selfOrAdmin, function (req, res, next) {
         User.findById(req.params.id)
         .then(function (foundUser) {
             //check it exists*sv
@@ -62,13 +70,10 @@ router.put('/:id', assertIsLoggedIn, function (req, res, next) {
             res.json(edited);
         })
         .catch(next);
-    } else {
-        next(HttpError(401))
-    }
 });
 //combined*sv
 //get one user, their order and reviews
-router.get('/:id', function (req, res, next) {
+router.get('/:id', selfOrAdmin, function (req, res, next) {
     User.findOne({
             where: {
                 id: req.params.id

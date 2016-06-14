@@ -43,8 +43,8 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
 
     $scope.editItem = CartFactory.editItem
 
-    $scope.deleteItem = function (product) {
-        CartFactory.deleteItem(product)
+    $scope.deleteItem = function (userId, productId) {
+        CartFactory.deleteItem(productId, userId)
             .then(function (removed) {
                 $scope.products = $scope.products.filter(function (p) {
                     return p.productId !== removed.productId
