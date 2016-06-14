@@ -227,24 +227,20 @@ db.sync({
 			.spread(function( createdProducts, createdOrders ){
 
 						return Promise.all(createdOrders.map((order)=>{
-							//what is the current order
-							console.log("This is the order", getData(order));
 							//create an array of random products
 							let prodOrdersArray = generateOrderProdArray(createdProducts);
 							//Add each product to the current order
 							return Promise.all(
 								prodOrdersArray.map((product) => {
-									console.log("????????", getData(product));
 									return order.addProduct(product.product, product.orderInfo)
-									.then((value) => {console.log(getData(value));})
 								}))
 						}))
 						.catch((err) => {
+							//TODO: there is a validation problem here, but it seems to work if we catch, should resolve it later though
 							console.error("Houston we have a problem" + err);
 						})
 					});
     })
-
 		// CREATE REVIEWS
     .then(function () {
 			console.log("Creating reviews");
