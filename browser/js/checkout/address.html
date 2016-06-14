@@ -8,12 +8,6 @@
 		<br>
 
 		<div class="col-md-4">
-		<!-- 	doesn't work  -->
-		<!-- 	<div ng-hide="checkOutInfo.$pristine" ng-messages="checkOutInfo.$error">
-				<div ng-show="checkOutInfo.input.email.$error" ng-message="checkOutInfo.email.$error" class="alert alert-warning">Please enter a valid Email</div>
-			</div> -->
-		<!-- 	show s with google -->
-
 			<form name="checkOutInfo">
 				<h4>New Shipping Address</h4>
 		 		<div class="form-group">
@@ -39,6 +33,6 @@
 					<button ng-click="setEmail(userEmail)" class="btn btn-primary">Confirm</button>
 				</form>
 			</div>
-<!-- 		//checkOutInfo.$invalid -->
-		<button ng-disabled="!confirmation()" ng-click="next()" class="btn btn-primary">next</button>
+			<br >
+		<button ng-disabled="!confirmation() || checkOutInfo.$invalid" ng-click="next()" class="btn btn-primary">next</button>
 	</div>
