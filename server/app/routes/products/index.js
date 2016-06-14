@@ -6,6 +6,12 @@ var Product = require(rootPath + 'db').Product;
 var Review = require(rootPath + 'db').Review;
 var Category = require(rootPath + 'db').Category;
 
+var HttpError = require('../../../utils/HttpError');
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
+
 // category too, because req.query
 router.get('/', function (req, res, next) {
     Product.findAll({

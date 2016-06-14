@@ -8,6 +8,26 @@ var User = require(rootPath + 'db').User;
 var Order = require(rootPath + 'db').Order;
 var OrderProduct = require(rootPath + 'db').OrderProduct;
 
+var HttpError = require('../../../utils/HttpError');
+
+router.param('id', function (req, res, next, id) {
+  User.findById(id)
+  .then(function (user) {
+    if (!user) throw HttpError(404);
+    req.requestedUser = user;
+    next();
+  })
+  .catch(next);
+});
+
+
+
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
+
+
 //sv I just moved this bit out while I was reading to make it easier to see
 function findOrCreateUser(req, res, next) {
     // user will be either req.user (logged in),
@@ -64,31 +84,8 @@ function createOrUpdateOrderProduct (orderId, reqObj) {
         });
 }
 
-function assertAdmin (req, res, next) {
-  if (req.user && req.user.isAdmin) next();
-  else next(HttpError(403));
-}
 
-function selfOrAdmin (req,res, next){
-    if (req.user){
-        if (req.user === req.requestedUser || req.user.isAdmin) next();
-    }
-    else {
-        next(HttpError(401));
-    }
-}
-
-router.param('userId', function (req, res, next, userId) {
-  User.findById(userId)
-  .then(function (user) {
-    if (!user) throw HttpError(404);
-    req.requestedUser = user;
-    next();
-  })
-  .catch(next);
-});
-
-// find all orders, only Admin can do this
+// find all orders
 router.get('/', assertAdmin, function (req, res, next) {
     Order.findAll({
             where: req.query
@@ -170,21 +167,7 @@ router.post('/addToCart', function (req, res, next) {
 
 // tc: edit one item in the shopping cart or within 30 mins after placing order
 // admin should be able to edit everything in the order
-// router.put('/editItem', function (req, res, next) {
-//     OrderProduct.update(req.body, {
-//             where: {
-//                 orderId: req.session.orderId,
-//                 productId: req.body.productId
-//             }
-//         })
-//         .then(function (updatedItem) {
-//             res.json(updatedItem);
-//         })
-//         .catch(next);
-// });
-
-// maybe update cart like this: so only self or admin can update the cart
-router.put('/:userId', selfOrAdmin, function (req, res, next) {
+router.put('/', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
                 orderId: req.session.orderId,
@@ -198,21 +181,7 @@ router.put('/:userId', selfOrAdmin, function (req, res, next) {
 });
 
 // delete one item in the shopping cart, interesting enought that it's a put route
-// router.put('/deleteItem', function (req, res, next) {
-//     OrderProduct.destroy({
-//             where: {
-//                 orderId: req.session.orderId,
-//                 productId: req.body.productId
-//             }
-//         })
-//         .then(function (removed) {
-//             res.json(removed);
-//         })
-//         .catch(next)
-// });
-
-// maybe update cart like this: so only self or admin can delete item from the cart
-router.delete('/:userId/:productId', selfOrAdmin, function (req, res, next) {
+router.delete('/:productId', function (req, res, next) {
     OrderProduct.destroy({
             where: {
                 orderId: req.session.orderId,

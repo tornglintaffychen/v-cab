@@ -1,6 +1,7 @@
 <category-view ></category-view>
 <!-- LA: View for all the products -->
 
+<<<<<<< HEAD
 <span class="col-md-1"></span>
 <div class="col-md-3"   ng-repeat='product in products'>
 		<a ui-sref = "product({productId:product.id})">
@@ -20,4 +21,39 @@
 			</button>
 		</span>
 		<span class="col-md-1"></span>
+=======
+<category-view ></category-view>
+<!-- LA: View for all the products -->
+<!-- <products-view></products-view> -->
+<span class="col-md-1"></span>
+<!-- <ui-view></ui-view> -->
+
+<!-- The search bar -->
+<div class="input-group col-md-8">
+	<span class="input-group-addon glyphicon glyphicon-search" id="basic-addon1"></span>
+	<input ng-model="search" type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1">
+</div>
+
+<br />
+
+<div class="row text-center">
+	<div class="col-md-3 col-sm-6 hero-feature" ng-repeat="product in products |filter: search |category:currentCategory.title ">
+		<div class="thumbnail">
+			<img src="{{product.photoUrl}}" alt="">
+			<div class="caption">
+				<h3>{{product.title}}</h3>
+				<p>
+					{{product.price | currency}}
+				</p>
+				<p>
+					<button class="btn btn-default" ng-click="addToCart(product)">
+						<img height = "10px" src="/js/common/images/teeth-logo-black.png" />
+						Add to Cart
+					</button>
+					<a ui-sref = "product({productId:product.id})" class="btn btn-default">More Info</a>
+				</p>
+			</div>
+		</div>
+	</div>
+>>>>>>> master
 </div>

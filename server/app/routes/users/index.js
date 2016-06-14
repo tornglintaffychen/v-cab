@@ -7,6 +7,27 @@ var User = require(rootPath + 'db').User;
 var Review = require(rootPath + 'db').Review;
 var Order = require(rootPath + 'db').Order;
 var parser = require('parse-address');
+var HttpError = require('../../../utils/HttpError');
+
+router.param('id', function (req, res, next, id) {
+  User.findById(id)
+  .then(function (user) {
+    if (!user) throw HttpError(404);
+    req.requestedUser = user;
+    next();
+  })
+  .catch(next);
+});
+
+function assertIsUserOrAdmin (req, res, next) {
+  if (req.user === req.requestedUser || req.user.isAdmin) next();
+  else next(HttpError(401));
+}
+
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
 
 router.param('id', function (req, res, next, id) {
   User.findById(id)
@@ -41,7 +62,7 @@ function assertAdmin (req, res, next) {
 
 // only admin users can see all users
 router.get('/', assertAdmin, function (req, res, next) {
-    User.findAll({})
+    User.findAll()
         .then(function (users) {
             res.json(users);
         })
@@ -57,9 +78,9 @@ router.post('/', function (req, res, next) {
         .catch(next);
 });
 
-// update user, only self and admin can update
-router.put('/:id', selfOrAdmin, function (req, res, next) {
-        User.findById(req.params.id)
+//update user
+router.put('/:id', assertIsUserOrAdmin, function (req, res, next) {
+    User.findById(req.params.id)
         .then(function (foundUser) {
             //check it exists*sv
             if (foundUser) {
