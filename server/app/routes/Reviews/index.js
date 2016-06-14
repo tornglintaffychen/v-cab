@@ -2,10 +2,31 @@
 var router = require('express').Router();
 var rootPath = '../../../';
 var Review = require(rootPath + 'db').Review;
+var HttpError = require('../../../utils/HttpError');
+
+router.param('id', function (req, res, next, id) {
+  User.findById(id)
+  .then(function (user) {
+    if (!user) throw HttpError(404);
+    req.requestedUser = user;
+    next();
+  })
+  .catch(next);
+});
+
+function assertIsLoggedIn (req, res, next) {
+  if (req.user) next();
+  else next(HttpError(401));
+}
+
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
 
 
 // only admin users can see all reviews
-router.get('/', function (req, res, next) {
+router.get('/', assertAdmin, function (req, res, next) {
     Review.findAll({})
         .then(function (reviews) {
             res.json(reviews);
@@ -25,7 +46,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 //create review*sv
-router.post('/', function (req, res, next) {
+router.post('/', assertIsLoggedIn, function (req, res, next) {
     Review.create(req.body)
         .then(function (added) {
             res.json(added);
@@ -34,7 +55,7 @@ router.post('/', function (req, res, next) {
 });
 
 //delete review*sv for the admin or your own review
-router.delete('/:id', function (req, res, next) {
+router.delete('/:id', assertAdmin, function (req, res, next) {
     Review.destroy({
             where: {
                 id: req.params.id
@@ -48,7 +69,7 @@ router.delete('/:id', function (req, res, next) {
 });
 
 //update
-router.put('/:id', function (req, res, next) {
+router.put('/:id', assertAdmin, function (req, res, next) {
     Review.update(req.body, {
             where: {
                 id: req.params.id

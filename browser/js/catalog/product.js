@@ -41,6 +41,6 @@ app.controller('ProductCtrl', function ($scope, singleProduct, CartFactory) {
 app.controller('ProductsCtrl', function ($scope, CategoryFactory, allProducts, ProductFactory, CartFactory) {
     $scope.products = allProducts;
     $scope.addToCart = CartFactory.addToCart;
-		$scope.currentCategory = CategoryFactory.currentCategory
+	$scope.currentCategory = CategoryFactory.currentCategory
 
 });

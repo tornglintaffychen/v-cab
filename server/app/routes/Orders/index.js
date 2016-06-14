@@ -6,7 +6,25 @@ var rootPath = '../../../';
 var User = require(rootPath + 'db').User;
 var Order = require(rootPath + 'db').Order;
 var OrderProduct = require(rootPath + 'db').OrderProduct;
-var chalk = require('chalk');
+
+var HttpError = require('../../../utils/HttpError');
+
+router.param('id', function (req, res, next, id) {
+  User.findById(id)
+  .then(function (user) {
+    if (!user) throw HttpError(404);
+    req.requestedUser = user;
+    next();
+  })
+  .catch(next);
+});
+
+
+
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
 
 
 //sv I just moved this bit out while I was reading to make it easier to see
@@ -65,7 +83,7 @@ function createOrUpdateOrderProduct (orderId, reqObj) {
 }
 
 // find all orders
-router.get('/', function (req, res, next) {
+router.get('/', assertAdmin, function (req, res, next) {
     Order.findAll({
             where: req.query
         })
@@ -146,7 +164,7 @@ router.post('/addToCart', function (req, res, next) {
 
 // tc: edit one item in the shopping cart or within 30 mins after placing order
 // admin should be able to edit everything in the order
-router.put('/editItem', function (req, res, next) {
+router.put('/', function (req, res, next) {
     OrderProduct.update(req.body, {
             where: {
                 orderId: req.session.orderId,
@@ -160,11 +178,11 @@ router.put('/editItem', function (req, res, next) {
 });
 
 // delete one item in the shopping cart, interesting enought that it's a put route
-router.put('/deleteItem', function (req, res, next) {
+router.delete('/:productId', function (req, res, next) {
     OrderProduct.destroy({
             where: {
                 orderId: req.session.orderId,
-                productId: req.body.productId
+                productId: req.params.productId
             }
         })
         .then(function (removed) {
