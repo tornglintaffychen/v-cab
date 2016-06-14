@@ -13,14 +13,22 @@ app.controller("ReviewController", function($scope, $http, ReviewFactory){
   // 	})
   // }
 
-  $scope.newReview = function (review) {
-  return ReviewFactory.addReview(review)
+  $scope.newReview = function() {
+  return ReviewFactory.addReview($scope.review)
   .then(function(review){
-    return review;
+    $scope.message = "Thank you for your review!";
   })
   .catch(function(error){
-    console.error("problem posting review!", error)
+    $scope.message = "There was a problem posting your review.";
   })
   };
+
+// // who cares about this 
+
+// id: number
+// rating: number
+// text: text
+$scope.logModel = function(){
+  console.log($scope.review)
+}
 })
-// who cares about this 

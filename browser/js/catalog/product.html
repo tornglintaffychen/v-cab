@@ -27,29 +27,34 @@
 
 			<div>
 				<b>User Reviews:</b>
-					<div> 
-						<form>
-							Add your review!
+					<!-- <div ng-show="user.firstName !=='Unregistered'"> --> 
+						<form ng-controller="ReviewController">
+							<div ng-model="review.productId" value="product.id">
+							Add your review for {{ product.title }}!
+							</div>
 							<br>
 							Rating:
 							<br>
 
-							<input type="radio" name="rating" value="1">
+							<input type="radio" ng-model="review.rating" value="1">
 							&#9829;&#9825;&#9825;&#9825;&#9825;<br>
-							<input type="radio" name="rating" value="2">
-							&#9829;&#9829;&#9825;&#9825;&#9825;<br>						<input type="radio" name="rating" value="3">
+							<input type="radio" ng-model="review.rating" value="2">
+							&#9829;&#9829;&#9825;&#9825;&#9825;<br>						
+							<input type="radio" ng-model="review.rating" value="3">
 							&#9829;&#9829;&#9829;&#9825;&#9825;<br>
-							<input type="radio" name="rating" value="4">
+							<input type="radio" ng-model="review.rating" value="4">
 							&#9829;&#9829;&#9829;&#9829;&#9825;<br>
-							<input type="radio" name="rating" value="5">
+							<input type="radio" ng-model="review.rating" value="5">
 							&#9829;&#9829;&#9829;&#9829;&#9829;<br>	
 
 							<br>
 							Review:
 							<br>
-							<input type="text" id="text" value="Add your review!" style="width: 300px; height: 200px">
+							<input type="text" id="text" ng-model="review.text" style="width: 300px; height: 200px">
 							<br>
-							<input type="submit" value="Submit">
+							<button ng-click="newReview()">
+							submit
+							</button>
 						</form>
 					</div>
 				<div ng-repeat="review in product.reviews"><td>
@@ -137,3 +142,7 @@
 		</div>
 	</div>
 </div>
+<div ng-show="user &amp;&amp; user.firstName !== 'Unregistered'" class="welcome" style="">
+            <span class="ng-binding">Welcome, Barak!</span>
+            <a ng-click="logout()">Logout</a>
+        </div>
