@@ -6,6 +6,7 @@ var HttpError = require('../../../utils/HttpError')
 var User = require(rootPath + 'db').User;
 var Review = require(rootPath + 'db').Review;
 var Order = require(rootPath + 'db').Order;
+var parser = require('parse-address');
 
 router.param('id', function (req, res, next, id) {
   User.findById(id)
@@ -35,6 +36,8 @@ function assertAdmin (req, res, next) {
   if (req.user && req.user.isAdmin) next();
   else next(HttpError(403));
 }
+
+
 
 // only admin users can see all users
 router.get('/', assertAdmin, function (req, res, next) {
@@ -91,5 +94,12 @@ router.get('/member', function (req, res, next) {
         .catch(next);
 });
 
+
+router.get('/address/:string', function(req, res, next) {
+    var string = req.params.string;
+    console.log("here", string);
+
+    res.json(parser.parseLocation(string));
+});
 
 module.exports = router;

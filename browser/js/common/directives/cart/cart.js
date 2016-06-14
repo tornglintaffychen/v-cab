@@ -41,7 +41,12 @@ app.controller('CartController', function ($scope, products, CartFactory, $state
     $scope.userId = CartFactory.userId;
     $scope.products = products;
 
-    $scope.editItem = CartFactory.editItem
+    $scope.proceedToCheckOut = function () {
+        console.log("hi")
+        $state.go('checkout');
+    };
+
+    $scope.editItem = CartFactory.editItem;
 
     $scope.deleteItem = function (userId, productId) {
         CartFactory.deleteItem(productId, userId)
