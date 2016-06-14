@@ -6,7 +6,33 @@ var rootPath = '../../../';
 var User = require(rootPath + 'db').User;
 var Order = require(rootPath + 'db').Order;
 var OrderProduct = require(rootPath + 'db').OrderProduct;
-var chalk = require('chalk');
+
+var HttpError = require('../../../utils/HttpError');
+
+router.param('id', function (req, res, next, id) {
+  User.findById(id)
+  .then(function (user) {
+    if (!user) throw HttpError(404);
+    req.requestedUser = user;
+    next();
+  })
+  .catch(next);
+});
+
+function assertIsLoggedIn (req, res, next) {
+  if (req.user) next();
+  else next(HttpError(401));
+}
+
+function assertIsUserOrAdmin (req, res, next) {
+  if (req.user === req.requestedUser || req.user.isAdmin) next();
+  else next(HttpError(401));
+}
+
+function assertAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) next();
+  else next(HttpError(403));
+}
 
 
 //sv I just moved this bit out while I was reading to make it easier to see
@@ -89,7 +115,7 @@ router.get('/products', function (req, res, next) {
 });
 
 // find all products by order id for any order
-router.get('/:id', function (req, res, next) {
+router.get('/:id', assertIsUserOrAdmin, function (req, res, next) {
     OrderProduct.findAll({
             where: {
                 orderId: req.params.id
