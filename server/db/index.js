@@ -8,7 +8,7 @@ require('./models/review')(db);
 require('./models/product')(db);
 require('./models/order')(db);
 require('./models/category')(db);
-require('./models/OrderProduct')(db);
+require('./models/orderProduct')(db);
 
 db.User = db.model('user');
 db.Review = db.model('review');

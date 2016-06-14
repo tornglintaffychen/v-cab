@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-xs-8">
 				<h3>
-					{{ product.title }}
+					{{ product.title }}, {{ product.averageRating }}
 				</h3>
 				<h4>
 					{{ product.price | currency }}
@@ -18,44 +18,108 @@
 				</div>
 
 				<div>
-					<span><b>Categories:</b></span>
+					<b>Categories:</b>
+
 					<div ng-repeat="category in product.categories">
-					{{ category.title }}
+						{{ category.title }}
+					</div>
 				</div>
-			</div>
 
 			<div>
-				<span><b>User Reviews:</b></span>
-				<div ng-repeat="review in product.reviews"><td>
-			    <span ng-if="review.rating == 1">
-                	Rating: <span style="font-color: crimson"> &#9829;&#9825;&#9825;&#9825;&#9825; </span>
-                	<span>{{ review.text }}</span>
-                	<p>{{ UserFactory.getUser(review.userId) }} posted at {{ review.createdAt | date:"longDate"}}</p>
-     			</span>
-        		<span ng-if="review.rating == 2">
-					Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9825;&#9825;&#9825; </span>
-					<span>{{ review.text }}</span>
-					<p>{{ review.getUser }} posted at {{ review.createdAt | date:"longDate" }}</p>
-         		</span>
-        		<span ng-if="review.rating == 3">
-						Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9829;&#9825;&#9825; </span>
-						<span>{{ review.text }}</span>
-						<p>user posted at {{ review.createdAt | date:"longDate" }}</p>
-     			</span>
-        		<span ng-if="review.rating == 4">
-			        Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9829;&#9829;&#9825; </span>
-			        <span>{{ review.text }}</span>
-			        <p>user posted at {{ review.createdAt | date:"longDate" }}</p>
+				<b>User Reviews:</b>
+					<div> 
+						<form>
+							Add your review!
+							<br>
+							Rating:
+							<br>
 
+							<input type="radio" name="rating" value="1">
+							&#9829;&#9825;&#9825;&#9825;&#9825;<br>
+							<input type="radio" name="rating" value="2">
+							&#9829;&#9829;&#9825;&#9825;&#9825;<br>						<input type="radio" name="rating" value="3">
+							&#9829;&#9829;&#9829;&#9825;&#9825;<br>
+							<input type="radio" name="rating" value="4">
+							&#9829;&#9829;&#9829;&#9829;&#9825;<br>
+							<input type="radio" name="rating" value="5">
+							&#9829;&#9829;&#9829;&#9829;&#9829;<br>	
+
+							<br>
+							Review:
+							<br>
+							<input type="text" id="text" value="Add your review!" style="width: 300px; height: 200px">
+							<br>
+							<input type="submit" value="Submit">
+						</form>
+					</div>
+				<div ng-repeat="review in product.reviews"><td>
+			    
+			    <span ng-if="review.rating == 1">
+                	Rating: 
+                	<span style="font-color: crimson"> 
+                		&#9829;&#9825;&#9825;&#9825;&#9825; 
+                	</span>
+                	<span>
+                		{{ review.text }}
+                	</span>
+                	<p>
+                		{{ review.userId }} posted at {{ review.createdAt | date:"longDate"}}
+                	</p>
+     			</span>
+        		
+        		<span ng-if="review.rating == 2">
+					Rating: 
+					<span style="font-color: crimson"> 
+						&#9829;&#9829;&#9825;&#9825;&#9825; 
+					</span>
+					<span>
+						{{ review.text }}
+					</span>
+					<p>
+						{{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
+					</p>
+         		</span>
+
+        		<span ng-if="review.rating == 3">
+					Rating: 
+					<span style="font-color: crimson"> 
+						&#9829;&#9829;&#9829;&#9825;&#9825; 
+					</span>
+					<span>
+						{{ review.text }}
+					</span>
+					<p>
+					{{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
+					</p>
+     			</span>
+
+        		<span ng-if="review.rating == 4">
+			        Rating: 
+			        <span style="font-color: crimson"> 
+			        	&#9829;&#9829;&#9829;&#9829;&#9825;
+			        </span>
+			        <span>
+			        	{{ review.text }}
+			        </span>
+			        <p>
+			        {{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
+			        </p>
     		 	</span>
+
         		<span ng-if="review.rating == 5">
-			        Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9829;&#9829;&#9829;</span>
-			        <span>{{ review.text }}</span>
-			        <p>user posted at {{ review.createdAt | date:"longDate" }}</p>
-    		 	<span>
-    		 						
-				</div>
+			        Rating: 
+			        <span style="font-color: crimson"> 
+			        	&#9829;&#9829;&#9829;&#9829;&#9829;
+			        </span>
+			        <span>
+			        	{{ review.text }}
+			        </span>
+			        <p>
+			        	{{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
+			        </p>
+    		 	<span> 						
 			</div>
+		</div>
 
 		<div>
 			<button class="btn btn-default" ng-click="addToCart(product)" style="background-color: crimson; font-color: white" >
