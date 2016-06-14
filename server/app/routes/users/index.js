@@ -18,11 +18,6 @@ router.param('id', function (req, res, next, id) {
   .catch(next);
 });
 
-function assertIsLoggedIn (req, res, next) {
-  if (req.user) next();
-  else next(HttpError(401));
-}
-
 function assertIsUserOrAdmin (req, res, next) {
   if (req.user === req.requestedUser || req.user.isAdmin) next();
   else next(HttpError(401));
