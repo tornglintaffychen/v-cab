@@ -1,8 +1,8 @@
-app.factory(ReviewFactory, function ($http) {
+app.factory('ReviewFactory', function ($http) {
     var ReviewFactory = {};
 
     ReviewFactory.addReview = function(review){
-        return $http.post('/api/reviews')
+        return $http.post('/api/reviews', review)
         .then(function(res){
             console.log('here is the new review res: ' + res)
         })
@@ -12,7 +12,7 @@ app.factory(ReviewFactory, function ($http) {
     }
 
     ReviewFactory.editReview = function(id){
-        return $http.put('/api/reviews/'+ id )
+        return $http.put('/api/reviews/'+ id, review)
         .then(function(res){
             console.log('here is the update res: ' + res)
         })
@@ -30,9 +30,6 @@ app.factory(ReviewFactory, function ($http) {
             console.error("something went wrong with deleting your review! " + error)
         })
     }
-
     return ReviewFactory;
-
-
 })
 
