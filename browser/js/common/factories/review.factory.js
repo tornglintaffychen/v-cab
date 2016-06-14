@@ -1,4 +1,4 @@
-app.factory('ReviewFactory', function ($http, 'ProductFactory', 'UserFactory') {
+app.factory('ReviewFactory', function ($http, ProductFactory, UserFactory) {
     //sv (str, str) => string
     var ReviewFactory = {};
 
