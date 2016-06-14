@@ -8,11 +8,9 @@ var Order = require('../../db').Order;
 var Product = require('../../db').Product;
 
 function formatText(name, orderId) {
-	return `Thankyou ${name}!
-			You're is being processed!
-			View order: # ${orderId} 
-			made autoinsertdate
-			`;
+	return `Thank you, ${name}!
+			Your order is being processed!
+			View order: # ${orderId}`;
 }
 
 function changeOrderStatus(orderId) {
@@ -54,18 +52,10 @@ router.post('/orderConfirmation', function (req, res, next) {
 	};
 
 	var smtpTransport = nodemailer.createTransport({
-		service: "gmail", 
+		service: "gmail",
 		auth: secrets.auth});
 
-	smtpTransport.sendMail(mailOptions, function(error, info){
-		if(error){
-		    console.log(error);
-		    res.json({yo: 'error'});
-		}else{
-		    console.log('Message sent: ' + info.response);
-		    res.json({yo: info.response});
-		};
-	});
+
 
 	//change order to processing
 	changeOrderStatus(req.session.orderId)
@@ -76,10 +66,18 @@ router.post('/orderConfirmation', function (req, res, next) {
 		//should throw error if negative amount
 		var products = updateProductInventory(req.body.products);
 		return Promise.all(products);
-	}).then(function(product){
-		res.sendStatus(200);
+	}).then(function(){
+		smtpTransport.sendMail(mailOptions, function(error, info){
+			if(error){
+			    console.log(error);
+			    res.json({yo: 'error'});
+			}else{
+			    console.log('Message sent: ' + info.response);
+			    res.status(200).json({yo: info.response});
+			};
+		});
 	});
-	
+
 
 });
 

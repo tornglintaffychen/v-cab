@@ -13,7 +13,7 @@
 				<div ng-show="checkOutInfo.input.email.$error" ng-message="checkOutInfo.email.$error" class="alert alert-warning">Please enter a valid Email</div>
 			</div> -->
 		<!-- 	show s with google -->
-			 		
+
 			<form name="checkOutInfo">
 				<h4>New Shipping Address</h4>
 		 		<div class="form-group">
@@ -29,7 +29,7 @@
 					<input required class = "form-control" ng-model="zip" placeholder="zip"/>
 					<select class="form-control state" ng-model="state" ng-options="state for state in states"></select>
 				</div>
-				<button ng-submit="setAddress()" class="btn btn-primary">Use This Address</button>
+				<button ng-click="setAddress()" class="btn btn-primary">Use This Address</button>
 			</form>
 
 			<div ng-hide="user.email" class="form-group">
@@ -42,4 +42,3 @@
 <!-- 		//checkOutInfo.$invalid -->
 		<button ng-disabled="!confirmation()" ng-click="next()" class="btn btn-primary">next</button>
 	</div>
-

@@ -22,7 +22,7 @@ app.controller("checkoutCtrl", function ($state, CheckOutFactory, $scope, AuthSe
             $state.go("checkout.confirm");
         }
     };
-    
+
 });
 
 app.controller("confirmCtrl", function($scope, CheckOutFactory, CartFactory, products){
@@ -35,15 +35,16 @@ app.controller("confirmCtrl", function($scope, CheckOutFactory, CartFactory, pro
 
 app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory, user, AuthService ) {
     $scope.user = user;
-  
+
     $scope.confirmation = function(){
+        if ($scope.user.email) CheckOutFactory.setEmail($scope.user.email)
         var allInfo = CheckOutFactory.getMailOptions();
         return allInfo.email && allInfo.address;
     }
     $scope.states = AddressFactory.getStates();
     $scope.state = "New York";
     $scope.setEmail = CheckOutFactory.setEmail;
-        
+
     $scope.setAddress = function (address) {
         if (address) {
             CheckOutFactory.setName($scope.user.fullName);
@@ -51,6 +52,7 @@ app.controller("addressCtrl", function ($scope, CheckOutFactory,  AddressFactory
         }
         else {
             var address = $scope.address +","+ $scope.apt +","+ $scope.city+" "+$scope.state+" "+$scope.zip;
+            console.log(address)
             CheckOutFactory.setName($scope.firstname+" "+$scope.lastname);
             CheckOutFactory.setAddress(address);
         }
