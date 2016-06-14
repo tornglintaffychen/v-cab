@@ -29,9 +29,7 @@
 				<b>User Reviews:</b>
 					<!-- <div ng-show="user.firstName !=='Unregistered'"> --> 
 						<form ng-controller="ReviewController">
-							<div ng-model="review.productId" value="product.id">
 							Add your review for {{ product.title }}!
-							</div>
 							<br>
 							Rating:
 							<br>
@@ -56,8 +54,9 @@
 							submit
 							</button>
 						</form>
-					</div>
-				<div ng-repeat="review in product.reviews"><td>
+					<!-- </div> -->
+			</div>
+			<div ng-repeat="review in product.reviews"><td>
 			    
 			    <span ng-if="review.rating == 1">
                 	Rating: 
