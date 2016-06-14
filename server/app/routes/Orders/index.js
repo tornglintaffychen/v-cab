@@ -15,8 +15,8 @@ function findOrCreateUser(req, res, next) {
     // or we create one and log her in
     var user = req.user ? Promise.resolve(req.user) :
         User.create({
-            firstName: 'Bella',
-            lastName: 'Swan'
+            firstName: 'Unregistered',
+            lastName: 'Person'
         })
         .then(function (createdUser) {
             req.logIn(createdUser, function (loginErr) {
