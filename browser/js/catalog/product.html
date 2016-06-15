@@ -16,53 +16,128 @@
 						{{ product.description}}
 					</p>
 				</div>
-
-				<div>
-					<span><b>Categories:</b></span>
-					<div ng-repeat="category in product.categories">
-					{{ category.title }}
-				</div>
-			</div>
-
-			<div>
-				<span><b>User Reviews:</b></span>
-				<div ng-repeat="review in product.reviews"><td>
-			    <span ng-if="review.rating == 1">
-                	Rating: <span style="font-color: crimson"> &#9829;&#9825;&#9825;&#9825;&#9825; </span>
-                	<span>{{ review.text }}</span>
-                	<p>{{ UserFactory.getUser(review.userId) }} posted at {{ review.createdAt | date:"longDate"}}</p>
-     			</span>
-        		<span ng-if="review.rating == 2">
-					Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9825;&#9825;&#9825; </span>
-					<span>{{ review.text }}</span>
-					<p>{{ review.getUser }} posted at {{ review.createdAt | date:"longDate" }}</p>
-         		</span>
-        		<span ng-if="review.rating == 3">
-						Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9829;&#9825;&#9825; </span>
-						<span>{{ review.text }}</span>
-						<p>user posted at {{ review.createdAt | date:"longDate" }}</p>
-     			</span>
-        		<span ng-if="review.rating == 4">
-			        Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9829;&#9829;&#9825; </span>
-			        <span>{{ review.text }}</span>
-			        <p>user posted at {{ review.createdAt | date:"longDate" }}</p>
-
-    		 	</span>
-        		<span ng-if="review.rating == 5">
-			        Rating: <span style="font-color: crimson"> &#9829;&#9829;&#9829;&#9829;&#9829;</span>
-			        <span>{{ review.text }}</span>
-			        <p>user posted at {{ review.createdAt | date:"longDate" }}</p>
-    		 	<span>
-
-				</div>
-			</div>
-
-		<div>
-			<button class="btn btn-default" ng-click="addToCart(product)" style="background-color: crimson; font-color: white" >
+	<button class="btn btn-default" ng-click="addToCart(product, user.id)" style="background-color: crimson; font-color: white" >
 				<img height = "15px" src="/js/common/images/teeth-logo-white.png" />
 				Add to Cart
 			</button>
+				<div>
+					<b>Categories:</b>
+
+					<div ng-repeat="category in product.categories">
+						{{ category.title }}
+					</div>
+				</div>
+
+			<div>
+			<br><br>
+					<!-- <div ng-show="user.firstName !=='Unregistered'"> --> 
+						<form ng-controller="ReviewController">
+							<!-- Add your review for {{ product.title }}! -->
+							
+							<textarea id="text" placeholder="Leave a review for {{ product.title }}!" ng-model="review.text" style="width: 300px; height: 100px">
+							</textarea>
+							<br>
+							Rating:
+							<br>
+
+							<input type="radio" ng-model="review.rating" value="1">
+							&#9829;&#9825;&#9825;&#9825;&#9825;<br>
+							<input type="radio" ng-model="review.rating" value="2">
+							&#9829;&#9829;&#9825;&#9825;&#9825;<br>						
+							<input type="radio" ng-model="review.rating" value="3">
+							&#9829;&#9829;&#9829;&#9825;&#9825;<br>
+							<input type="radio" ng-model="review.rating" value="4">
+							&#9829;&#9829;&#9829;&#9829;&#9825;<br>
+							<input type="radio" ng-model="review.rating" value="5">
+							&#9829;&#9829;&#9829;&#9829;&#9829;<br>	
+							<button ng-click="newReview(user.id, product.id)">
+							submit
+							</button>
+						</form>
+					<!-- </div> -->
+			</div>
+			<b>User Reviews:</b>
+			<div ng-repeat="review in product.reviews"><td>
+			    
+			    <span ng-if="review.rating == 1">
+                	Rating: 
+                	<span style="font-color: crimson"> 
+                		&#9829;&#9825;&#9825;&#9825;&#9825; 
+                	</span>
+                	<span>
+                	<br><i>
+                		"{{ review.text }}"
+                		</i>
+                	</span>
+                	<p>
+                		{{ review.userId }} posted at {{ review.createdAt | date:"longDate"}}
+                	</p>
+     			</span>
+        		
+        		<span ng-if="review.rating == 2">
+					Rating: 
+					<span style="font-color: crimson"> 
+						&#9829;&#9829;&#9825;&#9825;&#9825; 
+					</span>
+					<span>
+					<br><i>
+						"{{ review.text }}"
+					</i>
+					</span>
+					<p>
+						{{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
+					</p>
+         		</span>
+
+        		<span ng-if="review.rating == 3">
+					Rating: 
+					<span style="font-color: crimson"> 
+						&#9829;&#9829;&#9829;&#9825;&#9825; 
+					</span>
+					<span>
+					<br><i>
+						"{{ review.text }}"
+					</span></i>
+					<p>
+					{{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
+					</p>
+     			</span>
+
+        		<span ng-if="review.rating == 4">
+			        Rating: 
+			        <span style="font-color: crimson"> 
+			        	&#9829;&#9829;&#9829;&#9829;&#9825;
+			        </span>
+			        <span>
+			        <br><i>
+			        	"{{ review.text }}"</i>
+			        </span>
+			        <p>
+			        {{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
+			        </p>
+    		 	</span>
+
+        		<span ng-if="review.rating == 5">
+
+			        Rating: 
+			        <span style="font-color: crimson"> 
+			        	&#9829;&#9829;&#9829;&#9829;&#9829;
+			        </span>
+			        <span>
+			        <br><i>
+			        	"{{ review.text }}"</i>
+			        	
+			        </span>
+			        <p>
+			        	{{ review.userId }} posted at {{ review.createdAt | date:"longDate" }}
+			        </p>
+    		 	<span> 						
+			</div>
 		</div>
 		</div>
 	</div>
 </div>
+<!-- <div ng-show="user &amp;&amp; user.firstName !== 'Unregistered'" class="welcome" style="">
+            <span class="ng-binding">Welcome, Barak!</span>
+            <a ng-click="logout()">Logout</a>
+        </div> -->
